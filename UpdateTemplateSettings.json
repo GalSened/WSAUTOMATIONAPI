@@ -1,0 +1,16 @@
+{
+  "Base_Url" : "https://wesign3.comda.co.il/userapi/v3/",
+  "templateId" : "df7d5422-3106-473c-782c-08d99e95b10a",
+  "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
+  "UpdateTemplateWithSignatureFieldSuccess": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldSuccess.json",
+  "UpdateTemplateWithTwoSignatureFieldSuccess": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithTwoSignatureFieldSuccess.json",
+  "UpdateTemplateWithMinimizedFieldSuccess": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithMinimizedFieldSuccess.json",
+  "UpdateTemplateWithMaximizedFieldSuccess": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithMaximizedFieldSuccess.json",
+  "UpdateTemplateWithOverlayingFieldsFields": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithOverlayingFieldsFields.json",
+  "UpdateTemplateWithTwoSignatureFieldWithSameFieldsName": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithTwoSignatureFieldWithSameFieldsName.json",
+  "UpdateTemplateWithInvalidTemplateId": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithInvalidTemplateId.json",
+  "UpdateTemplateWithRadioButtonsWithTwoSameGroupName": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithRadioButtonsWithTwoSameGroupName.json",
+  "UpdateTemplateWithInvalidFieldType": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithInvalidFieldType.json",
+  "UpdateTemplateWithoutNameParameter": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithoutNameParameter.json",
+  "UpdateTemplateToOriginal": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateToOriginal.json"
+}
