@@ -8,6 +8,10 @@ from shared import Shared
 from status_codes import StatusCode, ResultCode
 from selenium import webdriver
 
+"""""
+#dsadsada
+"""""
+
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('DocumentCollectionSettings.json')
