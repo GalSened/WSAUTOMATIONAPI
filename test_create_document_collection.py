@@ -2,15 +2,13 @@ import unittest
 import warnings
 from pathlib import Path
 from time import sleep
+import pytest
 import requests
 import json
+from selenium.webdriver import ActionChains
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 from selenium import webdriver
-
-"""""
-#dsadsada
-"""""
 
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
@@ -55,6 +53,63 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
+
+    def test_document_collection_document_sending_with_personal_note_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithPersonalNoteSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        personal_note_popup_window = self.driver.find_elements_by_class_name("modal__container")
+        assert len(personal_note_popup_window) > 0
+
+    def test_document_collection_document_sending_using_otp_code_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingOtpCodeSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        otp_box = self.driver.find_elements_by_id("auth")
+        assert len(otp_box) > 0
+
+    def test_document_collection_document_sending_using_document_code_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingDocumentCodeSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        document_code = self.driver.find_elements_by_id("id")
+        assert len(document_code) > 0
+
+
+
+    def test_document_collection_document_sending_using_document_code_and_otp_code_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        document_code = self.driver.find_element_by_xpath("//input[@type='text']")
+        document_code.send_keys(self.settings['DocumentCode'])
+        sleep(3)
+        send_request_button = self.driver.find_element_by_xpath("//*[@value='Send request']")
+        send_request_button.click()
+        sleep(3)
+        otp_box = self.driver.find_elements_by_id("auth")
+        assert len(otp_box) > 0
+
 
     def test_document_collection_document_sending_with_invalid_sign_field_name(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithInvalidSignFieldName')
@@ -133,54 +188,96 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['errors']['Signers']
         assert json_response[0] == ResultCode.SIGNER_METHOD_NOT_FEET_TO_CONTACT_MEANS, "Validation is " + str(json_response[0])
 
+    @pytest.mark.run(order=4)
     def test_document_collection_document_sending_with_should_send_parameter_as_false(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithShouldSignParamaterFlase')
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithShouldSendParamaterFlase')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
-        self.driver.get('https://mail.google.com/')
-        sleep(8)
-        self.driver.find_element_by_xpath("//input[@type='email']").send_keys("wesigntesting@gmail.com")
-        self.driver.find_element_by_id("identifierNext").click()
-        sleep(8)
-        self.driver.find_element_by_xpath("//input[@type='password']").send_keys("Comsign1!")
-        sleep(8)
-        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+        sleep(5)
+        self.__enter_gmail()
         sleep(8)
         email = self.driver.find_elements_by_xpath("//span[contains(text(),'devSignIt')]")
         assert len(email) == 0, "Check if email sent"
-        sleep(4)
+        sleep(6)
         self.driver.quit()
 
+    @pytest.mark.run(order=3)
     def test_document_collection_document_sending_with_should_send_parameter_as_true(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithShouldSignParamaterTrue')
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithShouldSendParamaterTrue')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
-        self.driver.get('https://mail.google.com/')
-        sleep(8)
-        self.driver.find_element_by_xpath("//input[@type='email']").send_keys("wesigntesting@gmail.com")
-        self.driver.find_element_by_id("identifierNext").click()
-        sleep(8)
-        self.driver.find_element_by_xpath("//input[@type='password']").send_keys("Comsign1!")
-        sleep(8)
-        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+        self.__enter_gmail()
         sleep(8)
         email = self.driver.find_elements_by_xpath("//span[contains(text(),'devSignIt')]")
         assert len(email) > 0, "Email didn't sent"
         sleep(8)
-        self.driver.find_element_by_xpath("(//table[@cellpadding='0'])[6]").is_displayed()
-        self.driver.find_element_by_xpath(
-                "//body/div[7]/div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/span[1]").click()  ##click on email checkbox
-        sleep(4)
-        self.driver.find_element_by_xpath("(//div[@role='button'])[11]").click()  ##delete button
-        sleep(3)
-        self.driver.quit()
+        self.__delete_gmail_emails()
 
+    @pytest.mark.run(order=2)
+    def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_false(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithshouldSendSignedParamaterFalse')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(8)
+        self.__sign_on_document()
+        self.driver.execute_script("window.open('');")
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(4)
+        self.__enter_gmail()
+        sleep(8)
+        email_notification = self.driver.find_element_by_id(":23")
+        email_notification.click()
+        sleep(8)
+        attached_document = self.driver.find_elements_by_xpath("//img[@id=':70']")
+        assert len(attached_document) == 0, "Pdf document attached"
+        sleep(3)
+        self.driver.back()
+        self.__delete_gmail_emails()
+
+    @pytest.mark.run(order=1)
+    def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(8)
+        self.__sign_on_document()
+        self.driver.execute_script("window.open('');")
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(4)
+        self.__enter_gmail()
+        sleep(8)
+        email_notification = self.driver.find_element_by_xpath("//tbody/tr[@id=':25']/td[4]/div[2]/span[1]/span[1]")
+        email_notification.click()
+        sleep(8)
+        attached_document = self.driver.find_elements_by_xpath("//*[@id=':7a']")
+        assert len(attached_document) > 0, "Pdf document attached"
+        sleep(3)
+        self.driver.back()
+        self.__delete_gmail_emails()
+
+    @pytest.mark.run(order=5)
+    def test_delete_all_mails(self):
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.__enter_gmail()
+        sleep(4)
+        try:
+            self.__delete_gmail_emails()
+        except:
+            pass
 
     if __name__ == "__main__":
         unittest.main()
@@ -192,3 +289,43 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json), headers=headers)
         return r
+
+    def __sign_on_document(self):
+        sleep(4)
+        self.driver.find_element_by_xpath("//*[@name='feather']").click()
+        sleep(4)
+        canvas = self.driver.find_element_by_xpath("//div[@class='signature-pad__canvas']")
+        drawing = ActionChains(self.driver) \
+            .click_and_hold(canvas) \
+            .move_by_offset(-200, 10) \
+            .move_by_offset(-10, -50) \
+            .move_by_offset(25, 10) \
+            .move_by_offset(80, 50) \
+            .move_by_offset(10, 60) \
+            .move_by_offset(10, 60) \
+            .release()
+        drawing.perform()
+        self.driver.find_element_by_class_name("ct-button--primary").click() ##Sign button
+        sleep(4)
+        self.driver.find_element_by_class_name("ct-button--titlebar-primary").click() ##Finish button
+        sleep(5)
+
+    def __delete_gmail_emails(self):
+        sleep(4)
+        self.driver.find_element_by_xpath("(//table[@cellpadding='0'])[6]").is_displayed()
+        self.driver.find_element_by_xpath(
+                "//body/div[7]/div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/span[1]").click()  ##click on email checkbox
+        sleep(4)
+        self.driver.find_element_by_xpath("(//div[@role='button'])[11]").click()  ##delete button
+        sleep(3)
+        self.driver.quit()
+
+    def __enter_gmail(self):
+        self.driver.get('https://mail.google.com/')
+        sleep(8)
+        self.driver.find_element_by_xpath("//input[@type='email']").send_keys("wesigntesting@gmail.com")
+        self.driver.find_element_by_id("identifierNext").click()
+        sleep(8)
+        self.driver.find_element_by_xpath("//input[@type='password']").send_keys("Comsign1!")
+        sleep(8)
+        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()

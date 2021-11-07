@@ -3,6 +3,7 @@
   "Base_Url" : "https://wesign3.comda.co.il/userapi/v3/",
   "templateId" : "df7d5422-3106-473c-782c-08d99e95b10a",
   "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
+  "DocumentCode" : "123456",
   "LoginRequestSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestSuccess.json",
   "DocumentCollectionDocumentSendingSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingSuccess.json",
   "DocumentCollectionDocumentSendingWithTextFieldSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithTextFieldSuccess.json",
@@ -19,6 +20,12 @@
   "DocumentCollectionDocumentSendingWithInvalidSendingMethod" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithInvalidSendingMethod.json",
   "DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess.json",
   "DocumentCollectionDocumentSendingTwoRecipientByGroupSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwoRecipientByGroupSuccess.json",
-  "DocumentCollectionDocumentSendingWithShouldSignParamaterFlase" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSignParamaterFlase.json",
-  "DocumentCollectionDocumentSendingWithShouldSignParamaterTrue" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSignParamaterTrue.json"
+  "DocumentCollectionDocumentSendingWithShouldSendParamaterFlase" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSendParamaterFlase.json",
+  "DocumentCollectionDocumentSendingWithShouldSendParamaterTrue" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSendParamaterTrue.json",
+  "DocumentCollectionDocumentSendingWithshouldSendSignedParamaterFalse" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithshouldSendSignedParamaterFalse.json",
+  "DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue.json",
+  "DocumentCollectionDocumentSendingWithPersonalNoteSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithPersonalNoteSuccess.json",
+  "DocumentCollectionDocumentSendingUsingOtpCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingOtpCodeSuccess.json",
+  "DocumentCollectionDocumentSendingUsingDocumentCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingDocumentCodeSuccess.json",
+  "DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess.json"
 }

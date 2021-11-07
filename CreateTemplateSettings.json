@@ -4,5 +4,8 @@
   "CreateTemplateWordBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateWordBase64Success.json",
   "CreateTemplateXlsxBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateXlsxBase64Success.json",
    "CreateTemplatePngBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatePngBase64Success.json",
-  "CreateTemplateJpgBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateJpgBase64Success.json"
+  "CreateTemplateJpgBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateJpgBase64Success.json",
+  "CreateTemplatePdfBase64EmptyName" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatePdfBase64EmptyName.json",
+  "CreateTemplatefBase64WithoutFileType" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatefBase64WithoutFileType.json",
+  "CreateTemplateWordBase64WithMetaDataSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json"
 }

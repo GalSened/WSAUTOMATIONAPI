@@ -22,3 +22,4 @@ class ResultCode:
     INVALID_TEMPLATE_ID = 'Invalid template id'
     RADIOGROUP_FIELDS_MUST_BE_UNIQUE_REMOVE_DUPLICATION_FIELDS = "RadioGroup fields must be unique, remove duplication fields- [test]"
     INVALID_FIELD_TYPE_NUMBER = 'Field type [8] for a text field named [text1] not supported'
+    BASE_64_FILE_UNSUPPORTED_TYPE = 'Supported FileType are: PDF, DOCX, PNG, JPG , JPEG. Please specify a valid Base64File in format data:application/FILE_TYPE;base64,.... '
