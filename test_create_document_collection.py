@@ -90,8 +90,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         document_code = self.driver.find_elements_by_id("id")
         assert len(document_code) > 0
 
-
-
     def test_document_collection_document_sending_using_document_code_and_otp_code_success(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess')
         assert r.status_code == StatusCode.OK
@@ -109,7 +107,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(3)
         otp_box = self.driver.find_elements_by_id("auth")
         assert len(otp_box) > 0
-
 
     def test_document_collection_document_sending_with_invalid_sign_field_name(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithInvalidSignFieldName')
@@ -270,6 +267,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.__delete_gmail_emails()
 
     @pytest.mark.run(order=5)
+
     def test_delete_all_mails(self):
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.__enter_gmail()
@@ -278,6 +276,21 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             self.__delete_gmail_emails()
         except:
             pass
+
+    def test_document_collection_document_sending_with_redirect_url(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithRedirectUrlSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        self.__sign_on_document()
+        sleep(5)
+        self.driver.switch_to.alert.accept()
+        sleep(5)
+        assert self.driver.current_url == "https://www.comsign.co.il/"
+
 
     if __name__ == "__main__":
         unittest.main()

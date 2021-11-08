@@ -27,5 +27,7 @@
   "DocumentCollectionDocumentSendingWithPersonalNoteSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithPersonalNoteSuccess.json",
   "DocumentCollectionDocumentSendingUsingOtpCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingOtpCodeSuccess.json",
   "DocumentCollectionDocumentSendingUsingDocumentCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingDocumentCodeSuccess.json",
-  "DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess.json"
+  "DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess.json",
+  "DocumentCollectionDocumentSendingWithRedirectUrlSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithRedirectUrlSuccess.json"
+
 }
