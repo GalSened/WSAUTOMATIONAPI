@@ -101,10 +101,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         document_code = self.driver.find_element_by_xpath("//input[@type='text']")
         document_code.send_keys(self.settings['DocumentCode'])
-        sleep(3)
+        sleep(5)
         send_request_button = self.driver.find_element_by_xpath("//*[@value='Send request']")
         send_request_button.click()
-        sleep(3)
+        sleep(5)
         otp_box = self.driver.find_elements_by_id("auth")
         assert len(otp_box) > 0
 
@@ -119,8 +119,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithEmptyFieldNameReadOnly')
         assert r.status_code == StatusCode.BAD_REQUEST, "Status " + str(r.status_code) + " incorrect"
         response = r.json()
-        json_response = response['errors']['error']
-        assert json_response[0] == ResultCode.PLEASE_SPECIFY_FIELD_NAME_IN_READ_ONLY_FIELDS
+        json_response = response['errors']['']
+        assert json_response[0] == ResultCode.READ_ONLY_FIELDS_SHOULD_CONTAIN_NAME_AND_VALUE
 
     def test_document_collection_document_sending_with_invalid_field_name_in_read_only_fields(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithInvalidFieldNameReadOnly')
@@ -134,7 +134,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['']
-        assert json_response[0] == ResultCode.READ_ONLY_FIELDS_SHOULD_CONTAIN_VALUE
+        assert json_response[0] == ResultCode.READ_ONLY_FIELDS_SHOULD_CONTAIN_NAME_AND_VALUE
 
     def test_document_collection_document_sending_with_invalid_template_id(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWitheInvalidTemplateId')
@@ -183,7 +183,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['Signers']
-        assert json_response[0] == ResultCode.SIGNER_METHOD_NOT_FEET_TO_CONTACT_MEANS, "Validation is " + str(json_response[0])
+        assert json_response[0] == ResultCode.PLEASE_SPECIFY_VALID_SIGNERS, "Validation is " + str(json_response[0])
 
     @pytest.mark.run(order=4)
     def test_document_collection_document_sending_with_should_send_parameter_as_false(self):
@@ -241,7 +241,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.back()
         self.__delete_gmail_emails()
 
-    @pytest.mark.run(order=1)
+    @pytest.mark.run(order=5)
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue')
         assert r.status_code == StatusCode.OK
@@ -266,8 +266,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.back()
         self.__delete_gmail_emails()
 
-    @pytest.mark.run(order=5)
-
+    @pytest.mark.run(order=1)
     def test_delete_all_mails(self):
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.__enter_gmail()
