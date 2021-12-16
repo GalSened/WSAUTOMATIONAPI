@@ -1,12 +1,13 @@
 import unittest
 import warnings
 from pathlib import Path
+import pytest
 import requests
 import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
-
+@pytest.mark.flaky(max_runs=3)
 class WesignApiUpdateTemplateTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('UpdateTemplateSettings.json')
@@ -15,7 +16,6 @@ class WesignApiUpdateTemplateTests(unittest.TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
-
 
     def test_update_template_with_signature_field_success(self):
         r = self.__api_update_template_request('UpdateTemplateWithSignatureFieldSuccess')

@@ -1,6 +1,6 @@
 {
-  "Base_Url" : "https://wesign3.comda.co.il/userapi/v3/",
-  "templateId" : "df7d5422-3106-473c-782c-08d99e95b10a",
+  "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
+  "templateId" : "bc1ea668-9e1e-4d3f-22d5-08d9bd4c8663",
   "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
   "UpdateTemplateWithSignatureFieldSuccess": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldSuccess.json",
   "UpdateTemplateWithTwoSignatureFieldSuccess": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithTwoSignatureFieldSuccess.json",

@@ -1,6 +1,6 @@
 {
-  "chrome_driver" : "\\\\fs01\\Users\\NirK\\BrowserDrivers\\chromedriver.exe",
-  "Base_Url" : "https://wesign3.comda.co.il/userapi/v3/",
+  "chrome_driver" : "C:\\Dev\\Python\\chromedriver.exe",
+  "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
   "LoginRequestSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestSuccess.json",
   "LoginRequestInvalidPassword" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestInvalidPassword.json",
   "LoginRequestInvalidEmail" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestInvalidEmail.json",

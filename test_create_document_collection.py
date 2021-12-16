@@ -10,6 +10,8 @@ from shared import Shared
 from status_codes import StatusCode, ResultCode
 from selenium import webdriver
 
+
+@pytest.mark.flaky(max_runs=3)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('DocumentCollectionSettings.json')
@@ -78,6 +80,22 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         otp_box = self.driver.find_elements_by_id("auth")
         assert len(otp_box) > 0
 
+    def test_document_collection_document_sending_using_otp_code_send_to_phone_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        send_request_button = self.driver.find_element_by_xpath(
+            "/html/body/app-root/app-main-signer/app-otp-details/body/main/div[2]/div/div[3]/form/div[1]/a")
+        send_request_button.click()
+        sleep(2)
+        otp_box = self.driver.find_elements_by_id("auth")
+        assert len(otp_box) > 0
+
     def test_document_collection_document_sending_using_document_code_success(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingDocumentCodeSuccess')
         assert r.status_code == StatusCode.OK
@@ -102,7 +120,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         document_code = self.driver.find_element_by_xpath("//input[@type='text']")
         document_code.send_keys(self.settings['DocumentCode'])
         sleep(5)
-        send_request_button = self.driver.find_element_by_xpath("//*[@value='Send request']")
+        send_request_button = self.driver.find_element_by_xpath("/html/body/app-root/app-main-signer/app-otp-details/body/main/div[2]/div/div[2]/form/input")
         send_request_button.click()
         sleep(5)
         otp_box = self.driver.find_elements_by_id("auth")
@@ -196,7 +214,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         self.__enter_gmail()
         sleep(8)
-        email = self.driver.find_elements_by_xpath("//span[contains(text(),'devSignIt')]")
+        email = self.driver.find_elements_by_xpath("//span[contains(text(),'dev')]")
         assert len(email) == 0, "Check if email sent"
         sleep(6)
         self.driver.quit()
@@ -211,7 +229,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.__enter_gmail()
         sleep(8)
-        email = self.driver.find_elements_by_xpath("//span[contains(text(),'devSignIt')]")
+        email = self.driver.find_elements_by_xpath("//span[contains(text(),'dev')]")
         assert len(email) > 0, "Email didn't sent"
         sleep(8)
         self.__delete_gmail_emails()
@@ -274,7 +292,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         try:
             self.__delete_gmail_emails()
         except:
-            pass
+            self.driver.quit()
 
     def test_document_collection_document_sending_with_redirect_url(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithRedirectUrlSuccess')
@@ -290,6 +308,41 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         assert self.driver.current_url == "https://www.comsign.co.il/"
 
+    def test_document_collection_document_sending_using_signer_attachments_as_mandatory_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSignerAttachmentsAsMandatorySuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        self.__sign_on_document()
+        sleep(2)
+        attachment_window_pop_up = self.driver.find_elements_by_class_name("ct-animate-slide-down")
+        assert len(attachment_window_pop_up) == 1
+        sleep(1)
+        self.driver.quit()
+
+    def test_document_collection_document_sending_using_signer_appendices_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSignerAppendicesSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        appendices_icon = self.driver.find_elements_by_class_name("feather-bookmark")
+        assert len(appendices_icon) == 1
+        sleep(2)
+        appendices_icon = self.driver.find_element_by_class_name("feather-bookmark")
+        appendices_icon.click()
+        sleep(2)
+        appendices_pop_up = self.driver.find_elements_by_class_name("ct-animate-slide-down")
+        assert len(appendices_pop_up) == 1
+        sleep(1)
+        self.driver.quit()
 
     if __name__ == "__main__":
         unittest.main()

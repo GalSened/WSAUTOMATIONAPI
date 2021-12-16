@@ -90,8 +90,6 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         json_response = response['errors']['Base64File']
         assert json_response[0] == ResultCode.BASE_64_FILE_UNSUPPORTED_TYPE
 
-
-
     if __name__ == "__main__":
         unittest.main()
 

@@ -1,7 +1,7 @@
 {
-  "chrome_driver" : "\\\\fs01\\Users\\NirK\\BrowserDrivers\\chromedriver.exe",
-  "Base_Url" : "https://wesign3.comda.co.il/userapi/v3/",
-  "templateId" : "df7d5422-3106-473c-782c-08d99e95b10a",
+  "chrome_driver" : "C:\\Dev\\Python\\chromedriver.exe",
+  "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
+  "templateId" : "bc1ea668-9e1e-4d3f-22d5-08d9bd4c8663",
   "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
   "DocumentCode" : "123456",
   "LoginRequestSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestSuccess.json",
@@ -28,5 +28,8 @@
   "DocumentCollectionDocumentSendingUsingOtpCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingOtpCodeSuccess.json",
   "DocumentCollectionDocumentSendingUsingDocumentCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingDocumentCodeSuccess.json",
   "DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess.json",
-  "DocumentCollectionDocumentSendingWithRedirectUrlSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithRedirectUrlSuccess.json"
+  "DocumentCollectionDocumentSendingWithRedirectUrlSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithRedirectUrlSuccess.json",
+  "DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess.json",
+  "DocumentCollectionDocumentSendingSignerAttachmentsAsMandatorySuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingSignerAttachmentsAsMandatorySuccess.json",
+  "DocumentCollectionDocumentSendingSignerAppendicesSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingSignerAppendicesSuccess.json"
 }
