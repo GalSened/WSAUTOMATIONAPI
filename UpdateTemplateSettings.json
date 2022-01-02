@@ -12,5 +12,6 @@
   "UpdateTemplateWithRadioButtonsWithTwoSameGroupName": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithRadioButtonsWithTwoSameGroupName.json",
   "UpdateTemplateWithInvalidFieldType": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithInvalidFieldType.json",
   "UpdateTemplateWithoutNameParameter": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithoutNameParameter.json",
-  "UpdateTemplateToOriginal": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateToOriginal.json"
+  "UpdateTemplateToOriginal": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateToOriginal.json",
+  "UpdateTemplatePdfBase64With0TextParameter" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplatePdfBase64With0TextParameter.json"
 }

@@ -25,3 +25,5 @@ class ResultCode:
     BASE_64_FILE_UNSUPPORTED_TYPE = 'Supported FileType are: PDF, DOCX, PNG, JPG , JPEG. Please specify a valid Base64File in format data:application/FILE_TYPE;base64,.... '
     READ_ONLY_FIELDS_SHOULD_CONTAIN_NAME_AND_VALUE = 'Read only fields should contain name and value'
     PLEASE_SPECIFY_VALID_SIGNERS = 'Please specify valid signers (signer should contain contactId with valid sendingMethod (sms-1,email-2 or tablet-3) or contantMeans with contactName)'
+    GROUP_WITH_SAME_NAME = 'Group with same name already exist in company'
+    EMPTY_NAME = "'Name' must not be empty."

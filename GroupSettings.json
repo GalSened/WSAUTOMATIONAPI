@@ -1,0 +1,10 @@
+{
+  "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
+  "CreateNewGroupRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\CreateNewGroupRequest.json",
+  "CreateSameGroupNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\CreateSameGroupNameRequest.json",
+  "CreateEmptyGroupNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\CreateEmptyGroupNameRequest.json",
+  "ChangeGroupNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\ChangeGroupNameRequest.json",
+  "ChangeGroupNameToOriginalRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\ChangeGroupNameToOriginalRequest.json",
+  "GroupID" : "3051d282-27d0-43ac-e3cf-08d98e449cd2"
+
+}
