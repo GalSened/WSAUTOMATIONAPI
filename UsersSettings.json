@@ -1,0 +1,7 @@
+{
+  "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
+  "CreateNewBasicUserRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewBasicUserRequest.json",
+  "CreateNewEditorUserRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewEditorUserRequest.json",
+  "CreateNewAdminUserRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewAdminUserRequest.json",
+  "CreateNewUserInvalidUserTypeRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserInvalidUserTypeRequest.json"
+}

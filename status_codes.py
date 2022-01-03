@@ -27,3 +27,5 @@ class ResultCode:
     PLEASE_SPECIFY_VALID_SIGNERS = 'Please specify valid signers (signer should contain contactId with valid sendingMethod (sms-1,email-2 or tablet-3) or contantMeans with contactName)'
     GROUP_WITH_SAME_NAME = 'Group with same name already exist in company'
     EMPTY_NAME = "'Name' must not be empty."
+    THERE_ARE_USERS_IN_GROUP = 'There are users in group'
+    INVALID_USER_TYPE = 'Valid UserType: 1 (Basic) or 2 (Editor) or 3 (CompanyAdmin)'

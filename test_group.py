@@ -39,12 +39,41 @@ class WesignApiGroupTests(unittest.TestCase):
         json_response = response['errors']['Name']
         assert json_response[0] == ResultCode.EMPTY_NAME
 
-    def test_update_group_name(self):
+    def test_update_group_name_success(self):
         r = self.__api_update_group_request('ChangeGroupNameRequest')
         assert r.status_code == StatusCode.OK
         self.__api_update_group_request('ChangeGroupNameToOriginalRequest')
 
+    def test_get_all_groups_success(self):
+        r = self.__api_get_group_request()
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response_group_id = response['groups'][0]['groupId']
+        json_response_group_name = response['groups'][0]['name']
+        assert json_response_group_id == self.settings['GroupID']
+        assert  json_response_group_name == 'API'
 
+    def test_delete_group_success(self):
+        r = self.__api_create_group_request('CreateNewGroupRequest')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['groupId']
+        assert len(json_response) > 0
+        self.__api_delete_group_request(f'{json_response}')
+
+    def test_delete_group_with_users(self):
+        r = self.__api_delete_group_request(self.settings['GroupID'])
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.THERE_ARE_USERS_IN_GROUP
+
+    ##Bug number = WES-977
+    def test_delete_group_with_invalid_id(self):
+        r = self.__api_delete_group_request(self.settings['InvalidGroupID'])
+        assert r.status_code == StatusCode.BAD_REQUEST
+
+    
     if __name__ == "__main__":
         unittest.main()
 
@@ -58,8 +87,8 @@ class WesignApiGroupTests(unittest.TestCase):
 
     def __api_delete_group_request(self, group_id):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        requests.delete(self.settings['Base_Url'] + 'admins/groups/' + group_id,headers=headers)
-
+        r = requests.delete(self.settings['Base_Url'] + 'admins/groups/' + group_id,headers=headers)
+        return r
 
     def __api_update_group_request(self, request_file):
         file = open(self.settings[request_file], 'r')
@@ -67,4 +96,9 @@ class WesignApiGroupTests(unittest.TestCase):
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.put(self.settings['Base_Url'] + 'admins/groups/' + self.settings['GroupID'], data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def __api_get_group_request(self):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'admins/groups',headers=headers)
         return r
