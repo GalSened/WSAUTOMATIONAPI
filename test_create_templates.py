@@ -1,6 +1,8 @@
 import unittest
 import warnings
 from pathlib import Path
+from time import sleep
+
 import requests
 import json
 from shared import Shared
@@ -88,6 +90,9 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         response = r.json()
         json_response = response['errors']['Base64File']
         assert json_response[0] == ResultCode.BASE_64_FILE_UNSUPPORTED_TYPE
+
+    def tearDown(self):
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

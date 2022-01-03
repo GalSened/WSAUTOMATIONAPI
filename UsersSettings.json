@@ -3,5 +3,6 @@
   "CreateNewBasicUserRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewBasicUserRequest.json",
   "CreateNewEditorUserRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewEditorUserRequest.json",
   "CreateNewAdminUserRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewAdminUserRequest.json",
-  "CreateNewUserInvalidUserTypeRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserInvalidUserTypeRequest.json"
+  "CreateNewUserInvalidUserTypeRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserInvalidUserTypeRequest.json",
+  "CreateNewUserWhitEmptyNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserWhitEmptyNameRequest.json"
 }

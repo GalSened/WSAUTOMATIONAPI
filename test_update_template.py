@@ -1,6 +1,8 @@
 import unittest
 import warnings
 from pathlib import Path
+from time import sleep
+
 import pytest
 import requests
 import json
@@ -82,6 +84,7 @@ class WesignApiUpdateTemplateTests(unittest.TestCase):
     def tearDown(self):
         r = self.__api_update_template_request('UpdateTemplateToOriginal')
         assert r.status_code == StatusCode.OK
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

@@ -1,6 +1,8 @@
 import unittest
 import warnings
 from pathlib import Path
+from time import sleep
+
 import pytest
 import requests
 import json
@@ -48,6 +50,15 @@ class WesignApiUsersTests(unittest.TestCase):
         json_response = response['errors']['Type']
         assert json_response[0] == ResultCode.INVALID_USER_TYPE
 
+    def test_create_new_user_with_empty_name(self):
+        r = self.__api_create_user_request('CreateNewUserWhitEmptyNameRequest')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['Name']
+        assert json_response[0] == ResultCode.EMPTY_NAME
+
+    def tearDown(self):
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

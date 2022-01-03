@@ -344,6 +344,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.quit()
 
+    def tearDown(self):
+        sleep(3)
+
     if __name__ == "__main__":
         unittest.main()
 

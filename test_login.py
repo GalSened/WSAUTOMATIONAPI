@@ -1,6 +1,8 @@
 import unittest
 import warnings
 from pathlib import Path
+from time import sleep
+
 import requests
 import json
 from status_codes import StatusCode
@@ -50,6 +52,8 @@ class WesignApiLoginTests(unittest.TestCase):
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_AN_EMAIL
         assert json_response[1] == ResultCode.PLEASE_SPECIFY_A_VALID_EMAIL
 
+    def tearDown(self):
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

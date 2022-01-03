@@ -1,6 +1,8 @@
 import unittest
 import warnings
 from pathlib import Path
+from time import sleep
+
 import pytest
 import requests
 import json
@@ -73,7 +75,9 @@ class WesignApiGroupTests(unittest.TestCase):
         r = self.__api_delete_group_request(self.settings['InvalidGroupID'])
         assert r.status_code == StatusCode.BAD_REQUEST
 
-    
+    def tearDown(self):
+        sleep(3)
+
     if __name__ == "__main__":
         unittest.main()
 
