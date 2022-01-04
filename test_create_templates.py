@@ -2,12 +2,13 @@ import unittest
 import warnings
 from pathlib import Path
 from time import sleep
-
+import pytest
 import requests
 import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
+@pytest.mark.flaky(max_runs=2)
 class WesignApiCreateTemplateTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('CreateTemplateSettings.json')

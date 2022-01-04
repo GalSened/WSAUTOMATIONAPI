@@ -29,3 +29,4 @@ class ResultCode:
     EMPTY_NAME = "'Name' must not be empty."
     THERE_ARE_USERS_IN_GROUP = 'There are users in group'
     INVALID_USER_TYPE = 'Valid UserType: 1 (Basic) or 2 (Editor) or 3 (CompanyAdmin)'
+    INVALID_GROUP_ID = 'Invalid GroupId'

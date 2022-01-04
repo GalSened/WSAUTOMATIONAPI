@@ -11,7 +11,7 @@ from status_codes import StatusCode, ResultCode
 from selenium import webdriver
 
 
-@pytest.mark.flaky(max_runs=3)
+@pytest.mark.flaky(max_runs=2)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('DocumentCollectionSettings.json')

@@ -4,5 +4,14 @@
   "CreateNewEditorUserRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewEditorUserRequest.json",
   "CreateNewAdminUserRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewAdminUserRequest.json",
   "CreateNewUserInvalidUserTypeRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserInvalidUserTypeRequest.json",
-  "CreateNewUserWhitEmptyNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserWhitEmptyNameRequest.json"
+  "CreateNewUserWhitEmptyNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserWhitEmptyNameRequest.json",
+  "CreateNewUserWhitInvalidEmailRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserWhitInvalidEmailRequest.json",
+  "CreateNewUserWhitInvalidGroupIdRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\CreateNewUserWhitInvalidGroupIdRequest.json",
+  "UpdateUserNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\UpdateUserNameRequest.json",
+  "UpdateUserEmailRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\UpdateUserEmailRequest.json",
+  "UpdateUserToBasicRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\UpdateUserToBasicRequest.json",
+  "UpdateUserToEditorRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\UpdateUserToEditorRequest.json",
+  "UpdateUserEmptyNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\UpdateUserEmptyNameRequest.json",
+  "UpdateUserEmptyEmailRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\UpdateUserEmptyEmailRequest.json",
+  "UpdateUserInvalidGroupIdRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UsersRequest\\UpdateUserInvalidGroupIdRequest.json"
 }
