@@ -2,14 +2,12 @@ import unittest
 import warnings
 from pathlib import Path
 from time import sleep
-
 import pytest
 import requests
 import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
-@pytest.mark.flaky(max_runs=2)
 class WesignApiGroupTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('GroupSettings.json')
@@ -74,6 +72,9 @@ class WesignApiGroupTests(unittest.TestCase):
     def test_delete_group_with_invalid_id(self):
         r = self.__api_delete_group_request(self.settings['InvalidGroupID'])
         assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.INVALID_GROUP_ID
 
     def tearDown(self):
         sleep(3)

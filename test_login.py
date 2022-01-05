@@ -2,14 +2,14 @@ import unittest
 import warnings
 from pathlib import Path
 from time import sleep
-
+import pytest
 import requests
 import json
 from status_codes import StatusCode
 from status_codes import ResultCode
 
-class WesignApiLoginTests(unittest.TestCase):
 
+class WesignApiLoginTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('settings.json')
         with open(p) as f:

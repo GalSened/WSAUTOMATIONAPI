@@ -1,0 +1,46 @@
+{
+	"name": "dummy",
+	"fields": {
+		"textFields": [
+			{
+				"textFieldType": 1,
+				"customerRegex": null,
+				"value": "",
+				"name": "text1",
+				"description": "",
+				"x": 0.08403361344537816,
+				"y": 0.03859857482185273,
+				"width": 0.15999999999999998,
+				"height": 0.023503562945368127,
+				"mandatory": false,
+				"page": 1
+			}
+		],
+		"signatureFields": [
+			{
+				"image": null,
+				"signingType": 1,
+				"name": "sign1",
+				"description": "",
+				"x": 0.3596638655462185,
+				"y": 0.11757719714964371,
+				"width": 0.15999999999999998,
+				"height": 0.02350000000000004,
+				"mandatory": false,
+				"page": 1
+			},
+			{
+				"image": null,
+				"signingType": 1,
+				"name": "sign2",
+				"description": "",
+				"x": 0.49495798319327735,
+				"y": 0.2007125890736342,
+				"width": 0.15999999999999998,
+				"height": 0.02350000000000004,
+				"mandatory": false,
+				"page": 1
+			}
+		]
+	}
+}

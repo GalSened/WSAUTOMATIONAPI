@@ -1,0 +1,19 @@
+{
+	"name": "dummy",
+	"fields": {
+		"textFields": [
+			{
+				"textFieldType": 8,
+				"value": "Hi",
+				"name": "text1",
+				"description": "sadsadasdasdsadsa",
+				"x": 0.06209150326797386,
+				"y": 0.14646464646464646,
+				"width": 0.21650326797385622,
+				"height": 0.02462121212121212,
+				"page": 1,
+				"isVlid": true
+			}
+		]
+	}
+}

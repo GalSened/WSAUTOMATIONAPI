@@ -1,0 +1,26 @@
+{
+	"name": "dummy",
+	"fields": {
+		"signatureFields": [{
+				"signingType": 1,
+				"customerRegex": "string",
+				"name": "sign1",
+				"x": 0.1397916666666666,
+				"y": 0.1559055118110236,
+				"width": 0.08403361344537816,
+				"height": 0.020190023752969124,
+				"page": 1
+			},
+			{
+				"signingType": 1,
+				"customerRegex": "string",
+				"name": "sign2",
+				"x": 0.1397916666666666,
+				"y": 0.1559055118110236,
+				"width": 0.08403361344537816,
+				"height": 0.020190023752969124,
+				"page": 1
+			}
+		]
+	}
+}

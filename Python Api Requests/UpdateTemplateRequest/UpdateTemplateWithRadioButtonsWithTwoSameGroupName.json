@@ -1,0 +1,90 @@
+{
+	"name": "dummy",
+	"fields": {
+		"textFields": [
+			{
+				"textFieldType": 1,
+				"customerRegex": "string",
+				"value": "Hi",
+				"name": "test1",
+				"description": "sadsadasdasdsadsa",
+				"x": 0.06209150326797386,
+				"y": 0.14646464646464646,
+				"width": 0.21650326797385622,
+				"height": 0.02462121212121212,
+				"page": 1,
+				"isVlid": true
+			}
+		],
+		"signatureFields": [
+			{
+				"signingType": 1,
+				"name": "sign1",
+				"x": 0.505718954248366,
+				"y": 0.13446969696969696,
+				"width": 0.19934640522875818,
+				"height": 0.03598484848484849,
+				"page": 1,
+				"isVlid": true
+			}
+		],
+		"radioGroupFields": [
+			{
+				"name": "test",
+				"radioFields": [
+					{
+						"name": "radioOne",
+						"description": "string",
+						"x": 0.36356209150326796,
+						"y": 0.1351010101010101,
+						"width": 0.03104575163398693,
+						"height": 0.023989898989898988,
+						"mandatory": true,
+						"fieldGroup": 0,
+						"page": 1
+					},
+					{
+						"name": "radio2",
+						"description": "string",
+						"x": 0.4272875816993464,
+						"y": 0.13636363636363635,
+						"width": 0.03676470588235294,
+						"height": 0.028409090909090908,
+						"mandatory": true,
+						"fieldGroup": 0,
+						"page": 1
+					}
+				
+]
+			},
+						{
+				"name": "test",
+				"radioFields": [
+					{
+						"name": "radioOne",
+						"description": "string",
+						"x": 0.1,
+						"y": 0.2,
+						"width": 0.03104575163398693,
+						"height": 0.023989898989898988,
+						"mandatory": true,
+						"fieldGroup": 0,
+						"page": 1
+					},
+					{
+						"name": "radio2",
+						"description": "string",
+						"x": 0.2,
+						"y": 0.3,
+						"width": 0.03676470588235294,
+						"height": 0.028409090909090908,
+						"mandatory": true,
+						"fieldGroup": 0,
+						"page": 1
+					}
+				
+]
+			}
+		]
+	}
+}

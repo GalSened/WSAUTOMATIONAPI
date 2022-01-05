@@ -2,14 +2,13 @@ import unittest
 import warnings
 from pathlib import Path
 from time import sleep
-
 import pytest
 import requests
 import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
-@pytest.mark.flaky(max_runs=2)
+
 class WesignApiUsersTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('UsersSettings.json')
@@ -137,7 +136,7 @@ class WesignApiUsersTests(unittest.TestCase):
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_A_VALID_EMAIL
         self.__api_delete_user_request(json_response_id)
 
-    ##Bug number = WES-977
+    ##Bug number = WES-981
     def test_update_existing_user_invalid_group_id(self):
         r = self.__api_create_user_request('CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
@@ -145,9 +144,12 @@ class WesignApiUsersTests(unittest.TestCase):
         json_response_id = response['userId']
         r = self.__update_user_request('UpdateUserInvalidGroupIdRequest', json_response_id)
         assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.INVALID_GROUP_ID
         self.__api_delete_user_request(json_response_id)
 
-    
+
     def tearDown(self):
         sleep(3)
 
@@ -177,5 +179,6 @@ class WesignApiUsersTests(unittest.TestCase):
         json_input = file.read()
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'admins/users/' + user_id, data=json.dumps(requests_json), headers=headers)
+        r = requests.put(self.settings['Base_Url'] + 'admins/users/' + user_id, data=json.dumps(requests_json),
+                         headers=headers)
         return r

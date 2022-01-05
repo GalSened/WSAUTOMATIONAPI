@@ -1,0 +1,25 @@
+{
+	"documentMode": 1,
+	"documentName": "test",
+	"templates": [
+		"bc1ea668-9e1e-4d3f-22d5-08d9bd4c8663"
+	],
+	"signers": [
+		{
+			"contactId": "58999b4b-2596-4809-7685-08d98f12bf81",
+			"sendingMethod": 2,
+			"signerFields": [
+				{
+					"templateId": "bc1ea668-9e1e-4d3f-22d5-08d9bd4c8663",
+					"fieldName": "sign1"
+				}
+			]
+		}
+	],
+	"readOnlyFields": [
+		{
+			"templateId": "bc1ea668-9e1e-4d3f-22d5-08d9bd4c8663",
+			"fieldName": "text1"
+		}
+	]
+}
