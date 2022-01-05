@@ -11,7 +11,7 @@ from status_codes import StatusCode, ResultCode
 
 class WesignContactsApi(unittest.TestCase):
     def setUp(self):
-        p = Path(__file__).with_name('UsersSettings.json')
+        p = Path(__file__).with_name('ContactsSettings.json')
         with open(p) as f:
             self.settings = json.load(f)
         warnings.simplefilter('ignore', ResourceWarning)
@@ -19,6 +19,67 @@ class WesignContactsApi(unittest.TestCase):
         self.token = Shared.login_request(self)
 
 
+    def test_create_new_contact_by_email_success(self):
+        r = self.__api_create_contact_request('CreateNewValidContactWithEmailAndPhone')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactId']
+        assert len(json_response) > 0
+        r = self.__api_delete_contact_request(json_response)
+        assert r.status_code == StatusCode.OK
+
+    def test_create_new_contact_by_phone_success(self):
+        r = self.__api_create_contact_request('CreateNewValidContactSendingBySms')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactId']
+        assert len(json_response) > 0
+        r = self.__api_delete_contact_request(json_response)
+        assert r.status_code == StatusCode.OK
+
+    def test_create_new_contact_by_invalid_email(self):
+        r = self.__api_create_contact_request('CreateNewContactWithInvalidEmail')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['Email']
+        assert json_response[0] == ResultCode.PLEASE_SPECIFY_VALID_EMAIL
+
+    def test_create_new_contact_by_invalid_phone(self):
+        r = self.__api_create_contact_request('CreateNewContactWithInvalidPhone')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['Phone']
+        assert  json_response[0] == ResultCode.PLEASE_SPECIFY_VALID_PHONE
+
+    def test_create_new_contact_by_empty_name(self):
+        r = self.__api_create_contact_request('CreateNewContactWithEmptyName')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['Name']
+        assert json_response == ResultCode.INVALID_NAME
+
+    def test_create_new_contact_by_phone_invalid_sending_type(self):
+        r = self.__api_create_contact_request('CreateNewValidContactByPhoneInvalidSendingMethod')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['DefaultSendingMethod']
+        assert json_response == ResultCode.DEFAULT_SENDING_METHOD
+
+    def test_create_new_contact_by_email_invalid_sending_type(self):
+        r = self.__api_create_contact_request('CreateNewValidContactByEmailInvalidSendingMethod')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['DefaultSendingMethod']
+        assert json_response == ResultCode.DEFAULT_SENDING_METHOD
+
+    def test_create_new_contact_by_email_invalid_default_sending_method(self):
+        r = self.__api_create_contact_request('CreateNewValidContactByEmailInvalidSendingMethod')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['DefaultSendingMethod']
+        assert json_response == ResultCode.DEFAULT_SENDING_METHOD
+
+    ##TODO continue with contact test
 
     def tearDown(self):
         sleep(3)
@@ -32,5 +93,10 @@ class WesignContactsApi(unittest.TestCase):
         json_input = file.read()
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'admins/users', data=json.dumps(requests_json), headers=headers)
+        r = requests.post(self.settings['Base_Url'] + 'contacts', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def __api_delete_contact_request(self, contact_id):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.delete(self.settings['Base_Url'] + 'contacts/' + contact_id, headers=headers)
         return r
