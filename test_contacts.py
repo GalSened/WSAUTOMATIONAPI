@@ -79,7 +79,35 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['DefaultSendingMethod']
         assert json_response == ResultCode.DEFAULT_SENDING_METHOD
 
-    ##TODO continue with contact test
+    def test_create_new_contact_with_name_already_exists(self):
+        r = self.__api_create_contact_request('CreateNewValidContactNameExists')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS
+
+    def test_create_new_contact_with_email_already_exists(self):
+        r = self.__api_create_contact_request('CreateNewValidContactEmailExists')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS
+
+    def test_create_new_contact_with_phone_already_exists(self):
+        r = self.__api_create_contact_request('CreateNewValidContactPhoneExists')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS
+
+    def test_create_new_contact_from_bulk_csv_file_success(self):
+        r = self.__api_create_contact_request_csv('CreateNewContactFromBulkCsv')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactsId']
+        assert len(json_response[0]) == 36
+        r = self.__api_delete_contact_request(json_response[0])
+        assert r.status_code == StatusCode.OK
 
     def tearDown(self):
         sleep(3)
@@ -99,4 +127,12 @@ class WesignContactsApi(unittest.TestCase):
     def __api_delete_contact_request(self, contact_id):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.delete(self.settings['Base_Url'] + 'contacts/' + contact_id, headers=headers)
+        return r
+
+    def __api_create_contact_request_csv(self, request_file):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'contacts/bulk', data=json.dumps(requests_json), headers=headers)
         return r

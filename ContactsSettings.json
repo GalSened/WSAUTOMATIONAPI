@@ -7,5 +7,9 @@
   "CreateNewContactWithEmptyName": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactWithEmptyName.json",
   "CreateNewValidContactByEmailInvalidSendingMethod": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactByEmailInvalidSendingMethod.json",
   "CreateNewValidContactByPhoneInvalidSendingMethod": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactByPhoneInvalidSendingMethod.json",
-  "CreateNewValidContactByEmailInvalidDefualtSendingMethod": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactByEmailInvalidDefualtSendingMethod.json"
+  "CreateNewValidContactByEmailInvalidDefualtSendingMethod": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactByEmailInvalidDefualtSendingMethod.json",
+  "CreateNewValidContactNameExists": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactNameExists.json",
+  "CreateNewValidContactEmailExists": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactEmailExists.json",
+  "CreateNewValidContactPhoneExists": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactPhoneExists.json",
+  "CreateNewContactFromBulkCsv": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactFromBulkCsv.json"
 }
