@@ -35,3 +35,6 @@ class ResultCode:
     INVALID_NAME = ['Please specify a Name', 'FirstName length limit to 50', 'Name should contain only characters']
     DEFAULT_SENDING_METHOD = ['Please specify valid Phone while DefaultSendingMethod=1 (SMS), or valid Email while DefaultSendingMethod=2 (Email)']
     CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS = 'Contact with same means already exists'
+    INVALID_PHONE = 'Invalid Phone'
+    INVALID_CSV = 'Csv must contains headers of FullName,Email,PhoneNumber,SendingMethod'
+    NAME_IS_MISSING = 'Name Is Missing'

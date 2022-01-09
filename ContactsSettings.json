@@ -11,5 +11,11 @@
   "CreateNewValidContactNameExists": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactNameExists.json",
   "CreateNewValidContactEmailExists": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactEmailExists.json",
   "CreateNewValidContactPhoneExists": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewValidContactPhoneExists.json",
-  "CreateNewContactFromBulkCsv": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactFromBulkCsv.json"
+  "CreateNewContactFromBulkCsv": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactFromBulkCsv.json",
+  "CreateNewContactsFromBulkCsvSendingMehtodSms": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvSendingMehtodSms.json",
+  "CreateNewContactsFromBulkCsvSendingMehtodEmail": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvSendingMehtodEmail.json",
+  "CreateNewContactsFromBulkCsvSendingMehtodEmailAndSms": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvSendingMehtodEmailAndSms.json",
+  "CreateNewContactsFromBulkCsvInvalidNameAndEmailInvalidPhone": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvInvalidNameAndEmailInvalidPhone.json",
+  "CreateNewContactsFromBulkCsvEmpty": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvEmpty.json",
+  "CreateNewContactsFromBulkCsvEmptyFullnameValidPhone": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvEmptyFullnameValidPhone.json"
 }

@@ -109,6 +109,54 @@ class WesignContactsApi(unittest.TestCase):
         r = self.__api_delete_contact_request(json_response[0])
         assert r.status_code == StatusCode.OK
 
+    def test_create_new_contacts_from_bulk_csv_sending_method_sms_success(self):
+        r = self.__api_create_contact_request_csv('CreateNewContactsFromBulkCsvSendingMehtodSms')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactsId']
+        assert len(json_response) == 20
+        for contacts in json_response:
+            self.__api_delete_contact_request(contacts)
+
+    def test_create_new_contacts_from_bulk_csv_sending_method_email_success(self):
+        r = self.__api_create_contact_request_csv('CreateNewContactsFromBulkCsvSendingMehtodEmail')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactsId']
+        assert len(json_response) == 20
+        for contacts in json_response:
+            self.__api_delete_contact_request(contacts)
+
+    def test_create_new_contacts_from_bulk_csv_sending_method_email_and_sms_success(self):
+        r = self.__api_create_contact_request_csv('CreateNewContactsFromBulkCsvSendingMehtodEmailAndSms')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactsId']
+        assert len(json_response) == 20
+        for contacts in json_response:
+            self.__api_delete_contact_request(contacts)
+
+    def test_create_new_contact_from_bulk_csv_valid_name_and_email_invalid_phone(self):
+        r = self.__api_create_contact_request_csv('CreateNewContactsFromBulkCsvInvalidNameAndEmailInvalidPhone')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['error']
+        json_response[0] == ResultCode.INVALID_PHONE
+
+    def test_create_new_contact_from_bulk_csv_empty_csv(self):
+        r = self.__api_create_contact_request_csv('CreateNewContactsFromBulkCsvEmpty')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['Base64File']
+        json_response[0] == ResultCode.INVALID_CSV
+
+    def test_create_new_contact_from_bulk_csv_empty_fullname_valid_phone(self):
+        r = self.__api_create_contact_request_csv('CreateNewContactsFromBulkCsvEmptyFullnameValidPhone')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.NAME_IS_MISSING
+
     def tearDown(self):
         sleep(3)
 
