@@ -27,6 +27,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
+        self.__api_delete_document_request()
 
     def test_document_collection_document_sending_two_contacts_by_order_success(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess')
@@ -243,7 +244,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.driver.get(json_response)
-        sleep(8)
+        sleep(14)
         self.__sign_on_document()
         self.driver.execute_script("window.open('');")
         self.driver.switch_to.window(self.driver.window_handles[1])
@@ -344,6 +345,32 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.quit()
 
+    def test_document_collection_delete_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['documentCollectionId']
+        r = self.__api_delete_document_request(json_response)
+        assert r.status_code == StatusCode.OK
+
+    def test_document_collection_cancel_document_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['documentCollectionId']
+        r = self.__api_cancel_document_request(json_response)
+        assert r.status_code == StatusCode.OK
+
+    def test_document_collection_resend_document_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response_document_id = response['documentCollectionId']
+        json_response_signer_id = response['signerLinks'][0]['signerId']
+        r = self.__api_resend_document_request(json_response_document_id,json_response_signer_id)
+        assert r.status_code == StatusCode.OK
+
+
     def tearDown(self):
         sleep(3)
 
@@ -356,6 +383,21 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def __api_delete_document_request(self, document_collection_id):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.delete(self.settings['Base_Url'] + 'documentcollections/' + document_collection_id,headers=headers)
+        return r
+
+    def __api_cancel_document_request(self, document_collection_id):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + 'documentcollections/'+document_collection_id+'/cancel', headers=headers)
+        return r
+
+    def __api_resend_document_request(self, document_collection_id,signer_id):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'documentcollections/'+document_collection_id+'/signers/'+signer_id+'/method/2?shouldSend=true', headers=headers)
         return r
 
     def __sign_on_document(self):

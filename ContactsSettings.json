@@ -17,5 +17,11 @@
   "CreateNewContactsFromBulkCsvSendingMehtodEmailAndSms": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvSendingMehtodEmailAndSms.json",
   "CreateNewContactsFromBulkCsvInvalidNameAndEmailInvalidPhone": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvInvalidNameAndEmailInvalidPhone.json",
   "CreateNewContactsFromBulkCsvEmpty": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvEmpty.json",
-  "CreateNewContactsFromBulkCsvEmptyFullnameValidPhone": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvEmptyFullnameValidPhone.json"
+  "CreateNewContactsFromBulkCsvEmptyFullnameValidPhone": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\CreateNewContactsFromBulkCsvEmptyFullnameValidPhone.json",
+  "UpdateContactMail": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\UpdateContactMail.json",
+  "UpdateContactPhone": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\UpdateContactPhone.json",
+  "UpdateContactInvalidEmail": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\UpdateContactInvalidEmail.json",
+  "UpdateContactInvalidPhone": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\UpdateContactInvalidPhone.json",
+  "UpdateContactInvalidName": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\UpdateContactInvalidName.json",
+  "UpdateContactSeal": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\ContactRequest\\UpdateContactSeal.json"
 }

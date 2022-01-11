@@ -38,3 +38,4 @@ class ResultCode:
     INVALID_PHONE = 'Invalid Phone'
     INVALID_CSV = 'Csv must contains headers of FullName,Email,PhoneNumber,SendingMethod'
     NAME_IS_MISSING = 'Name Is Missing'
+    NAME_SHOULD_CONTAIN_ONLY_CHARACTERS = 'Name should contain only characters'

@@ -157,6 +157,62 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.NAME_IS_MISSING
 
+    def test_update_contact_mail(self):
+        r = self.__api_create_contact_request('CreateNewValidContactWithEmailAndPhone')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactId']
+        r = self.__api_update_contact(json_response,'UpdateContactMail')
+        assert r.status_code == StatusCode.OK
+        self.__api_delete_contact_request(json_response)
+        assert r.status_code == StatusCode.OK
+
+    def test_update_contact_phone(self):
+        r = self.__api_create_contact_request('CreateNewValidContactWithEmailAndPhone')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactId']
+        r = self.__api_update_contact(json_response,'UpdateContactPhone')
+        assert r.status_code == StatusCode.OK
+        self.__api_delete_contact_request(json_response)
+        assert r.status_code == StatusCode.OK
+
+    def test_update_contact_seal(self):
+        r = self.__api_create_contact_request('CreateNewValidContactWithEmailAndPhone')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactId']
+        r = self.__api_update_contact(json_response,'UpdateContactSeal')
+        assert r.status_code == StatusCode.OK
+        self.__api_delete_contact_request(json_response)
+        assert r.status_code == StatusCode.OK
+
+    def test_update_contact_invalid_email(self):
+        r = self.__api_create_contact_request('CreateNewValidContactWithEmailAndPhone')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactId']
+        r = self.__api_update_contact(json_response,'UpdateContactInvalidPhone')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response_error = r.json()
+        json_response_error = response_error['errors']['Phone']
+        assert json_response_error[0] == ResultCode.PLEASE_SPECIFY_VALID_PHONE
+        r = self.__api_delete_contact_request(json_response)
+        assert r.status_code == StatusCode.OK
+
+    def test_update_contact_invalid_name(self):
+        r = self.__api_create_contact_request('CreateNewValidContactWithEmailAndPhone')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['contactId']
+        r = self.__api_update_contact(json_response,'UpdateContactInvalidName')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response_error = r.json()
+        json_response_error = response_error['errors']['Name']
+        json_response_error[0] == ResultCode.NAME_SHOULD_CONTAIN_ONLY_CHARACTERS
+        r = self.__api_delete_contact_request(json_response)
+        assert r.status_code == StatusCode.OK
+
     def tearDown(self):
         sleep(3)
 
@@ -183,4 +239,12 @@ class WesignContactsApi(unittest.TestCase):
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.post(self.settings['Base_Url'] + 'contacts/bulk', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def __api_update_contact(self,contact_id, request_file):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + 'contacts/' + contact_id, data=json.dumps(requests_json), headers=headers)
         return r
