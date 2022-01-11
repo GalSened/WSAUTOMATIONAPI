@@ -1,0 +1,6 @@
+{
+  "name": "ApiUser",
+  "email": "ApiUserTest@ApiUser.com",
+  "phone": "05012345678",
+  "defaultSendingMethod": 1
+}

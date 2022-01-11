@@ -27,7 +27,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
-        self.__api_delete_document_request()
 
     def test_document_collection_document_sending_two_contacts_by_order_success(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess')
@@ -275,10 +274,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(4)
         self.__enter_gmail()
-        sleep(8)
+        sleep(15)
         email_notification = self.driver.find_element_by_xpath("//tbody/tr[@id=':25']/td[4]/div[2]/span[1]/span[1]")
         email_notification.click()
-        sleep(8)
+        sleep(10)
         attached_document = self.driver.find_elements_by_xpath("//*[@id=':7a']")
         assert len(attached_document) > 0, "Pdf document attached"
         sleep(3)
@@ -372,6 +371,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
 
     def tearDown(self):
+        try:
+            self.driver.quit()
+        except:
+            pass
         sleep(3)
 
     if __name__ == "__main__":
