@@ -214,7 +214,7 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.OK
 
     def tearDown(self):
-        sleep(3)
+        sleep(4)
 
     if __name__ == "__main__":
         unittest.main()

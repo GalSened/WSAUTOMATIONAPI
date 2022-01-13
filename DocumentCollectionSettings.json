@@ -31,5 +31,7 @@
   "DocumentCollectionDocumentSendingWithRedirectUrlSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithRedirectUrlSuccess.json",
   "DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess.json",
   "DocumentCollectionDocumentSendingSignerAttachmentsAsMandatorySuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingSignerAttachmentsAsMandatorySuccess.json",
-  "DocumentCollectionDocumentSendingSignerAppendicesSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingSignerAppendicesSuccess.json"
+  "DocumentCollectionDocumentSendingSignerAppendicesSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingSignerAppendicesSuccess.json",
+  "DocumentCollectionReplaceSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionReplaceSuccess.json",
+  "DocumentCollectionShareDocuemnt" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionShareDocuemnt.json"
 }

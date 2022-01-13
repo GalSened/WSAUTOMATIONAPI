@@ -151,7 +151,7 @@ class WesignApiUsersTests(unittest.TestCase):
 
 
     def tearDown(self):
-        sleep(3)
+        sleep(4)
 
     if __name__ == "__main__":
         unittest.main()

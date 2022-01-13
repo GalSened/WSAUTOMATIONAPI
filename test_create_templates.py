@@ -92,7 +92,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         assert json_response[0] == ResultCode.BASE_64_FILE_UNSUPPORTED_TYPE
 
     def tearDown(self):
-        sleep(3)
+        sleep(4)
 
     if __name__ == "__main__":
         unittest.main()
