@@ -81,6 +81,8 @@ class WesignApiUpdateTemplateTests(unittest.TestCase):
         r = self.__api_update_template_request('UpdateTemplatePdfBase64With0TextParameter')
         assert r.status_code == StatusCode.OK
 
+
+
     def tearDown(self):
         r = self.__api_update_template_request('UpdateTemplateToOriginal')
         assert r.status_code == StatusCode.OK

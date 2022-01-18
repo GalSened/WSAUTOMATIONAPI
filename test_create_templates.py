@@ -91,6 +91,14 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         json_response = response['errors']['Base64File']
         assert json_response[0] == ResultCode.BASE_64_FILE_UNSUPPORTED_TYPE
 
+    def test_create_template_duplicate_template_success(self):
+        r = self.__api_create_template_duplicate_request("CreateTemplateDuplicateTemplate")
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['newTemplateId']
+        self.__delete_template_created(json_response)
+
+
     def tearDown(self):
         sleep(4)
 
@@ -109,3 +117,11 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.delete(self.settings['Base_Url'] + 'templates/' + template_guid, headers=headers)
         assert r.status_code == 200
+
+    def __api_create_template_duplicate_request(self, request_file):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'templates/2e5aa13a-c9f9-4033-671f-08d9d6912194', data=json.dumps(requests_json), headers=headers)
+        return r

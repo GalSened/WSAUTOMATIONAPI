@@ -7,5 +7,6 @@
   "CreateTemplateJpgBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateJpgBase64Success.json",
   "CreateTemplatePdfBase64EmptyName" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatePdfBase64EmptyName.json",
   "CreateTemplatefBase64WithoutFileType" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatefBase64WithoutFileType.json",
+  "CreateTemplateDuplicateTemplate" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateDuplicateTemplate.json",
   "CreateTemplateWordBase64WithMetaDataSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json"
 }

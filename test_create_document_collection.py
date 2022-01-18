@@ -398,7 +398,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         r = self.__api_replace_signer_request(json_response_signer_id,json_response_document_id,'DocumentCollectionReplaceSuccess')
         assert r.status_code == StatusCode.OK
 
-    def test_document_collection_share_document(self):
+    def test_document_collection_share_document_success(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -417,16 +417,81 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         r = self.__api_share_document_request('DocumentCollectionShareDocuemnt')
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.run(order=31)
+    def test_document_collection_without_fields_one_recipient_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFields')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        signature_field = self.driver.find_elements_by_class_name("is-signature")
+        assert len(signature_field) == 0
+        finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
+        sleep(5)
+        finish_button.click()
+        sleep(3)
+        sign_complete_msg = self.driver.find_elements_by_xpath('/html/body/app-root/app-main-signer/app-success-page/body/main/h2')
+        sleep(4)
+        assert len(sign_complete_msg) > 0
+
+    @pytest.mark.run(order=30)
+    def test_document_collection_without_fields_two_recipient_by_group_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFieldsTwoRecipients')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        json_response_two = response['signerLinks'][1]['link']
+        json_response_three = response['signerLinks']
+        assert json_response != json_response_two
+        assert len(json_response_two) == 85
+        assert len(json_response) == 85
+        assert len(json_response_three) == 2
+
+    @pytest.mark.run(order=29)
+    def test_document_collection_without_fields_two_recipient_by_order_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFieldsTwoRecipientsOrder')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        json_response_two = response['signerLinks']
+        assert len(json_response) == 85
+        assert len(json_response_two) == 1
+
+    @pytest.mark.run(order=28)
+    def test_document_collection_with_only_one_signature_field_two_recipient_by_order_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipients')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        json_response_two = response['signerLinks']
+        assert len(json_response) == 85
+        assert len(json_response_two) == 1
+
+    @pytest.mark.run(order=27)
+    def test_document_collection_with_only_one_signature_field_two_recipient_by_group_success(self):
+        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipientsGroup')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        json_response_two = response['signerLinks'][1]['link']
+        json_response_three = response['signerLinks']
+        assert json_response != json_response_two
+        assert len(json_response_two) == 85
+        assert len(json_response) == 85
+        assert len(json_response_three) == 2
     """""
     def test_delete_all_documents(self):
-        for x in range(50):
+        for x in range(5):
             r = self.__api_get_all_document_collection()
             assert r.status_code == StatusCode.OK
             response = r.json()
             json_response_document_id = response['documentCollections'][0]['documentCollectionId']
             self.__api_delete_document_request(json_response_document_id)
-    """
 
+    """""
     def tearDown(self):
         try:
             self.driver.quit()
