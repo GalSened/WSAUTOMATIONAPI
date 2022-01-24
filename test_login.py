@@ -7,7 +7,7 @@ import requests
 import json
 from status_codes import StatusCode
 from status_codes import ResultCode
-
+import pytest
 
 class WesignApiLoginTests(unittest.TestCase):
     def setUp(self):

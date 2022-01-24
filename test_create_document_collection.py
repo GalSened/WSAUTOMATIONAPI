@@ -541,7 +541,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         r = requests.post(self.settings['Base_Url'] + 'documentcollections/' + 'share', data=json.dumps(requests_json), headers=headers)
         return r
 
-
     def __api_get_all_document_collection(self):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.get('https://devtest.comda.co.il/userapi/v3/documentcollections?sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&limit=200', headers=headers)

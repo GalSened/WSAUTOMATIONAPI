@@ -100,7 +100,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
 
 
     def tearDown(self):
-        sleep(4)
+        sleep(5)
 
     if __name__ == "__main__":
         unittest.main()

@@ -1,0 +1,13 @@
+{
+	"documentMode": 1,
+	"documentName": "TestApi",
+	"templates": [
+		"e2c7d6d3-5ab0-4d7d-2897-08d9da5f027a"
+	],
+	"signers": [
+		{
+			"contactId": "58999b4b-2596-4809-7685-08d98f12bf81",
+			"sendingMethod": 2
+		}
+	]
+}
