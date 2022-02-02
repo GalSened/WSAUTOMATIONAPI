@@ -38,5 +38,9 @@
   "DocumentCollectionSendDocumentWithoutFieldsTwoRecipients" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionSendDocumentWithoutFieldsTwoRecipients.json",
   "DocumentCollectionSendDocumentWithoutFieldsTwoRecipientsOrder" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionSendDocumentWithoutFieldsTwoRecipientsOrder.json",
   "DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipients" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipients.json",
-  "DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipientsGroup" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipientsGroup.json"
+  "DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipientsGroup" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipientsGroup.json",
+  "CreateTemplatePdfBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatePdfBase64Success.json",
+  "UpdateTemplateWithTextFieldAsHidden": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithTextFieldAsHidden.json",
+  "UpdateTemplateWithTextFieldAsHiddenAsFalse": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\UpdateTemplateRequest\\UpdateTemplateWithTextFieldAsHiddenAsFalse.json",
+  "DocumentCollectionDocumentHiddenFieldsSendingSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\DocumentCollectionRequest\\DocumentCollectionDocumentHiddenFieldsSendingSuccess.json"
 }

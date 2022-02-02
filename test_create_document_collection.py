@@ -10,7 +10,6 @@ from shared import Shared
 from status_codes import StatusCode, ResultCode
 from selenium import webdriver
 
-
 @pytest.mark.flaky(max_runs=2)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
@@ -482,16 +481,90 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response_two) == 85
         assert len(json_response) == 85
         assert len(json_response_three) == 2
-    """""
+
+    def test_document_collection_with_hidden_field_as_true(self):
+        r = self.__api_create_template_request('CreateTemplatePdfBase64Success')
+        response = r.json()
+        template = response['templateId']
+        self.__api_update_template_request_hidden_field('UpdateTemplateWithTextFieldAsHidden', template)
+        d = {
+            "documentMode": 1,
+            "documentName": "TestApiHiddenAsTrue",
+            "templates": [
+                template
+            ],
+            "signers": [
+                {
+                    "contactId": "58999b4b-2596-4809-7685-08d98f12bf81",
+                    "sendingMethod": 2,
+                    "signerFields": [
+                        {
+                            "templateId": template,
+                            "fieldName": "sign1"
+                        }
+                    ]
+                }
+            ]
+        }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        text_field = self.driver.find_elements_by_id("text1")
+        assert len(text_field) == 0, 'Text field displayed'
+
+    def test_document_collection_with_hidden_field_as_false(self):
+        r = self.__api_create_template_request('CreateTemplatePdfBase64Success')
+        response = r.json()
+        template = response['templateId']
+        self.__api_update_template_request_hidden_field('UpdateTemplateWithTextFieldAsHiddenAsFalse', template)
+        d = {
+            "documentMode": 1,
+            "documentName": "TestApiHiddenAsFalse",
+            "templates": [
+                template
+            ],
+            "signers": [
+                {
+                    "contactId": "58999b4b-2596-4809-7685-08d98f12bf81",
+                    "sendingMethod": 2,
+                    "signerFields": [
+                        {
+                            "templateId": template,
+                            "fieldName": "sign1"
+                        }
+                    ]
+                }
+            ]
+        }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        text_field = self.driver.find_elements_by_id("text1")
+        assert len(text_field) > 0, 'Text field not displayed'
+
+
     def test_delete_all_documents(self):
-        for x in range(5):
+        for x in range(70):
             r = self.__api_get_all_document_collection()
             assert r.status_code == StatusCode.OK
             response = r.json()
             json_response_document_id = response['documentCollections'][0]['documentCollectionId']
             self.__api_delete_document_request(json_response_document_id)
 
-    """""
+
+
     def tearDown(self):
         try:
             self.driver.quit()
@@ -585,3 +658,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.find_element_by_xpath("//input[@type='password']").send_keys("Comsign1!")
         sleep(8)
         self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+
+    def __api_create_template_request(self, request_file):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'templates', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def __api_update_template_request_hidden_field(self, request_file, template_id):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + 'templates/' + template_id, data=json.dumps(requests_json), headers=headers)
+        return r
