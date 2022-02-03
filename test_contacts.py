@@ -213,6 +213,10 @@ class WesignContactsApi(unittest.TestCase):
         r = self.__api_delete_contact_request(json_response)
         assert r.status_code == StatusCode.OK
 
+    def test_get_all_contacts(self):
+        r = self.__api_get_all_contacts()
+        assert r.status_code == StatusCode.OK
+
     def tearDown(self):
         sleep(4)
 
@@ -247,4 +251,9 @@ class WesignContactsApi(unittest.TestCase):
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.put(self.settings['Base_Url'] + 'contacts/' + contact_id, data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def __api_get_all_contacts(self):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'contacts/' + "?limit=20&includeTabletMode=true", headers=headers)
         return r
