@@ -10,6 +10,7 @@ from shared import Shared
 from status_codes import StatusCode, ResultCode
 from selenium import webdriver
 
+
 @pytest.mark.flaky(max_runs=2)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
@@ -554,7 +555,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         text_field = self.driver.find_elements_by_id("text1")
         assert len(text_field) > 0, 'Text field not displayed'
 
-
+    """""
     def test_delete_all_documents(self):
         for x in range(70):
             r = self.__api_get_all_document_collection()
@@ -562,9 +563,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             response = r.json()
             json_response_document_id = response['documentCollections'][0]['documentCollectionId']
             self.__api_delete_document_request(json_response_document_id)
-
-
-
+    """""
     def tearDown(self):
         try:
             self.driver.quit()
@@ -574,6 +573,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     if __name__ == "__main__":
         unittest.main()
+
 
     def __api_document_collection_request(self, request_file):
         file = open(self.settings[request_file], 'r')

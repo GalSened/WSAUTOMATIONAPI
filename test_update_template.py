@@ -81,13 +81,6 @@ class WesignApiUpdateTemplateTests(unittest.TestCase):
         r = self.__api_update_template_request('UpdateTemplatePdfBase64With0TextParameter')
         assert r.status_code == StatusCode.OK
 
-    def test_update_template_with_hidden_text_field_as_true(self):
-        r = self.__api_update_template_request_hidden_field("UpdateTemplateWithTextFieldAsHidden")
-        assert r.status_code == StatusCode.OK
-        response = r.json()
-        print(response)
-
-
     def tearDown(self):
         r = self.__api_update_template_request('UpdateTemplateToOriginal')
         assert r.status_code == StatusCode.OK
@@ -108,15 +101,7 @@ class WesignApiUpdateTemplateTests(unittest.TestCase):
         file = open(self.settings[request_file], 'r')
         json_input = file.read()
         requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        headers ={'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.put(self.settings['Base_Url'] + 'templates/' + self.settings['InvalidTemplateId'], data=json.dumps(requests_json), headers=headers)
         return r
 
-
-    def __api_update_template_request_hidden_field(self, request_file, template_id):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'templates/' + template_id, data=json.dumps(requests_json), headers=headers)
-        return r

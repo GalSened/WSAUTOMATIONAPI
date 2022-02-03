@@ -1,5 +1,21 @@
 {
-  "documentCollectionId": "",
-  "signerName": "wesigntesting",
-  "signerMeans": "wesigntesting@gmail.com"
+   "documentMode": 1,
+   "documentName": "TestApiHiddenField",
+   "templates": "b2a40a04-a317-4366-50f3-08d9e480115a",
+   "signers": [
+      {
+         "contactId": "b2a40a04-a317-4366-50f3-08d9e480115a",
+         "sendingMethod": 2,
+         "signerFields": [
+            {
+               "templateId": "bc1ea668-9e1e-4d3f-22d5-08d9bd4c8663",
+               "fieldName": "sign1"
+            },
+            {
+               "templateId": "bc1ea668-9e1e-4d3f-22d5-08d9bd4c8663",
+               "fieldName": "text1"
+            }
+         ]
+      }
+   ],
 }
