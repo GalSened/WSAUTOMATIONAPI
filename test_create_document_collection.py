@@ -404,7 +404,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response_document_id = response['documentCollectionId']
         json_response_link = response['signerLinks'][0]['link']
-        with open("C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\DocumentCollectionRequest\\DocumentCollectionShareDocuemnt.json", 'r+') as f:
+        with open("\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionShareDocuemnt.json", 'r+') as f:
             data = json.load(f)
             data['documentCollectionId'] = json_response_document_id  # <--- add `id` value.
             f.seek(0)  # <--- should reset file position to the beginning.

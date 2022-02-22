@@ -1,8 +1,8 @@
 {
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
-  "SelfSignUploadPdfDocument" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\SelfSignRequest\\SelfSignUploadPdfDocument.json",
-  "SelfSignUploadWordDocument" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\SelfSignRequest\\SelfSignUploadWordDocument.json",
-  "SelfSignUploadXlsxDocument" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\SelfSignRequest\\SelfSignUploadXlsxDocument.json",
-  "SelfSignUploadPngDocument" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\SelfSignRequest\\SelfSignUploadPngDocument.json",
-  "SelfSignDocumentSigning" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\SelfSignRequest\\SelfSignDocumentSigning.json"
+  "SelfSignUploadPdfDocument" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\SelfSignRequest\\SelfSignUploadPdfDocument.json",
+  "SelfSignUploadWordDocument" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\SelfSignRequest\\SelfSignUploadWordDocument.json",
+  "SelfSignUploadXlsxDocument" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\SelfSignRequest\\SelfSignUploadXlsxDocument.json",
+  "SelfSignUploadPngDocument" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\SelfSignRequest\\SelfSignUploadPngDocument.json",
+  "SelfSignDocumentSigning" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\SelfSignRequest\\SelfSignDocumentSigning.json"
 }

@@ -1,5 +1,6 @@
 import unittest
 import warnings
+import smtplib
 from pathlib import Path
 from time import sleep
 import pytest
@@ -40,7 +41,7 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         response = r.json()
         documentcollectionid = response['documentCollectionId']
         documentid = response['documentId']
-        with open("C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\SelfSignRequest\\SelfSignDocumentSigning.json", 'r+') as f:
+        with open("\\\\fs01\\Users\\NirK\\PythonAutomation\\\SelfSignRequest\\SelfSignDocumentSigning.json", 'r+') as f:
             data = json.load(f)
             data['documentCollectionId'] = documentcollectionid  # <--- add `id` value.
             data['documentId'] = documentid  # <--- add `id` value.
@@ -56,7 +57,7 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         response = r.json()
         documentcollectionid = response['documentCollectionId']
         documentid = response['documentId']
-        with open("C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\SelfSignRequest\\SelfSignDocumentSigning.json", 'r+') as f:
+        with open("\\\\fs01\\Users\\NirK\\PythonAutomation\\SelfSignRequest\\SelfSignDocumentSigning.json", 'r+') as f:
             data = json.load(f)
             data['documentCollectionId'] = documentcollectionid  # <--- add `id` value.
             data['documentId'] = documentid  # <--- add `id` value.

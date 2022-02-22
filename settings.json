@@ -1,8 +1,8 @@
 {
   "chrome_driver" : "C:\\Dev\\Python\\chromedriver.exe",
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
-  "LoginRequestSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestSuccess.json",
-  "LoginRequestInvalidPassword" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestInvalidPassword.json",
-  "LoginRequestInvalidEmail" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestInvalidEmail.json",
-  "LoginRequestEmptyEmail" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\LoginRequest\\LoginRequestEmptyEmail.json"
+  "LoginRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccess.json",
+  "LoginRequestInvalidPassword" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestInvalidPassword.json",
+  "LoginRequestInvalidEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestInvalidEmail.json",
+  "LoginRequestEmptyEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestEmptyEmail.json"
 }

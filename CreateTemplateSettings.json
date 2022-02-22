@@ -1,12 +1,12 @@
 {
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
-  "CreateTemplatePdfBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatePdfBase64Success.json",
-  "CreateTemplateWordBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateWordBase64Success.json",
-  "CreateTemplateXlsxBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateXlsxBase64Success.json",
-   "CreateTemplatePngBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatePngBase64Success.json",
-  "CreateTemplateJpgBase64Success": "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateJpgBase64Success.json",
-  "CreateTemplatePdfBase64EmptyName" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatePdfBase64EmptyName.json",
-  "CreateTemplatefBase64WithoutFileType" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplatefBase64WithoutFileType.json",
-  "CreateTemplateDuplicateTemplate" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateDuplicateTemplate.json",
-  "CreateTemplateWordBase64WithMetaDataSuccess" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json"
+  "CreateTemplatePdfBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatePdfBase64Success.json",
+  "CreateTemplateWordBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64Success.json",
+  "CreateTemplateXlsxBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateXlsxBase64Success.json",
+   "CreateTemplatePngBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatePngBase64Success.json",
+  "CreateTemplateJpgBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateJpgBase64Success.json",
+  "CreateTemplatePdfBase64EmptyName" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatePdfBase64EmptyName.json",
+  "CreateTemplatefBase64WithoutFileType" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatefBase64WithoutFileType.json",
+  "CreateTemplateDuplicateTemplate" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateDuplicateTemplate.json",
+  "CreateTemplateWordBase64WithMetaDataSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json"
 }

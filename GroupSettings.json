@@ -1,10 +1,10 @@
 {
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
-  "CreateNewGroupRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\CreateNewGroupRequest.json",
-  "CreateSameGroupNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\CreateSameGroupNameRequest.json",
-  "CreateEmptyGroupNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\CreateEmptyGroupNameRequest.json",
-  "ChangeGroupNameRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\ChangeGroupNameRequest.json",
-  "ChangeGroupNameToOriginalRequest" : "C:\\Users\\nirk\\Desktop\\QA\\Python Api Requests\\CreateGroup\\ChangeGroupNameToOriginalRequest.json",
+  "CreateNewGroupRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\CreateNewGroupRequest.json",
+  "CreateSameGroupNameRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\CreateSameGroupNameRequest.json",
+  "CreateEmptyGroupNameRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\CreateEmptyGroupNameRequest.json",
+  "ChangeGroupNameRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\ChangeGroupNameRequest.json",
+  "ChangeGroupNameToOriginalRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\ChangeGroupNameToOriginalRequest.json",
   "GroupID" : "3051d282-27d0-43ac-e3cf-08d98e449cd2",
   "InvalidGroupID" : "3051d282-27d0-43ac-e3cf-08d98e441cd8"
 }
