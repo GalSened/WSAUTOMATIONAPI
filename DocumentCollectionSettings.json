@@ -1,7 +1,7 @@
 {
   "chrome_driver" : "C:\\Dev\\Python\\chromedriver.exe",
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
-  "templateId" : "bc1ea668-9e1e-4d3f-22d5-08d9bd4c8663",
+  "templateId" : "dbe5f51d-8153-4c1b-9c0a-08d9f9cdcf5d",
   "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
   "DocumentCode" : "123456",
   "LoginRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccess.json",

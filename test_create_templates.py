@@ -124,5 +124,5 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         json_input = file.read()
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'templates/2e5aa13a-c9f9-4033-671f-08d9d6912194', data=json.dumps(requests_json), headers=headers)
+        r = requests.post(self.settings['Base_Url'] + 'templates/7644a14d-fb2c-4478-941f-08d9f7a2ca6d', data=json.dumps(requests_json), headers=headers)
         return r
