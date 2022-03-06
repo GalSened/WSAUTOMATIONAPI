@@ -73,6 +73,14 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         r = requests.get(url, headers=headers)
         assert r.status_code == StatusCode.OK
 
+    def self_sign_create_document(self, request_file):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
+        return r
+
     def tearDown(self):
         try:
             self.driver.quit()

@@ -1,8 +1,13 @@
 {
-  "chrome_driver" : "C:\\Dev\\Python\\chromedriver.exe",
+  "chrome_driver" : "\\\\fs01\\Users\\NirK\\chromedriver.exe",
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
   "LoginRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccess.json",
   "LoginRequestInvalidPassword" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestInvalidPassword.json",
   "LoginRequestInvalidEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestInvalidEmail.json",
-  "LoginRequestEmptyEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestEmptyEmail.json"
+  "LoginRequestEmptyEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestEmptyEmail.json",
+  "deleted_status" : "7",
+  "db_name" : "WeSign",
+  "db_user" : "sa",
+  "db_password" : "Aa123456",
+  "jobs_url" : "https://devtest.comda.co.il:10443/managementApi/jobs/recurring"
 }

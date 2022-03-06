@@ -556,12 +556,23 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(text_field) > 0, 'Text field not displayed'
 
     def test_delete_all_documents(self):
-        for x in range(70):
-            r = self.__api_get_all_document_collection()
-            assert r.status_code == StatusCode.OK
-            response = r.json()
-            json_response_document_id = response['documentCollections'][0]['documentCollectionId']
-            self.__api_delete_document_request(json_response_document_id)
+        r = self.__api_get_all_document_collection()
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response
+        for id in json_response['documentCollections']:
+            self.__api_delete_document_request(id['documentCollectionId'])
+
+    def delete_all_documents(self):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get('https://devtest.comda.co.il/userapi/v3/documentcollections?sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&limit=200',headers=headers)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response
+        for document_id in json_response['documentCollections']:
+            headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+            requests.delete(self.settings['Base_Url'] + 'documentcollections/' + document_id['documentCollectionId'],headers=headers)
+
 
     def tearDown(self):
         try:

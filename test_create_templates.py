@@ -8,7 +8,7 @@ import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
-@pytest.mark.flaky(max_runs=2)
+@pytest.mark.flaky(max_runs=3)
 class WesignApiCreateTemplateTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('CreateTemplateSettings.json')
@@ -93,7 +93,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         assert json_response[0] == ResultCode.BASE_64_FILE_UNSUPPORTED_TYPE
 
     def test_create_template_duplicate_template_success(self):
-        r = self.__api_create_template_duplicate_request("CreateTemplateDuplicateTemplate")
+        r = self.__api_create_template_duplicate_request("CreateTemplateDuplicateTemplate", '351f65cd-8444-40d2-f479-08d9faba90ef')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['newTemplateId']
@@ -119,10 +119,10 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         r = requests.delete(self.settings['Base_Url'] + 'templates/' + template_guid, headers=headers)
         assert r.status_code == 200
 
-    def __api_create_template_duplicate_request(self, request_file):
+    def __api_create_template_duplicate_request(self, request_file, template_id):
         file = open(self.settings[request_file], 'r')
         json_input = file.read()
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'templates/7644a14d-fb2c-4478-941f-08d9f7a2ca6d', data=json.dumps(requests_json), headers=headers)
+        r = requests.post(self.settings['Base_Url'] + f'templates/{template_id}', data=json.dumps(requests_json), headers=headers)
         return r
