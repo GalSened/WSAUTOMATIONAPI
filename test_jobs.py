@@ -4,13 +4,9 @@ import warnings
 from pathlib import Path
 from time import sleep
 import pytest
-import requests
 import json
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-
 from shared import Shared
-from status_codes import StatusCode, ResultCode
 from selenium import webdriver
 from test_self_sign import WesignApiSelfSignTestTests as sl
 from test_create_document_collection import WesignApiCreateDocumentCollectionTests as cd

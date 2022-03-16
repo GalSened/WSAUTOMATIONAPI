@@ -5,6 +5,8 @@ from time import sleep
 import pytest
 import requests
 import json
+
+import xlsxwriter
 from selenium.webdriver import ActionChains
 from shared import Shared
 from status_codes import StatusCode, ResultCode
@@ -555,6 +557,18 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         text_field = self.driver.find_elements_by_id("text1")
         assert len(text_field) > 0, 'Text field not displayed'
 
+    #Bug number - WES-1030
+    def test_document_collection_send_twice_to_same_contact(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingTwiceToSameContact')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
+
     def test_delete_all_documents(self):
         r = self.__api_get_all_document_collection()
         assert r.status_code == StatusCode.OK
@@ -572,7 +586,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         for document_id in json_response['documentCollections']:
             headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
             requests.delete(self.settings['Base_Url'] + 'documentcollections/' + document_id['documentCollectionId'],headers=headers)
-
 
     def tearDown(self):
         try:

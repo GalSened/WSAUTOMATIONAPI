@@ -42,5 +42,6 @@
   "CreateTemplatePdfBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatePdfBase64Success.json",
   "UpdateTemplateWithTextFieldAsHidden": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithTextFieldAsHidden.json",
   "UpdateTemplateWithTextFieldAsHiddenAsFalse": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithTextFieldAsHiddenAsFalse.json",
-  "DocumentCollectionDocumentHiddenFieldsSendingSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentHiddenFieldsSendingSuccess.json"
+  "DocumentCollectionDocumentHiddenFieldsSendingSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentHiddenFieldsSendingSuccess.json",
+  "DocumentCollectionDocumentSendingTwiceToSameContact" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwiceToSameContact.json"
 }
