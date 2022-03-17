@@ -93,7 +93,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         assert json_response[0] == ResultCode.BASE_64_FILE_UNSUPPORTED_TYPE
 
     def test_create_template_duplicate_template_success(self):
-        r = self.__api_create_template_duplicate_request("CreateTemplateDuplicateTemplate", '351f65cd-8444-40d2-f479-08d9faba90ef')
+        r = self.__api_create_template_duplicate_request("CreateTemplateDuplicateTemplate", '4f6af355-a798-4b71-be62-08d9fab629bc')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['newTemplateId']

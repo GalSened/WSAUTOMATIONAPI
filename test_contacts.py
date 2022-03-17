@@ -209,9 +209,18 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.BAD_REQUEST
         response_error = r.json()
         json_response_error = response_error['errors']['Name']
-        json_response_error[0] == ResultCode.NAME_SHOULD_CONTAIN_ONLY_CHARACTERS
+        assert json_response_error[0] == ResultCode.NAME_SHOULD_CONTAIN_ONLY_CHARACTERS
         r = self.__api_delete_contact_request(json_response)
         assert r.status_code == StatusCode.OK
+
+    #Bug number = WES-1047
+    def test_create_new_contact_with_global_number_when_provider_is_goldman(self):
+        r = self.__api_create_contact_request('CreateNewContactWithGlobalPhoneWhenProviderIsGoldman')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response_error = r.json()
+        json_response_error = response_error['errors']['Phone']
+        assert json_response_error[0] == ResultCode.SMS_PROVIDER_ERROR
+
 
     def test_get_all_contacts(self):
         r = self.__api_get_all_contacts()

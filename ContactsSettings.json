@@ -23,5 +23,6 @@
   "UpdateContactInvalidEmail": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\UpdateContactInvalidEmail.json",
   "UpdateContactInvalidPhone": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\UpdateContactInvalidPhone.json",
   "UpdateContactInvalidName": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\UpdateContactInvalidName.json",
-  "UpdateContactSeal": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\UpdateContactSeal.json"
+  "UpdateContactSeal": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\UpdateContactSeal.json",
+  "CreateNewContactWithGlobalPhoneWhenProviderIsGoldman" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderIsGoldman.json"
 }
