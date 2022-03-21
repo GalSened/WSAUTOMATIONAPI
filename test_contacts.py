@@ -218,13 +218,19 @@ class WesignContactsApi(unittest.TestCase):
         r = self.__api_create_contact_request('CreateNewContactWithGlobalPhoneWhenProviderIsGoldman')
         assert r.status_code == StatusCode.BAD_REQUEST
         response_error = r.json()
-        json_response_error = response_error['errors']['Phone']
+        json_response_error = response_error['errors']['error']
         assert json_response_error[0] == ResultCode.SMS_PROVIDER_ERROR
-
 
     def test_get_all_contacts(self):
         r = self.__api_get_all_contacts()
         assert r.status_code == StatusCode.OK
+            # To delete all contacts
+            # response = r.json()
+            # json_response = response
+            # for id in json_response['contacts']:
+            #     self.__api_delete_contact_request(id['id'])
+
+
 
     def tearDown(self):
         sleep(4)
