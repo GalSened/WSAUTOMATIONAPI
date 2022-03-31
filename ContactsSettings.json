@@ -24,5 +24,8 @@
   "UpdateContactInvalidPhone": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\UpdateContactInvalidPhone.json",
   "UpdateContactInvalidName": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\UpdateContactInvalidName.json",
   "UpdateContactSeal": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\UpdateContactSeal.json",
-  "CreateNewContactWithGlobalPhoneWhenProviderIsGoldman" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderIsGoldman.json"
+  "CreateNewContactWithGlobalPhoneWhenProviderTwiiloPhoneExtensionInvalid": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderTwiiloPhoneExtensionInvalid.json",
+  "CreateNewContactWithGlobalPhoneWhenProviderIsGoldman" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderIsGoldman.json",
+  "CreateNewContactWithLocalPhoneWhenProviderTwiilo": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithLocalPhoneWhenProviderTwiilo.json",
+  "CreateNewContactWithGlobalPhoneWhenProviderTwiilo": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderTwiilo.json"
 }

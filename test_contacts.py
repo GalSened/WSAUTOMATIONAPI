@@ -8,7 +8,7 @@ import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
-@pytest.mark.flaky(max_runs=2)
+@pytest.mark.flaky(max_runs=10)
 class WesignContactsApi(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('ContactsSettings.json')
@@ -17,7 +17,6 @@ class WesignContactsApi(unittest.TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
-
 
     def test_create_new_contact_by_email_success(self):
         r = self.__api_create_contact_request('CreateNewValidContactWithEmailAndPhone')
@@ -114,7 +113,7 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['contactsId']
-        assert len(json_response) == 20
+        assert len(json_response[0]) == 36
         for contacts in json_response:
             self.__api_delete_contact_request(contacts)
 
@@ -123,7 +122,7 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['contactsId']
-        assert len(json_response) == 20
+        assert len(json_response[0]) == 36
         for contacts in json_response:
             self.__api_delete_contact_request(contacts)
 
@@ -132,7 +131,7 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['contactsId']
-        assert len(json_response) == 20
+        assert len(json_response[0]) == 36
         for contacts in json_response:
             self.__api_delete_contact_request(contacts)
 
@@ -229,8 +228,6 @@ class WesignContactsApi(unittest.TestCase):
             # json_response = response
             # for id in json_response['contacts']:
             #     self.__api_delete_contact_request(id['id'])
-
-
 
     def tearDown(self):
         sleep(4)

@@ -1,4 +1,5 @@
 import unittest
+import uuid
 import warnings
 from pathlib import Path
 from time import sleep
@@ -13,7 +14,7 @@ from status_codes import StatusCode, ResultCode
 from selenium import webdriver
 
 
-@pytest.mark.flaky(max_runs=2)
+@pytest.mark.flaky(max_runs=5)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('DocumentCollectionSettings.json')
@@ -84,7 +85,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.driver.get(json_response)
-        sleep(5)
+        sleep(10)
         otp_box = self.driver.find_elements_by_id("auth")
         assert len(otp_box) > 0
 
@@ -114,7 +115,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.driver.get(json_response)
-        sleep(5)
+        sleep(10)
         document_code = self.driver.find_elements_by_id("id")
         assert len(document_code) > 0
 
@@ -227,6 +228,16 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=4)
     def test_document_collection_document_sending_with_should_send_parameter_as_false(self):
+        email_prefix = uuid.uuid4().hex
+        self.document_name = email_prefix
+        with open(
+                "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSendParamaterFlase.json",
+                'r+') as f:
+            data = json.load(f)
+            data['documentName'] = self.document_name  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithShouldSendParamaterFlase')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -236,13 +247,23 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         self.__enter_gmail()
         sleep(8)
-        email = self.driver.find_elements_by_xpath("//span[contains(text(),'dev')]")
+        email = self.driver.find_elements_by_xpath(f"//span[contains(text(),'{self.document_name}')]")
         assert len(email) == 0, "Check if email sent"
         sleep(6)
         self.driver.quit()
 
     @pytest.mark.run(order=2)
     def test_document_collection_document_sending_with_should_send_parameter_as_true(self):
+        email_prefix = uuid.uuid4().hex
+        self.document_name = email_prefix
+        with open(
+                "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSendParamaterTrue.json",
+                'r+') as f:
+            data = json.load(f)
+            data['documentName'] = self.document_name  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithShouldSendParamaterTrue')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -251,13 +272,24 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.__enter_gmail()
         sleep(8)
-        email = self.driver.find_elements_by_xpath("//span[contains(text(),'dev')]")
+        email = self.driver.find_elements_by_xpath(f"//span[contains(text(),'{self.document_name}')]")
         assert len(email) > 0, "Email didn't sent"
         sleep(8)
-        self.__delete_gmail_emails()
+        self.driver.quit()
+
 
     @pytest.mark.run(order=3)
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_false(self):
+        email_prefix = uuid.uuid4().hex
+        self.document_name = email_prefix
+        with open(
+                "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithshouldSendSignedParamaterFalse.json",
+                'r+') as f:
+            data = json.load(f)
+            data['documentName'] = self.document_name  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithshouldSendSignedParamaterFalse')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -271,18 +303,26 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(4)
         self.__enter_gmail()
-        sleep(8)
-        email_notification = self.driver.find_element_by_id(":23")
+        sleep(10)
+        email_notification = self.driver.find_element_by_xpath(f"(//*[contains(text(),'{self.document_name}')])[2]")
         email_notification.click()
         sleep(8)
         attached_document = self.driver.find_elements_by_xpath("//img[@id=':70']")
         assert len(attached_document) == 0, "Pdf document attached"
-        sleep(3)
-        self.driver.back()
-        self.__delete_gmail_emails()
+
 
     @pytest.mark.run(order=5)
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
+        email_prefix = uuid.uuid4().hex
+        self.document_name = email_prefix
+        with open(
+                "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue.json",
+                'r+') as f:
+            data = json.load(f)
+            data['documentName'] = self.document_name  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -297,24 +337,21 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(4)
         self.__enter_gmail()
         sleep(15)
-        email_notification = self.driver.find_element_by_xpath("//tbody/tr[@id=':25']/td[4]/div[2]/span[1]/span[1]")
+        email_notification = self.driver.find_element_by_xpath(f"(//*[contains(text(),'{self.document_name}')])[2]")
         email_notification.click()
         sleep(10)
-        attached_document = self.driver.find_elements_by_xpath("//span[contains(text(),'TestApi.pdf')]")
-        assert len(attached_document) > 2, "Pdf document attached"
-        sleep(3)
-        self.driver.back()
-        self.__delete_gmail_emails()
+        attached_document = self.driver.find_elements_by_xpath(f"(//span[contains(text(),'{self.document_name}.pdf')])[3]")
+        assert len(attached_document) > 0, "Pdf document attached"
 
-    @pytest.mark.run(order=1)
-    def test_delete_all_mails(self):
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
-        self.__enter_gmail()
-        sleep(4)
-        try:
-            self.__delete_gmail_emails()
-        except:
-            self.driver.quit()
+    # @pytest.mark.run(order=1)
+    # def test_delete_all_mails(self):
+    #     self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+    #     self.__enter_gmail()
+    #     sleep(4)
+    #     try:
+    #         self.__delete_gmail_emails()
+    #     except:
+    #         self.driver.quit()
 
     def test_document_collection_document_sending_with_redirect_url(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithRedirectUrlSuccess')
@@ -569,23 +606,23 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
 
-    def test_delete_all_documents(self):
-        r = self.__api_get_all_document_collection()
-        assert r.status_code == StatusCode.OK
-        response = r.json()
-        json_response = response
-        for id in json_response['documentCollections']:
-            self.__api_delete_document_request(id['documentCollectionId'])
-
-    def delete_all_documents(self):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get('https://devtest.comda.co.il/userapi/v3/documentcollections?sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&limit=200',headers=headers)
-        assert r.status_code == StatusCode.OK
-        response = r.json()
-        json_response = response
-        for document_id in json_response['documentCollections']:
-            headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-            requests.delete(self.settings['Base_Url'] + 'documentcollections/' + document_id['documentCollectionId'],headers=headers)
+    # def test_delete_all_documents(self):
+    #     r = self.__api_get_all_document_collection()
+    #     assert r.status_code == StatusCode.OK
+    #     response = r.json()
+    #     json_response = response
+    #     for id in json_response['documentCollections']:
+    #         self.__api_delete_document_request(id['documentCollectionId'])
+    #
+    # def delete_all_documents(self):
+    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.get('https://devtest.comda.co.il/userapi/v3/documentcollections?sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&limit=200',headers=headers)
+    #     assert r.status_code == StatusCode.OK
+    #     response = r.json()
+    #     json_response = response
+    #     for document_id in json_response['documentCollections']:
+    #         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #         requests.delete(self.settings['Base_Url'] + 'documentcollections/' + document_id['documentCollectionId'],headers=headers)
 
     def tearDown(self):
         try:

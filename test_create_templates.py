@@ -8,7 +8,7 @@ import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
-@pytest.mark.flaky(max_runs=3)
+@pytest.mark.flaky(max_runs=5)
 class WesignApiCreateTemplateTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('CreateTemplateSettings.json')

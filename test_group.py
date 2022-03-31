@@ -1,4 +1,5 @@
 import unittest
+import uuid
 import warnings
 from pathlib import Path
 from time import sleep
@@ -8,7 +9,7 @@ import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
-@pytest.mark.flaky(max_runs=2)
+@pytest.mark.flaky(max_runs=5)
 class WesignApiGroupTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('GroupSettings.json')
@@ -41,9 +42,24 @@ class WesignApiGroupTests(unittest.TestCase):
         assert json_response[0] == ResultCode.EMPTY_NAME
 
     def test_update_group_name_success(self):
-        r = self.__api_update_group_request('ChangeGroupNameRequest')
+        group = uuid.uuid4().hex
+        self.group_name = group
+        with open(
+                "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\CreateNewGroupRequest.json",'r+') as f:
+            data = json.load(f)
+            data['name'] = self.group_name  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
+        r = self.__api_create_group_request('CreateNewGroupRequest')
         assert r.status_code == StatusCode.OK
-        self.__api_update_group_request('ChangeGroupNameToOriginalRequest')
+        response = r.json()
+        json_response = response['groupId']
+        assert len(json_response) > 0
+        r = self.__api_update_group_request('ChangeGroupNameRequest',json_response)
+        assert r.status_code == StatusCode.OK
+        self.__api_delete_group_request(f'{json_response}')
+
 
     def test_get_all_groups_success(self):
         r = self.__api_get_group_request()
@@ -52,7 +68,7 @@ class WesignApiGroupTests(unittest.TestCase):
         json_response_group_id = response['groups'][0]['groupId']
         json_response_group_name = response['groups'][0]['name']
         assert json_response_group_id == self.settings['GroupID']
-        assert  json_response_group_name == 'API'
+        assert json_response_group_name == 'TestApi2'
 
     def test_delete_group_success(self):
         r = self.__api_create_group_request('CreateNewGroupRequest')
@@ -96,12 +112,12 @@ class WesignApiGroupTests(unittest.TestCase):
         r = requests.delete(self.settings['Base_Url'] + 'admins/groups/' + group_id,headers=headers)
         return r
 
-    def __api_update_group_request(self, request_file):
+    def __api_update_group_request(self, request_file,group_name):
         file = open(self.settings[request_file], 'r')
         json_input = file.read()
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'admins/groups/' + self.settings['GroupID'], data=json.dumps(requests_json), headers=headers)
+        r = requests.put(self.settings['Base_Url'] + 'admins/groups/' + group_name, data=json.dumps(requests_json), headers=headers)
         return r
 
     def __api_get_group_request(self):

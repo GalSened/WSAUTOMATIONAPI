@@ -9,7 +9,7 @@ from status_codes import StatusCode
 from status_codes import ResultCode
 import pytest
 
-@pytest.mark.flaky(max_runs=2)
+@pytest.mark.flaky(max_runs=5)
 class WesignApiLoginTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('settings.json')
@@ -45,6 +45,16 @@ class WesignApiLoginTests(unittest.TestCase):
 
     def test_login_empty_email(self):
         r = self.__api_login_request('LoginRequestEmptyEmail')
+        assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        json_response = response['errors']['Email']
+        status_response = r.json()['status']
+        assert status_response == StatusCode.BAD_REQUEST
+        assert json_response[0] == ResultCode.PLEASE_SPECIFY_AN_EMAIL
+        assert json_response[1] == ResultCode.PLEASE_SPECIFY_A_VALID_EMAIL
+
+    def test_login_empty_email_empty_password(self):
+        r = self.__api_login_request('LoginRequestEmptyEmailEmptyPassword')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['Email']

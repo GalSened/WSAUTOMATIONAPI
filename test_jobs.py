@@ -6,13 +6,12 @@ from time import sleep
 import pytest
 import json
 from selenium.webdriver.common.by import By
+import test_create_document_collection
+import test_self_sign
 from shared import Shared
 from selenium import webdriver
-from test_self_sign import WesignApiSelfSignTestTests as sl
-from test_create_document_collection import WesignApiCreateDocumentCollectionTests as cd
 
-
-@pytest.mark.flaky(max_runs=2)
+@pytest.mark.flaky(max_runs=1)
 class WesignJobs(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('SelfSignSettings.json')
@@ -27,11 +26,11 @@ class WesignJobs(unittest.TestCase):
 
     def test_clean_db_job_after_delete_documents(self):
         #Create 20 documents
-        for x in range(100):
+        for x in range(20):
             sleep(2)
-            sl.self_sign_create_document(self,'SelfSignUploadPdfDocument')
+            test_self_sign.WesignApiSelfSignTestTests.self_sign_create_document(self,'SelfSignUploadPdfDocument')
         #Delete documents
-        cd.delete_all_documents(self)
+        test_create_document_collection.WesignApiCreateDocumentCollectionTests.delete_all_documents(self)
         sleep(20)
         #Enter jobs ui and click on clean db
         self.driver = webdriver.Chrome(self.settings_jobs["chrome_driver"])
