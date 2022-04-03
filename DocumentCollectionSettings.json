@@ -43,5 +43,8 @@
   "UpdateTemplateWithTextFieldAsHidden": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithTextFieldAsHidden.json",
   "UpdateTemplateWithTextFieldAsHiddenAsFalse": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithTextFieldAsHiddenAsFalse.json",
   "DocumentCollectionDocumentHiddenFieldsSendingSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentHiddenFieldsSendingSuccess.json",
-  "DocumentCollectionDocumentSendingTwiceToSameContact" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwiceToSameContact.json"
+  "DocumentCollectionDocumentSendingTwiceToSameContact" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwiceToSameContact.json",
+  "DocumentCollectionDocumentSendingTwilioProviderSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwilioProviderSuccess.json",
+  "DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess.json"
+
 }

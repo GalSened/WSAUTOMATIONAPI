@@ -6,8 +6,6 @@ from time import sleep
 import pytest
 import requests
 import json
-
-import xlsxwriter
 from selenium.webdriver import ActionChains
 from shared import Shared
 from status_codes import StatusCode, ResultCode
@@ -557,6 +555,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         text_field = self.driver.find_elements_by_id("text1")
         assert len(text_field) == 0, 'Text field displayed'
+        self.__delete_template_created(template)
+
 
     def test_document_collection_with_hidden_field_as_false(self):
         r = self.__api_create_template_request('CreateTemplatePdfBase64Success')
@@ -593,10 +593,38 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         text_field = self.driver.find_elements_by_id("text1")
         assert len(text_field) > 0, 'Text field not displayed'
+        self.__delete_template_created(template)
 
     #Bug number - WES-1030
     def test_document_collection_send_twice_to_same_contact(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingTwiceToSameContact')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
+
+
+    #Bug number - WES-1066
+    def test_document_collection_send_global_number_without_extension_twilio_provider(self):
+        self.token_twillio = Shared.login_request_twillo(self)
+        r = self.__api_document_collection_request_twilio('DocumentCollectionDocumentSendingTwilioProviderSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
+
+
+    def test_document_collection_send_global_number_with_extension_twilio_provider(self):
+        self.token_twillio = Shared.login_request_twillo(self)
+        r = self.__api_document_collection_request_twilio('DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -734,3 +762,16 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.put(self.settings['Base_Url'] + 'templates/' + template_id, data=json.dumps(requests_json), headers=headers)
         return r
+
+    def __api_document_collection_request_twilio(self, request_file):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token_twillio}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def __delete_template_created(self, template_guid):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.delete(self.settings['Base_Url'] + 'templates/' + template_guid, headers=headers)
+        assert r.status_code == 200
