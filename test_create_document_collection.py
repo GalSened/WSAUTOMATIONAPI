@@ -10,6 +10,9 @@ from selenium.webdriver import ActionChains
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 
 @pytest.mark.flaky(max_runs=5)
@@ -607,22 +610,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
 
-
-    #Bug number - WES-1066
     def test_document_collection_send_global_number_without_extension_twilio_provider(self):
         self.token_twillio = Shared.login_request_twillo(self)
-        r = self.__api_document_collection_request_twilio('DocumentCollectionDocumentSendingTwilioProviderSuccess')
-        assert r.status_code == StatusCode.OK
-        response = r.json()
-        json_response = response['signerLinks'][0]['link']
-        assert len(json_response) == 85
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
-        self.driver.get(json_response)
-        sleep(5)
-        assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
+        r = self.__api_document_collection_request_twilio('DocumentCollectionDocumentSendingTwilioProvider')
+        assert r.status_code == StatusCode.BAD_REQUEST
 
-
-    def test_document_collection_send_global_number_with_extension_twilio_provider(self):
+    # Bug number - WES-1066
+    def test_document_collection_send_global_number_with_extension_twilio_provider_success(self):
         self.token_twillio = Shared.login_request_twillo(self)
         r = self.__api_document_collection_request_twilio('DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess')
         assert r.status_code == StatusCode.OK
@@ -633,6 +627,38 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.get(json_response)
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
+
+    def test_document_collection_send_global_number_with_extension_and_local_number_twilio_provider_success(self):
+        self.token_twillio = Shared.login_request_twillo(self)
+        r = self.__api_document_collection_request_twilio('DocumentCollectionDocumentSendingTwilioProviderWithExtensionsAndLocalNumberSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
+        driver = self.driver
+        WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.CLASS_NAME, "ct-button--titlebar-primary")))
+        finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
+        finish_button.click()
+
+    def test_document_collection_send_global_number_without_extension_to_local_number_twilio_provider_success(self):
+        self.token_twillio = Shared.login_request_twillo(self)
+        r = self.__api_document_collection_request_twilio('DocumentCollectionDocumentSendingTwilioProviderWithoutExtensionsLocalNumberSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get(json_response)
+        sleep(5)
+        assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
+        driver = self.driver
+        WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.CLASS_NAME, "ct-button--titlebar-primary")))
+        finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
+        finish_button.click()
 
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
