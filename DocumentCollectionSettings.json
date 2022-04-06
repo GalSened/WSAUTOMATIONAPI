@@ -44,7 +44,9 @@
   "UpdateTemplateWithTextFieldAsHiddenAsFalse": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithTextFieldAsHiddenAsFalse.json",
   "DocumentCollectionDocumentHiddenFieldsSendingSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentHiddenFieldsSendingSuccess.json",
   "DocumentCollectionDocumentSendingTwiceToSameContact" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwiceToSameContact.json",
-  "DocumentCollectionDocumentSendingTwilioProviderSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwilioProviderSuccess.json",
-  "DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess.json"
+  "DocumentCollectionDocumentSendingTwilioProvider": "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwilioProvider.json",
+  "DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess.json",
+  "DocumentCollectionDocumentSendingTwilioProviderWithExtensionsAndLocalNumberSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwilioProviderWithExtensionsAndLocalNumberSuccess.json",
+  "DocumentCollectionDocumentSendingTwilioProviderWithoutExtensionsLocalNumberSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwilioProviderWithoutExtensionsLocalNumberSuccess.json"
 
 }
