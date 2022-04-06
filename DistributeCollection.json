@@ -1,0 +1,7 @@
+{
+  "base64signers" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\base64signers.json",
+  "Base_Url" : "https://devtest.comda.co.il/userapi/v3",
+  "distribute_file_with_users_and_field" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\DistributeSignersApi.json",
+  "PDF_file_base64" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\PDF_File_base64.json",
+  "text_field_for_template" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\text_field_for_template.json"
+}
