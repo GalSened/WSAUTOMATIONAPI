@@ -610,11 +610,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
 
-    def test_document_collection_send_global_number_without_extension_twilio_provider(self):
-        self.token_twillio = Shared.login_request_twillo(self)
-        r = self.__api_document_collection_request_twilio('DocumentCollectionDocumentSendingTwilioProvider')
-        assert r.status_code == StatusCode.BAD_REQUEST
-
     # Bug number - WES-1066
     def test_document_collection_send_global_number_with_extension_twilio_provider_success(self):
         self.token_twillio = Shared.login_request_twillo(self)
