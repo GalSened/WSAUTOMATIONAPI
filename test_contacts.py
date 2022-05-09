@@ -220,14 +220,16 @@ class WesignContactsApi(unittest.TestCase):
         json_response_error = response_error['errors']['error']
         assert json_response_error[0] == ResultCode.SMS_PROVIDER_ERROR
 
-    def test_get_all_contacts(self):
-        r = self.__api_get_all_contacts()
-        assert r.status_code == StatusCode.OK
-            # To delete all contacts
-            # response = r.json()
-            # json_response = response
-            # for id in json_response['contacts']:
-            #     self.__api_delete_contact_request(id['id'])
+    # def test_get_all_contacts(self):
+    #     #Delete all contacts
+    #     for x in range(1000):
+    #         r = self.__api_get_all_contacts()
+    #         assert r.status_code == StatusCode.OK
+    #         response = r.json()
+    #         json_response = response
+    #         for id in json_response['contacts']:
+    #             self.__api_delete_contact_request(id['id'])
+
 
     def tearDown(self):
         sleep(4)

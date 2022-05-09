@@ -610,6 +610,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
 
+    #bug number - WES-1102
+    def test_document_collection_download_document_collection_invalid_id(self):
+        r = self.__api_document_collection_download_document('827b5c63-4951-4098-2ce4-08da2cedfaa9')
+        assert r.status_code == StatusCode.BAD_REQUEST
+
+
     # Bug number - WES-1066
     def test_document_collection_send_global_number_with_extension_twilio_provider_success(self):
         self.token_twillio = Shared.login_request_twillo(self)
@@ -796,3 +802,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.delete(self.settings['Base_Url'] + 'templates/' + template_guid, headers=headers)
         assert r.status_code == 200
+
+    def __api_document_collection_download_document(self, id):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'documentcollections/' + id, headers=headers)
+        return r
