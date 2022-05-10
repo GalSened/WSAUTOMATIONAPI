@@ -2,6 +2,7 @@
   "chrome_driver" : "\\\\fs01\\Users\\NirK\\chromedriver.exe",
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
   "LoginRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccess.json",
+  "LoginRequestSuccessGmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccessGmail.json",
   "LoginRequestSuccessTwilio" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccessTwillo.json",
   "LoginRequestInvalidPassword" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestInvalidPassword.json",
   "LoginRequestInvalidEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestInvalidEmail.json",
