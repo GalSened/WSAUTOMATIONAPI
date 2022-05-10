@@ -199,6 +199,7 @@ class WesignContactsApi(unittest.TestCase):
         r = self.__api_delete_contact_request(json_response)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.skip('Not implement in 3.0.8 version')
     def test_update_contact_invalid_name(self):
         r = self.__api_create_contact_request('CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK

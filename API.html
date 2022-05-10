@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++)
+        filterItems[i].hidden = false;
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+</script>
+    <h1>API.html</h1>
+    <p>Report generated on 10-May-2022 at 10:44:58 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>Packages</td>
+        <td>{"pluggy": "0.13.1", "py": "1.10.0", "pytest": "7.1.0"}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.19044-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{"allure-pytest": "2.9.45", "failed-screenshot": "1.0.2", "flaky": "3.7.0", "forked": "1.3.0", "html": "3.1.1", "html-reporter": "0.2.6", "metadata": "1.11.0", "ordering": "0.6", "parallel": "0.1.0", "xdist": "2.5.0"}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.9.5</td></tr></table>
+    <h2>Summary</h2>
+    <p>127 tests ran in 175.07 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">123 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">4 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable" col="duration">Duration</th>
+          <th class="sortable links" col="links">Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_by_empty_name</td>
+          <td class="col-duration">5.64</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/><br/>self = &lt;test_contacts.WesignContactsApi testMethod=test_create_new_contact_by_empty_name&gt;<br/><br/>    def test_create_new_contact_by_empty_name(self):<br/>        r = self.__api_create_contact_request(&#x27;CreateNewContactWithEmptyName&#x27;)<br/>        assert r.status_code == StatusCode.BAD_REQUEST<br/>        response = r.json()<br/>        json_response = response[&#x27;errors&#x27;][&#x27;Name&#x27;]<br/>&gt;       assert json_response == ResultCode.INVALID_NAME<br/><span class="error">E       AssertionError: assert [&#x27;Please spec... limit to 50&#x27;] == [&#x27;Please spec...y characters&#x27;]</span><br/><span class="error">E         Right contains one more item: &#x27;Name should contain only characters&#x27;</span><br/><span class="error">E         Use -v to get more diff</span><br/><br/>test_contacts.py:58: AssertionError[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_update_contact_invalid_name</td>
+          <td class="col-duration">5.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/><br/>self = &lt;test_contacts.WesignContactsApi testMethod=test_update_contact_invalid_name&gt;<br/><br/>    def test_update_contact_invalid_name(self):<br/>        r = self.__api_create_contact_request(&#x27;CreateNewValidContactWithEmailAndPhone&#x27;)<br/>&gt;       assert r.status_code == StatusCode.OK<br/><span class="error">E       assert 400 == 200</span><br/><span class="error">E        +  where 400 = &lt;Response [400]&gt;.status_code</span><br/><span class="error">E        +  and   200 = StatusCode.OK</span><br/><br/>test_contacts.py:204: AssertionError[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_distribution.py::WesignApiCreateDocumentDistributionTests::test_distribution_two_signers_api_success</td>
+          <td class="col-duration">5.87</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/><br/>self = &lt;test_distribution.WesignApiCreateDocumentDistributionTests testMethod=test_distribution_two_signers_api_success&gt;<br/><br/>    def test_distribution_two_signers_api_success(self):<br/>&gt;       signers = self.__api_extract_signers_from_xlsx_file(&quot;base64signers&quot;)<br/><br/>test_distribution.py:26: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;test_distribution.WesignApiCreateDocumentDistributionTests testMethod=test_distribution_two_signers_api_success&gt;, signers_file = &#x27;base64signers&#x27;<br/><br/>    def __api_extract_signers_from_xlsx_file(self, signers_file):<br/>&gt;       file = open(self.settings[signers_file], &#x27;r&#x27;)<br/><span class="error">E       FileNotFoundError: [Errno 2] No such file or directory: &#x27;\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\base64signers.json&#x27;</span><br/><br/>test_distribution.py:54: FileNotFoundError[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_download_document_collection_invalid_id</td>
+          <td class="col-duration">4.23</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/><br/>self = &lt;test_create_document_collection.WesignApiCreateDocumentCollectionTests testMethod=test_document_collection_download_document_collection_invalid_id&gt;<br/><br/>    def test_document_collection_download_document_collection_invalid_id(self):<br/>        r = self.__api_document_collection_download_document(&#x27;827b5c63-4951-4098-2ce4-08da2cedfaa9&#x27;)<br/>&gt;       assert r.status_code == StatusCode.BAD_REQUEST<br/><span class="error">E       assert 500 == 400</span><br/><span class="error">E        +  where 500 = &lt;Response [500]&gt;.status_code</span><br/><span class="error">E        +  and   400 = StatusCode.BAD_REQUEST</span><br/><br/>test_create_document_collection.py:616: AssertionError[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_duplicate_fields_name</td>
+          <td class="col-duration">9.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_with_only_one_signature_field_two_recipient_by_order_success</td>
+          <td class="col-duration">13.86</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw25] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw25] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw25] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw25] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_using_document_code_success</td>
+          <td class="col-duration">84.34</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw16] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw16] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw16] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw16] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_with_only_one_signature_field_two_recipient_by_group_success</td>
+          <td class="col-duration">15.49</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw24] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw24] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw24] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw24] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_using_signer_attachments_as_mandatory_success</td>
+          <td class="col-duration">94.51</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw59] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw59] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw59] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw59] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/> -------------------------------Captured log call-------------------------------- <br/>WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x00000298465465B0&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/901d6c737f8982a19c6e1230402a7491
+WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x0000029846546940&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/901d6c737f8982a19c6e1230402a7491
+WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x0000029846546730&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/901d6c737f8982a19c6e1230402a7491<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_using_otp_code_send_to_phone_success</td>
+          <td class="col-duration">85.16</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw17] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw17] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw17] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw17] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true</td>
+          <td class="col-duration">147.32</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw3] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw3] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw3] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw3] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_without_fields_one_recipient_success</td>
+          <td class="col-duration">77.52</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw28] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw28] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw28] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw28] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_should_send_sign_document_parameter_as_false</td>
+          <td class="col-duration">135.23</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw1] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_invalid_sending_method</td>
+          <td class="col-duration">9.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_empty_document_name</td>
+          <td class="col-duration">14.17</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw9] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw9] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw9] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw9] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_not_feet_contact_means</td>
+          <td class="col-duration">14.16</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw5] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw5] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw5] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw5] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts_twillo.py::WesignContactsApi::test_create_new_contact_with_local_number_with_twilio_provider_success</td>
+          <td class="col-duration">15.66</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw54] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw54] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw54] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw54] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_by_email_invalid_default_sending_method</td>
+          <td class="col-duration">10.93</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw29] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw29] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw29] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw29] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_invalid_template_id</td>
+          <td class="col-duration">9.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_should_send_parameter_as_true</td>
+          <td class="col-duration">99.13</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw0] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw0] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw0] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw0] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/> -------------------------------Captured log call-------------------------------- <br/>WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x00000172A909A250&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/25184b589c8c55f68d1a7e2f991a70c4
+WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x00000172A906E940&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/25184b589c8c55f68d1a7e2f991a70c4
+WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x00000172A906E970&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/25184b589c8c55f68d1a7e2f991a70c4<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_text_field_success</td>
+          <td class="col-duration">21.17</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw20] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_invalid_document_mode</td>
+          <td class="col-duration">9.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_success</td>
+          <td class="col-duration">15.69</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw23] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw23] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw23] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw23] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_using_otp_code_success</td>
+          <td class="col-duration">85.26</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw18] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw18] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw18] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw18] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_without_fields_two_recipient_by_order_success</td>
+          <td class="col-duration">9.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_personal_note_success</td>
+          <td class="col-duration">84.34</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw19] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw19] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw19] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw19] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_by_email_success</td>
+          <td class="col-duration">7.69</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_two_contacts_by_order_success</td>
+          <td class="col-duration">13.85</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw22] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw22] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw22] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw22] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_by_phone_invalid_sending_type</td>
+          <td class="col-duration">14.85</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw35] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw35] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw35] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw35] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_empty_value_field_in_read_only_fields</td>
+          <td class="col-duration">13.85</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw11] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw11] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw11] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw11] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_should_send_parameter_as_false</td>
+          <td class="col-duration">112.43</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw2] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw2] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw2] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw2] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/> -------------------------------Captured log call-------------------------------- <br/>WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x000001E913C7A280&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/a1e31650b88a3221acc9aa49f7372421
+WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x000001E913C4D2E0&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/a1e31650b88a3221acc9aa49f7372421
+WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x000001E913C7A7F0&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/a1e31650b88a3221acc9aa49f7372421<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_cancel_document_success</td>
+          <td class="col-duration">19.11</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw56] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw56] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw56] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw56] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts_twillo.py::WesignContactsApi::test_create_new_contact_with_local_number_with_twilio_provider_with_phone_extension_in_number</td>
+          <td class="col-duration">10.79</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw55] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw55] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw55] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw55] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_by_phone_success</td>
+          <td class="col-duration">14.64</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw36] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw36] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw36] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw36] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_from_bulk_csv_empty_fullname_valid_phone</td>
+          <td class="col-duration">15.23</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw38] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw38] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw38] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw38] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_from_bulk_csv_file_success</td>
+          <td class="col-duration">14.84</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw39] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw39] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw39] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw39] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_from_bulk_csv_empty_csv</td>
+          <td class="col-duration">10.79</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw37] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw37] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw37] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw37] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_from_bulk_csv_valid_name_and_email_invalid_phone</td>
+          <td class="col-duration">10.77</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw40] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw40] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw40] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw40] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts_twillo.py::WesignContactsApi::test_create_new_contact_with_global_number_with_twilio_provider_success</td>
+          <td class="col-duration">14.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw53] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw53] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw53] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw53] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_using_document_code_and_otp_code_success</td>
+          <td class="col-duration">85.48</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw15] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw15] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw15] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw15] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_by_invalid_email</td>
+          <td class="col-duration">10.79</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw33] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw33] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw33] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw33] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_invalid_sign_field_name</td>
+          <td class="col-duration">9.92</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw14] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw14] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw14] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw14] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_invalid_field_name_in_read_only_fields</td>
+          <td class="col-duration">13.92</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw12] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw12] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw12] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw12] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contacts_from_bulk_csv_sending_method_email_success</td>
+          <td class="col-duration">14.76</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw46] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw46] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw46] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw46] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_update_contact_seal</td>
+          <td class="col-duration">6.27</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contacts_from_bulk_csv_sending_method_sms_success</td>
+          <td class="col-duration">14.84</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw47] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw47] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw47] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw47] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_update_contact_mail</td>
+          <td class="col-duration">10.52</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_update_contact_phone</td>
+          <td class="col-duration">10.90</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contacts_from_bulk_csv_sending_method_email_and_sms_success</td>
+          <td class="col-duration">14.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw45] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw45] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw45] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw45] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_delete_success</td>
+          <td class="col-duration">15.13</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw57] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw57] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw57] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw57] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_empty_field_name_in_read_only_fields</td>
+          <td class="col-duration">9.80</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_using_signer_appendices_success</td>
+          <td class="col-duration">95.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw58] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw58] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw58] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw58] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/> -------------------------------Captured log call-------------------------------- <br/>WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x000002673924E3A0&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/d07a0ccacba1a2a1a9b9fb8ebc59ba30
+WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x000002673924E130&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/d07a0ccacba1a2a1a9b9fb8ebc59ba30
+WARNING  urllib3.connectionpool:connectionpool.py:780 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by &#x27;NewConnectionError(&#x27;&lt;urllib3.connection.HTTPConnection object at 0x000002673924E2B0&gt;: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it&#x27;)&#x27;: /session/d07a0ccacba1a2a1a9b9fb8ebc59ba30<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_by_invalid_phone</td>
+          <td class="col-duration">10.80</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw34] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw34] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw34] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw34] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_invalid_contact_id</td>
+          <td class="col-duration">14.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw7] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw7] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw7] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw7] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_two_contacts_by_group_success</td>
+          <td class="col-duration">13.83</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw21] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw21] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw21] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw21] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_by_email_invalid_sending_type</td>
+          <td class="col-duration">10.90</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw30] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw30] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw30] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw30] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_with_global_number_when_provider_is_goldman</td>
+          <td class="col-duration">10.78</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw42] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw42] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw42] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw42] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_with_email_already_exists</td>
+          <td class="col-duration">10.78</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw41] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw41] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw41] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw41] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_with_phone_already_exists</td>
+          <td class="col-duration">15.13</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw44] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw44] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw44] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw44] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_create_new_contact_with_name_already_exists</td>
+          <td class="col-duration">10.78</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw43] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw43] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw43] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw43] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_without_fields_two_recipient_by_group_success</td>
+          <td class="col-duration">9.90</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_contacts.py::WesignContactsApi::test_update_contact_invalid_email</td>
+          <td class="col-duration">16.66</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw48] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw48] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw48] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw48] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_with_hidden_field_as_true</td>
+          <td class="col-duration">66.21</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_group.py::WesignApiGroupTests::test_delete_group_with_users</td>
+          <td class="col-duration">8.97</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_send_global_number_with_extension_and_local_number_twilio_provider_success</td>
+          <td class="col-duration">76.50</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_share_document_success</td>
+          <td class="col-duration">87.56</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_send_global_number_without_extension_to_local_number_twilio_provider_success</td>
+          <td class="col-duration">76.14</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_png_template_base64_success</td>
+          <td class="col-duration">13.38</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_group.py::WesignApiGroupTests::test_get_all_groups_success</td>
+          <td class="col-duration">7.80</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_template_duplicate_template_success</td>
+          <td class="col-duration">13.30</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw14] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw14] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw14] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw14] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_self_sign.py::WesignApiSelfSignTestTests::test_self_sign_xlsx_document_upload_success</td>
+          <td class="col-duration">12.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw40] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw40] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw40] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw40] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_create_new_user_with_empty_name</td>
+          <td class="col-duration">6.73</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw55] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw55] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw55] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw55] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_login.py::WesignApiLoginTests::test_login_success</td>
+          <td class="col-duration">5.71</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw33] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw33] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw33] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw33] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_self_sign.py::WesignApiSelfSignTestTests::test_self_sign_pdf_sign_success</td>
+          <td class="col-duration">12.42</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw37] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw37] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw37] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw37] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_0_width_and_height_success</td>
+          <td class="col-duration">11.58</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw41] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw41] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw41] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw41] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_self_sign.py::WesignApiSelfSignTestTests::test_self_sign_delete_document_success</td>
+          <td class="col-duration">10.38</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw34] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw34] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw34] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw34] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_invalid_template_id</td>
+          <td class="col-duration">5.20</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw43] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw43] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw43] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw43] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_invalid_field_type_number</td>
+          <td class="col-duration">11.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw42] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw42] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw42] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw42] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_login.py::WesignApiLoginTests::test_login_empty_email_empty_password</td>
+          <td class="col-duration">5.51</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw30] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw30] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw30] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw30] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_login.py::WesignApiLoginTests::test_login_empty_email</td>
+          <td class="col-duration">5.51</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw29] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw29] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw29] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw29] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_group.py::WesignApiGroupTests::test_create_empty_group_name</td>
+          <td class="col-duration">10.36</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw21] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw21] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw21] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw21] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_jpg_template_base64_success</td>
+          <td class="col-duration">11.35</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw11] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw11] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw11] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw11] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_group.py::WesignApiGroupTests::test_delete_group_with_invalid_id</td>
+          <td class="col-duration">6.26</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw25] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw25] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw25] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw25] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_group.py::WesignApiGroupTests::test_create_new_group_success</td>
+          <td class="col-duration">11.93</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw22] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw22] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw22] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw22] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_pdf_template_base64_success</td>
+          <td class="col-duration">12.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw12] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw12] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw12] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw12] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_send_twice_to_same_contact</td>
+          <td class="col-duration">69.74</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw7] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw7] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw7] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw7] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_send_global_number_with_extension_twilio_provider_success</td>
+          <td class="col-duration">74.48</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw5] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw5] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw5] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw5] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_with_hidden_field_as_false</td>
+          <td class="col-duration">71.42</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw9] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw9] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw9] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw9] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_self_sign.py::WesignApiSelfSignTestTests::test_self_sign_pdf_document_upload_success</td>
+          <td class="col-duration">8.56</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw36] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw36] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw36] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw36] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_overlaying_fields</td>
+          <td class="col-duration">11.13</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw46] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw46] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw46] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw46] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_create_new_basic_user_success</td>
+          <td class="col-duration">10.97</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw53] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw53] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw53] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw53] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_minimized_field_success</td>
+          <td class="col-duration">10.41</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw45] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw45] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw45] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw45] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_self_sign.py::WesignApiSelfSignTestTests::test_self_sign_download_smart_card</td>
+          <td class="col-duration">9.14</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw35] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw35] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw35] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw35] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_same_fields_name</td>
+          <td class="col-duration">9.37</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw47] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw47] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw47] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw47] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_self_sign.py::WesignApiSelfSignTestTests::test_self_sign_word_document_upload_success</td>
+          <td class="col-duration">14.10</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw39] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw39] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw39] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw39] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_create_new_user_with_invalid_group_id</td>
+          <td class="col-duration">8.98</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw57] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw57] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw57] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw57] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_maximized_field_success</td>
+          <td class="col-duration">10.66</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw44] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw44] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw44] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw44] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_self_sign.py::WesignApiSelfSignTestTests::test_self_sign_png_document_upload_success</td>
+          <td class="col-duration">9.91</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw38] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw38] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw38] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw38] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_group.py::WesignApiGroupTests::test_delete_group_success</td>
+          <td class="col-duration">10.31</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw24] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw24] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw24] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw24] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_create_new_editor_user_success</td>
+          <td class="col-duration">9.94</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw54] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw54] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw54] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw54] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_group.py::WesignApiGroupTests::test_create_same_group_name</td>
+          <td class="col-duration">8.36</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw23] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw23] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw23] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw23] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_same_radio_group_name</td>
+          <td class="col-duration">9.20</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw48] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw48] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw48] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw48] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_update_existing_user_to_editor_user_success</td>
+          <td class="col-duration">9.53</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw27] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_update_existing_user_empty_email</td>
+          <td class="col-duration">7.74</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw26] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_login.py::WesignApiLoginTests::test_login_invalid_email</td>
+          <td class="col-duration">7.76</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw31] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_create_new_user_with_invalid_email</td>
+          <td class="col-duration">7.81</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw56] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw56] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw56] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw56] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_without_template_name_parameter</td>
+          <td class="col-duration">4.94</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw51] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_update_existing_user_to_basic_user_success</td>
+          <td class="col-duration">7.61</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw13] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_two_signature_field_success</td>
+          <td class="col-duration">4.39</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw50] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_create_new_admin_user_success</td>
+          <td class="col-duration">5.33</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw52] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_login.py::WesignApiLoginTests::test_login_invalid_password</td>
+          <td class="col-duration">5.05</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw32] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_update_template.py::WesignApiUpdateTemplateTests::test_update_template_with_signature_field_success</td>
+          <td class="col-duration">4.49</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw49] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_update_existing_user_empty_name</td>
+          <td class="col-duration">6.44</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw10] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_group.py::WesignApiGroupTests::test_update_group_name_success</td>
+          <td class="col-duration">6.37</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw28] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw28] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw28] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw28] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_xlsx_template_base64_success</td>
+          <td class="col-duration">11.79</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw19] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw19] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw19] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw19] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_template_without_file_type</td>
+          <td class="col-duration">5.95</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw16] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw16] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw16] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw16] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_word_template_base64_success</td>
+          <td class="col-duration">9.83</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw17] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw17] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw17] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw17] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_word_template_base64_with_meta_data_success</td>
+          <td class="col-duration">9.80</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw18] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw18] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw18] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw18] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_templates.py::WesignApiCreateTemplateTests::test_create_template_pdf_base_64_empty_name</td>
+          <td class="col-duration">5.57</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw15] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw15] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw15] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw15] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_update_existing_user_name_success</td>
+          <td class="col-duration">6.38</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw6] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_update_existing_user_email_success</td>
+          <td class="col-duration">5.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw4] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_get_all_users_in_company_success</td>
+          <td class="col-duration">4.40</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw59] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw59] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw59] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw59] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_create_new_user_with_invalid_user_type</td>
+          <td class="col-duration">4.40</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw58] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw58] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw58] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw58] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_users.py::WesignApiUsersTests::test_update_existing_user_invalid_group_id</td>
+          <td class="col-duration">5.05</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw8] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_document_sending_with_redirect_url</td>
+          <td class="col-duration">40.91</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw0] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw0] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw0] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw0] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_replace_signer_success</td>
+          <td class="col-duration">4.81</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw2] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw2] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw2] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw2] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_create_document_collection.py::WesignApiCreateDocumentCollectionTests::test_document_collection_resend_document_success</td>
+          <td class="col-duration">4.48</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw3] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/>[gw3] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw3] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe[gw3] win32 -- Python 3.9.5 c:\users\nirk\appdata\local\programs\python\python39\python.exe<br/></div></td></tr></tbody></table></body></html>
