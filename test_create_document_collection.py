@@ -72,6 +72,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         personal_note_popup_window = self.driver.find_elements_by_class_name("modal__container")
@@ -85,6 +88,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(10)
         otp_box = self.driver.find_elements_by_id("auth")
@@ -98,6 +104,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         send_request_button = self.driver.find_element_by_xpath(
@@ -115,6 +124,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(10)
         document_code = self.driver.find_elements_by_id("id")
@@ -128,6 +140,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         document_code = self.driver.find_element_by_xpath("//input[@type='text']")
@@ -245,6 +260,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
         sleep(5)
         self.__enter_gmail()
         sleep(8)
@@ -271,6 +288,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.__enter_gmail()
         sleep(8)
         email = self.driver.find_elements_by_xpath(f"//span[contains(text(),'{self.document_name}')]")
@@ -297,6 +317,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(14)
         self.__sign_on_document()
@@ -330,6 +353,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(8)
         self.__sign_on_document()
@@ -361,6 +387,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         self.__sign_on_document()
         sleep(5)
@@ -375,6 +404,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         self.__sign_on_document()
@@ -391,6 +423,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         appendices_icon = self.driver.find_elements_by_class_name("feather-bookmark")
@@ -451,6 +486,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             json.dump(data, f, indent=3)
             f.truncate()  # remove remaining part
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response_link)
         sleep(8)
         self.__sign_on_document()
@@ -465,6 +503,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         signature_field = self.driver.find_elements_by_class_name("is-signature")
@@ -554,6 +595,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         text_field = self.driver.find_elements_by_id("text1")
@@ -592,6 +636,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         text_field = self.driver.find_elements_by_id("text1")
@@ -606,6 +653,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
@@ -624,6 +674,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
@@ -636,6 +689,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
@@ -652,6 +708,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        sleep(1)
+        self.driver.maximize_window()
+        sleep(1)
         self.driver.get(json_response)
         sleep(5)
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"

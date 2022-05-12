@@ -222,7 +222,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__assert_values_in_fields("Test", "5678", "test@comsign.co.il", "504821887", "1989-08-23")
         self.driver.switch_to.window(self.driver.window_handles[1])
         self.__enter_temp_faker_mail_and_sign()
-        sleep(self.settings['element_wait'])
+        sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[1])
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
