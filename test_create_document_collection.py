@@ -5,7 +5,10 @@ from pathlib import Path
 from time import sleep
 import pytest
 import requests
+import names
+import openpyxl
 import json
+import base64
 from selenium.webdriver import ActionChains
 from shared import Shared
 from status_codes import StatusCode, ResultCode
@@ -661,6 +664,36 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
         finish_button.click()
 
+    #Bug number = WES-1106
+    def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
+        self.token = Shared.login_request_gmail(self)
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        template = self.__api_create_template_request("PDF_file_base64")
+        assert template.status_code == StatusCode.OK
+        template_json = template.json()
+        template = template_json['templateId']
+        fields_for_template = self.__api_create_template_field_request("documentCollection_duplicated_fields_for_template", template)
+        assert fields_for_template.status_code == StatusCode.OK
+        document_name = uuid.uuid4().hex
+        self._change_values_in_file("DocumentCollectionDuplicatedFields", template, document_name)
+        send_distribution = self.__api_create_documentCollection_request("DocumentCollectionDuplicatedFields")
+        assert send_distribution.status_code == StatusCode.OK
+        WebDriverWait(self.driver, 50).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name))))
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name)).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        self.__assert_number_of_fields(2)
+        get_value_from_text_field = self.driver.find_elements_by_xpath("//*[@type='text']")
+        for value in get_value_from_text_field:
+            assert value.get_attribute('value') == "string", " value wasn't added to the fields"
+        total_fields = self.driver.find_elements_by_class_name("ct-input--primary")
+        assert len(total_fields) == int(2), "field wasn't duplicated"
+
+
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
     #     assert r.status_code == StatusCode.OK
@@ -807,3 +840,51 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.get(self.settings['Base_Url'] + 'documentcollections/' + id, headers=headers)
         return r
+
+    def __api_create_template_field_request(self, field_file, templateId):
+        file = open(self.settings[field_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings["Base_Url"] + f'templates/{templateId}', data=json.dumps(requests_json) ,headers=headers)
+        return r
+
+    def __api_extract_signers_from_base64(self, signers_base64):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documents/distribution/signers', data=json.dumps(signers_base64), headers=headers)
+        return r
+
+    def _change_values_in_file(self, file_name, tempID, documentName):
+        with open(self.settings[file_name], 'r+') as f:
+            data = json.load(f)
+            data["documentName"] = documentName  # <--- add `id` value.
+            data["signers"][0]["signerFields"][0]["templateId"] = tempID
+            data["templates"][0] = tempID
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
+
+
+    def __api_create_documentCollection_request(self, request_file):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json), headers=headers)
+        return r
+
+
+    def __enter_gmail_mail(self, gmail_user_name, gmail_password):
+        # self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.driver.get('https://mail.google.com/')
+        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID, "identifierId")))
+        self.driver.find_element_by_xpath("//input[@type='email']").send_keys(gmail_user_name)
+        self.driver.find_element_by_id("identifierNext").click()
+        password = WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//input[@type='password']")))
+        password.send_keys(gmail_password)
+        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "qj ")))
+
+    def __assert_number_of_fields(self, number_of_fields):
+        total_fields = self.driver.find_elements_by_class_name("ct-input--primary")
+        assert len(total_fields) == int(number_of_fields)

@@ -182,16 +182,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         signers = self.__api_extract_signers_from_base64_file("signer_data_without_name")
         assert signers.status_code == StatusCode.BAD_REQUEST
 
-    #TODO
-    #def test_choose_multiple_templates_and_send(self):
-
     def test_send_distribute_empty_signer_means(self):
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
         signers = self.__api_extract_signers_from_base64_file("signer_data_without_means")
         assert signers.status_code == StatusCode.BAD_REQUEST
 
-    #TODO
+    #Bug number = WES-1106
     def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
         self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.__enter_mail_to_get_email_value(0)
@@ -222,34 +219,221 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__assert_values_in_fields("Test", "5678", "test@comsign.co.il", "504821887", "1989-08-23")
         self.driver.switch_to.window(self.driver.window_handles[1])
         self.__enter_temp_faker_mail_and_sign()
-        sleep(self.settings['element_wait'])
-        self.driver.switch_to.window(self.driver.window_handles[1])
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
-        self.__assert_number_of_fields(24)
+        self.__assert_number_of_fields(10)
         self.__assert_values_in_fields("Test1", "9012", "test1@comsign.co.il", "504821885", "1990-12-17")
 
-    # def test_distribution_OTP_xlsx_file_success(self):
-    #
+    def test_distribution_OTP_xlsx_file_success(self):
+        self.token = Shared.login_request_gmail(self)
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        template = self.__api_create_template_request("PDF_file_base64")
+        assert template.status_code == StatusCode.OK
+        template_json = template.json()
+        template = template_json['templateId']
+        document_name = uuid.uuid4().hex
+        full_name = names.get_full_name()
+        self.__change_values_in_file("Distribution_OTP", template, document_name, full_name)
+        send_distribution = self.__api_create_distribution_request("Distribution_OTP")
+        assert send_distribution.status_code == StatusCode.OK
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        OTP = self.driver.find_element(By.XPATH, "//*[contains(text(), 'OTP' )] ")
+        assert OTP != 0, " no OTP requirement "
+
     # #bug number = WES-1049
-    # def test_elements_values_in_distribution_doesnt_change_when_template_is_changed_success(self):
+    def test_elements_values_in_distribution_doesnt_change_when_template_is_changed_success(self):
+        self.token = Shared.login_request_gmail(self)
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        template = self.__api_create_template_request("PDF_file_base64")
+        assert template.status_code == StatusCode.OK
+        template_json = template.json()
+        template = template_json['templateId']
+        fields_for_template = self.__api_create_template_field_request("values_for_template",template)
+        assert fields_for_template.status_code == StatusCode.OK
+        name = names.get_full_name()
+        document_name = uuid.uuid4().hex
+        self.__change_values_in_file("distribute_elements_values", template, document_name, name)
+        send_distribution = self.__api_create_distribution_request("distribute_elements_values")
+        assert send_distribution.status_code == StatusCode.OK
+        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
+        sleep(1)
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name)).click()
+        sleep(1)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        get_value_from_text_field = self.driver.find_element_by_xpath("//*[@type='text']")
+        assert get_value_from_text_field.get_attribute('value') == "old erech" , "value wasnt added to field"
+        fields_for_template = self.__api_create_template_field_request("changed_values_for_template", template)
+        assert fields_for_template.status_code == StatusCode.OK
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[2])
+        sleep(2)
+        get_new_value_from_text_field = self.driver.find_element_by_xpath("//*[@type='text']")
+        assert get_new_value_from_text_field.get_attribute('value') == "old erech" , "value changed"
+
 
     #Bug number = WES-1041
-    # def test_distribution_xlsx_file_with_empty_rows_success(self):
-    #
-    # #Bug number = WES-1057
-    # def test_distribution_choose_two_recipients_from_address_book_validate_recipients_not_deselected_validate_sending_success(
-    #         self):
-    #
+    def test_distribution_xlsx_file_with_empty_rows_success(self):
+        template = self.__api_create_template_request("PDF_file_base64")
+        assert template.status_code == StatusCode.OK
+        template_json = template.json()
+        template = template_json['templateId']
+        data = open(self.settings["distribution_list_empty_rows"], "rb").read()
+        encode_signers_to_base64 = base64.b64encode(data)
+        signers_base64 = encode_signers_to_base64.decode('utf-8')
+        signers = self.__api_extract_signers_from_base64({"base64File": "data:application/vnd.ms-excel;base64," + signers_base64 +"" })
+        signers_json = signers.json()
+        assert signers.status_code == StatusCode.OK
+        self._change_values_in_file("distribute_xlsx_with_empty_rows", template, signers_json['signers'])
+        send_distribution = self.__api_create_distribution_request("distribute_xlsx_with_empty_rows")
+        assert send_distribution.status_code == StatusCode.OK
+
+
     # # Bug number = WES-1019
-    # def test_distribution_add_date_field_with_value_validate_date_displayed_to_signer_success(self):
-    #
-    # # Bug number = WES-1050
-    # def test_distribution_add_date_field_and_number_with_value_validate_date_and_number_displayed_to_signer_success(
-    #         self):
-    #
-    # # Bug number = WES-1023
-    # def test_distribution_validate_values_displayed_to_signer_from_xlsx_and_not_from_template_success(self):
+    def test_distribution_add_date_field_with_value_validate_date_displayed_to_signer_success(self):
+        self.token = Shared.login_request_gmail(self)
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        template = self.__api_create_template_request("PDF_file_base64")
+        assert template.status_code == StatusCode.OK
+        template_json = template.json()
+        template = template_json['templateId']
+        fields_for_template = self.__api_create_template_field_request("date_field_for_tempate", template)
+        assert fields_for_template.status_code == StatusCode.OK
+        name = names.get_full_name()
+        document_name = uuid.uuid4().hex
+        self.__change_values_in_file("distribution_with_date_field", template, document_name, name)
+        send_distribution = self.__api_create_distribution_request("distribution_with_date_field")
+        assert send_distribution.status_code == StatusCode.OK
+        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
+        sleep(1)
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name)).click()
+        sleep(1)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        get_value_from_date_field = self.driver.find_element_by_xpath("//*[@type='date']")
+        assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
+
+    # Bug number = WES-1050
+    def test_distribution_add_date_field_and_number_with_value_validate_date_and_number_displayed_to_signer_success(self):
+        self.token = Shared.login_request_gmail(self)
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        template = self.__api_create_template_request("PDF_file_base64")
+        assert template.status_code == StatusCode.OK
+        template_json = template.json()
+        template = template_json['templateId']
+        fields_for_template = self.__api_create_template_field_request("fields_for_template_date_and_number", template)
+        assert fields_for_template.status_code == StatusCode.OK
+        name = names.get_full_name()
+        document_name = uuid.uuid4().hex
+        self.__change_values_in_file("distribute_date_and_number_fiels", template, document_name, name)
+        send_distribution = self.__api_create_distribution_request("distribute_date_and_number_fiels")
+        assert send_distribution.status_code == StatusCode.OK
+        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located(
+            (By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
+        sleep(1)
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(
+            document_name)).click()
+        sleep(1)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        get_value_from_date_field = self.driver.find_element_by_xpath("//*[@type='date']")
+        get_value_from_number_field = self.driver.find_element(By.ID, "Number")
+        assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
+        assert get_value_from_number_field.get_attribute('value') == "1234", "Check number field"
+
+    # Bug number = WES-1023
+    def test_distribution_validate_values_displayed_to_signer_from_xlsx_and_not_from_template_success(self):
+        self.token = Shared.login_request_gmail(self)
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        template = self.__api_create_template_request("PDF_file_base64")
+        assert template.status_code == StatusCode.OK
+        template_json = template.json()
+        template = template_json['templateId']
+        fields_for_template = self.__api_create_template_field_request("field_for_template_number_field", template)
+        assert fields_for_template.status_code == StatusCode.OK
+        signers = self.__api_extract_signers_from_base64_file("signer_base64_for_distribution_with_fields_from_xlsx_and_template")
+        assert signers.status_code == StatusCode.OK
+        signers_json = signers.json()
+        file_name = uuid.uuid4().hex
+        with open(self.settings["distribute_file_with_number_field"], 'r+') as f:
+            data = json.load(f)
+            data["name"] = file_name # <--- add `id` value.
+            data["templateId"] = template
+            data["signers"] = signers_json['signers']
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
+        send_distribution = self.__api_create_distribution_request("distribute_file_with_number_field")
+        assert send_distribution.status_code == StatusCode.OK
+        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located(
+            (By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(file_name))))
+        sleep(1)
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(
+            file_name)).click()
+        sleep(1)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        get_value_from_number_field = self.driver.find_element(By.ID, "Number")
+        assert get_value_from_number_field.get_attribute('value') == "1234", "took value from template and not from xlsx file"
+
+    # bug number  =  WES-1110
+    def test_distribution_doesnt_update_value_in_fields(self):
+        self.token = Shared.login_request_gmail(self)
+        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        template = self.__api_create_template_request("PDF_file_base64")
+        assert template.status_code == StatusCode.OK
+        template_json = template.json()
+        template = template_json['templateId']
+        fields_for_template = self.__api_create_template_field_request("values_for_template_bug1011",template)
+        assert fields_for_template.status_code == StatusCode.OK
+        name = names.get_full_name()
+        document_name = uuid.uuid4().hex
+        self.__change_values_in_file("distribution_bug1011", template, document_name, name)
+        send_distribution = self.__api_create_distribution_request("distribution_bug1011")
+        assert send_distribution.status_code == StatusCode.OK
+        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
+        sleep(1)
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name)).click()
+        sleep(1)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        get_value_from_text_field = self.driver.find_element_by_xpath("//*[@type='text']")
+        assert get_value_from_text_field.get_attribute('value') == "new erech" , "value changed"
+
+
+
+
+
 
     def tearDown(self):
         sleep(5)
@@ -328,7 +512,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             self.second_email_address = second_email
 
     def __enter_name_and_email_to_xlsx_file(self, original_file, copied_file, emails):
-
         xfile = openpyxl.load_workbook(original_file)
         for row in range(len(emails)):
             sheet = xfile.get_sheet_by_name('Sheet1')
@@ -381,6 +564,15 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             json.dump(data, f, indent=3)
             f.truncate()  # remove remaining part
 
+    def __change_values_in_file(self, file_name, tempID, name, full_name):
+        with open(self.settings[file_name], 'r+') as f:
+            data = json.load(f)
+            data["name"] = name  # <--- add `id` value.
+            data["templateId"] = tempID
+            data["signers"][0]["fullName"] = full_name
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=4)
+            f.truncate()  # remove remaining part
 
     def __assert_values_in_fields(self, text_fields_value, number_fields_value, email_fields_value, phone_number_value, date_fields_value):
         get_value_from_text_field = self.driver.find_elements_by_xpath("//*[@type='text']")
