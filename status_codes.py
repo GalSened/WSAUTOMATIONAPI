@@ -32,7 +32,7 @@ class ResultCode:
     INVALID_GROUP_ID = 'Invalid GroupId'
     PLEASE_SPECIFY_VALID_EMAIL = 'Please specify valid Email '
     PLEASE_SPECIFY_VALID_PHONE = 'Please specify valid Phone'
-    INVALID_NAME = ['Please specify a Name', 'FirstName length limit to 50', 'Name should contain only characters']
+    INVALID_NAME = ['Please specify a Name', 'FirstName length limit to 50']
     DEFAULT_SENDING_METHOD = ['Please specify valid Phone while DefaultSendingMethod=1 (SMS), or valid Email while DefaultSendingMethod=2 (Email)']
     CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS = 'Contact with same means already exists'
     INVALID_PHONE = 'Invalid Phone'
