@@ -432,13 +432,10 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         get_value_from_text_field = self.driver.find_element_by_xpath("//*[@type='text']")
         assert get_value_from_text_field.get_attribute('value') == "new erech" , "value changed"
 
-
-
-
-
-
     def tearDown(self):
-        sleep(5)
+        sleep(3)
+        self.driver.close()
+        self.driver.quit()
 
     if __name__ == "__main__":
         unittest.main()
