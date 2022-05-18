@@ -9,14 +9,11 @@ import json
 import names
 import openpyxl
 import base64
-from selenium.webdriver import ActionChains
 from shared import Shared
 from status_codes import StatusCode, ResultCode
-from selenium import webdriver
 from telnetlib import EC
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -433,9 +430,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert get_value_from_text_field.get_attribute('value') == "new erech" , "value changed"
 
     def tearDown(self):
-        sleep(3)
-        self.driver.close()
-        self.driver.quit()
+        try:
+            sleep(3)
+            self.driver.close()
+            self.driver.quit()
+        except:
+            pass
 
     if __name__ == "__main__":
         unittest.main()

@@ -115,6 +115,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         send_request_button = self.driver.find_element_by_xpath(
             "/html/body/app-root/app-main-signer/app-otp-details/body/main/div[2]/div/div[3]/form/div[1]/a")
         send_request_button.click()
+        sleep(3)
+        validate_phone = self.driver.find_element_by_class_name("is-confirm")
+        assert validate_phone.text == "OTP code sent successfully to 050482*****87"
         sleep(2)
         otp_box = self.driver.find_elements_by_id("auth")
         assert len(otp_box) > 0
