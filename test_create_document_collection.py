@@ -754,6 +754,16 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         total_fields = self.driver.find_elements_by_class_name("ct-input--primary")
         assert len(total_fields) == int(2), "field wasn't duplicated"
 
+    #Bug number = WES-1123
+    def test_document_collection_download_cancel_document(self):
+        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['documentCollectionId']
+        cancel_document_request = self.__api_cancel_document_request(json_response)
+        assert cancel_document_request.status_code == StatusCode.OK
+        download_document = self.__api_document_collection_download_document(json_response)
+        assert download_document.status_code == 400, "Document still can be download after cancelation"
 
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
