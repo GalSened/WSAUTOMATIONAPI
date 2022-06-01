@@ -9,6 +9,9 @@ import json
 import names
 import openpyxl
 import base64
+
+from webdriver_manager.chrome import ChromeDriverManager
+
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 from telnetlib import EC
@@ -18,7 +21,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-@pytest.mark.flaky(max_runs=5)
+@pytest.mark.flaky(max_runs=10)
 class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('DistributeCollection.json')
@@ -30,7 +33,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     def test_api_sending_distribution_and_receiving_confirmation_for_document_viewed_and_signed_success(self):
         self.token = Shared.login_request_gmail(self)
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         self.__enter_mail_to_get_email_value(1)
         emails = [self.email_address, self.second_email_address]
@@ -57,17 +69,30 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = self.__api_create_distribution_request("DistributeSignersApi_Copy")
         assert send_distribution.status_code == StatusCode.OK
         self.__enter_mail_tm_mail_and_sign(1)
+        sleep(1)
         self.driver.switch_to.window(self.driver.window_handles[3])
+        sleep(1)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
+        sleep(2)
         self.driver.find_element_by_xpath("//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
+        sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
+        sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[2])
+        sleep(2)
         self.__enter_temp_faker_mail_and_sign()
+        sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
+        sleep(2)
         self.driver.find_element_by_xpath("//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
+        sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
+        sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '{} has been completed by all participants')]".format(self.document_name))))
+        sleep(2)
+        self.driver.refresh()
+        sleep(8)
+        WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '{} has been completed by all participants')]".format(self.document_name))))
         assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.email_address, self.document_name)), "confirmation email that signer viewed the document wasn't received"
         assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.email_address, self.document_name)), "confirmation email that signer signed the document wasn't received"
         assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.second_email_address, self.document_name)), "confirmation email that signer viewed the document wasn't received"
@@ -187,7 +212,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     #Bug number = WES-1106
     def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_mail_to_get_email_value(0)
         emails = [self.email_address, self.second_email_address]
         self.__enter_name_and_email_to_xlsx_file(self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit"], self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"], emails)
@@ -225,7 +259,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     def test_distribution_OTP_xlsx_file_success(self):
         self.token = Shared.login_request_gmail(self)
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -249,7 +292,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     # #bug number = WES-1049
     def test_elements_values_in_distribution_doesnt_change_when_template_is_changed_success(self):
         self.token = Shared.login_request_gmail(self)
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -305,7 +357,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     # # Bug number = WES-1019
     def test_distribution_add_date_field_with_value_validate_date_displayed_to_signer_success(self):
         self.token = Shared.login_request_gmail(self)
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -333,7 +394,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     # Bug number = WES-1050
     def test_distribution_add_date_field_and_number_with_value_validate_date_and_number_displayed_to_signer_success(self):
         self.token = Shared.login_request_gmail(self)
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -365,7 +435,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     # Bug number = WES-1023
     def test_distribution_validate_values_displayed_to_signer_from_xlsx_and_not_from_template_success(self):
         self.token = Shared.login_request_gmail(self)
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -404,7 +483,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     # bug number  =  WES-1110
     def test_distribution_doesnt_update_value_in_fields(self):
         self.token = Shared.login_request_gmail(self)
-        self.driver = webdriver.Chrome(self.settings["chrome_driver"])
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
