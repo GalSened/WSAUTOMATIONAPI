@@ -119,6 +119,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         otp_box = self.driver.find_elements_by_id("auth")
         assert len(otp_box) > 0
 
+
     @pytest.mark.run(order=19)
     def test_document_collection_document_sending_using_otp_code_send_to_phone_success(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess')
