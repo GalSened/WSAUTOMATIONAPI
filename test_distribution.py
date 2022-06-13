@@ -44,6 +44,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         options.add_argument("high-dpi-support=0.75")
         self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        sleep(2)
         self.__enter_mail_to_get_email_value(1)
         emails = [self.email_address, self.second_email_address]
         self.__enter_name_and_email_to_xlsx_file(self.settings["empty_xlsx_file"], self.settings["empty_file_with_no_fields_Copy"], emails)
@@ -579,7 +580,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             email = self.driver.find_element(By.ID, 'address').get_attribute('value')
             if email == "...":
                 self.driver.refresh()
-                sleep(4)
+                sleep(10)
             else:
                 self.email_address = email
                 break
