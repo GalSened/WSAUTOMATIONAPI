@@ -911,7 +911,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(total_fields) == int(2), "field wasn't duplicated"
 
     #Bug number = WES-1123
-    @pytest.mark.skip('Not fixed yet')
     def test_document_collection_download_cancel_document(self):
         r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
         assert r.status_code == StatusCode.OK
