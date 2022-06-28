@@ -11,7 +11,7 @@ import json
 import base64
 from selenium.webdriver import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
-
+from selenium.webdriver.common.action_chains import ActionChains
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 from selenium import webdriver
@@ -995,6 +995,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         return r
 
     def __sign_on_document(self):
+        driver = self.driver
         sleep(4)
         self.driver.find_element_by_xpath("//*[@name='feather']").click()
         sleep(4)
@@ -1003,12 +1004,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             .click_and_hold(canvas) \
             .move_by_offset(-200, 10) \
             .move_by_offset(-10, -50) \
-            .move_by_offset(25, 10) \
-            .move_by_offset(80, 50) \
+            .move_by_offset(-25, -10) \
+            .move_by_offset(100, -100) \
             .move_by_offset(10, 60) \
-            .move_by_offset(10, 60) \
+            .move_by_offset(10, 100) \
+            .move_by_offset(-10, -120) \
             .release()
         drawing.perform()
+        for x in range(25):
+            action = webdriver.common.action_chains.ActionChains(driver)
+            action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
+            action.click()
+            action.perform()
+        sleep(4)
         self.driver.find_element_by_class_name("ct-button--primary").click() ##Sign button
         sleep(4)
         self.driver.find_element_by_class_name("ct-button--titlebar-primary").click() ##Finish button
