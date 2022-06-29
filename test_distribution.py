@@ -10,6 +10,8 @@ import names
 import openpyxl
 import base64
 
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 
 from shared import Shared
@@ -81,7 +83,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
-        self.__enter_temp_faker_mail_and_sign()
+        self.__enter_cryptogmail_and_sign()
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
         sleep(2)
@@ -250,7 +252,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__assert_number_of_fields(10)
         self.__assert_values_in_fields("Test", "5678", "test@comsign.co.il", "504821887", "1989-08-23")
         self.driver.switch_to.window(self.driver.window_handles[1])
-        self.__enter_temp_faker_mail_and_sign()
+        self.__enter_cryptogmail_and_sign()
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[1])
         WebDriverWait(self.driver, 80).until(
@@ -572,6 +574,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         return r
 
     def __enter_mail_to_get_email_value(self, window_number):
+        driver = self.driver
         # self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.driver.execute_script("window.open('');")
         self.driver.switch_to.window(self.driver.window_handles[window_number])
@@ -585,18 +588,37 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
                 self.email_address = email
                 break
         self.driver.execute_script("window.open('');")
+        sleep(1)
         self.driver.switch_to.window(self.driver.window_handles[window_number+1])
-        self.driver.get("https://fakermail.com/")
+        # self.driver.get("https://fakermail.com/")
+        # try:
+        #     WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "email-address")))
+        #     get_email_address = self.driver.find_element_by_id("email-address")
+        #     second_email = get_email_address.get_attribute("value")
+        #     self.second_email_address = second_email
+        # except:
+        #     self.driver.refresh()
+        #     WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "email-address")))
+        #     get_email_address = self.driver.find_element_by_id("email-address")
+        #     second_email = get_email_address.get_attribute("value")
+        #     self.second_email_address = second_email
+        self.driver.get("https://cryptogmail.com/")
         try:
-            WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "email-address")))
-            get_email_address = self.driver.find_element_by_id("email-address")
-            second_email = get_email_address.get_attribute("value")
+            self.driver.find_element_by_class_name("button--remove").click()
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.XPATH, "//div[@class='field--value js-email']")))
+            sleep(2)
+            get_email_address = self.driver.find_element_by_xpath("//div[@class='field--value js-email']")
+            second_email = get_email_address.text
             self.second_email_address = second_email
         except:
-            self.driver.refresh()
-            WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "email-address")))
-            get_email_address = self.driver.find_element_by_id("email-address")
-            second_email = get_email_address.get_attribute("value")
+            self.driver.find_element_by_class_name("button--remove").click()
+            sleep(2)
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.XPATH, "//div[@class='field--value js-email']")))
+            sleep(2)
+            get_email_address = self.driver.find_element_by_xpath("//div[@class='field--value js-email']").text
+            second_email = get_email_address.text
             self.second_email_address = second_email
 
     def __enter_name_and_email_to_xlsx_file(self, original_file, copied_file, emails):
@@ -695,3 +717,24 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         click_on_email_title.click()
         click_on_email_title = WebDriverWait(self.driver, 80).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         click_on_email_title.click()
+
+    def __enter_cryptogmail_and_sign(self):
+        driver = self.driver
+        sleep(3)
+        WebDriverWait(driver, 40).until(
+            EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'sent you the document')]")))
+        sleep(3)
+        actions = ActionChains(self.driver)
+        actions.send_keys(Keys.PAGE_DOWN)
+        actions.perform()
+        sleep(5)
+        try:
+            click_on_email_title = self.driver.find_element_by_class_name("message--container-bold")
+            click_on_email_title.click()
+        except:
+            click_on_email_title = self.driver.find_element_by_class_name("message--container-bold")
+            click_on_email_title.click()
+        sleep(3)
+        WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element_by_xpath("//a[contains(text(),'SIGN NOW')]").click()
