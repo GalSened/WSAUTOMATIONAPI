@@ -54,6 +54,8 @@
   "sending_documentCollection_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\sending_documentCollection_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy.xlsx",
   "sending_documentCollection_duplicated_fields_with_same_name_and_value_in_xlsx_edit" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\sending_documentCollection_duplicated_fields_with_same_name_and_value_in_xlsx_edit.xlsx",
   "DocumentCollectionDuplicatedFields" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDuplicatedFields.json",
-  "documentCollection_duplicated_fields_for_template" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\Distribute_duplicated_fields_for_template.json"
-
+  "documentCollection_duplicated_fields_for_template" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\Distribute_duplicated_fields_for_template.json",
+  "UpdateTemplateWithSignatureFieldWithoutFieldDescriptionHebrew" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldWithoutFieldDescriptionHebrew.json",
+  "UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName.json",
+  "UpdateTemplateWithSignatureFieldWithoutFieldDescription" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldWithoutFieldDescription.json"
 }

@@ -5,11 +5,7 @@ from pathlib import Path
 from time import sleep
 import pytest
 import requests
-import names
-import openpyxl
 import json
-import base64
-from selenium.webdriver import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from shared import Shared
@@ -921,6 +917,246 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         download_document = self.__api_document_collection_download_document(json_response)
         assert download_document.status_code == 400, "Document still can be download after cancelation"
 
+    def test_document_collection_update_signature_field_description_is_empty_success(self):
+        create_template = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+        assert create_template.status_code == StatusCode.OK
+        response = create_template.json()
+        template = response['templateId']
+        templatename = response['templateName']
+        assert len(template) == 36, "Template not created"
+        assert len(templatename) > 0
+        update_template = self.__api_update_template_request('UpdateTemplateWithSignatureFieldWithoutFieldDescription', template)
+        assert update_template.status_code == StatusCode.OK
+        d = {
+            "documentMode": 1,
+            "documentName": "TestSignatureFieldDescriptionNull",
+            "templates": [
+                template
+            ],
+            "signers": [
+                {
+                    "contactId": "f56beec6-8fd0-4633-811e-08da0a7f7607",
+                    "sendingMethod": 2,
+                    "signerFields": [
+                        {
+                            "templateId": template,
+                            "fieldName": "Signature_null"
+                        }
+                    ]
+                }
+            ]
+        }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
+        sleep(2)
+        self.driver.get(json_response)
+        driver = self.driver
+        sleep(3)
+        self.__sign_on_document()
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        assert len(signing_complete_msg) == 1
+        self.__delete_template_created(template)
+
+    def test_document_collection_update_signature_field_description_different_from_field_name_using_field_name_success(self):
+        create_template = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+        assert create_template.status_code == StatusCode.OK
+        response = create_template.json()
+        template = response['templateId']
+        templatename = response['templateName']
+        assert len(template) == 36, "Template not created"
+        assert len(templatename) > 0
+        update_template = self.__api_update_template_request('UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName', template)
+        assert update_template.status_code == StatusCode.OK
+        d = {
+            "documentMode": 1,
+            "documentName": "TestSignatureFieldDescriptionDiffrentFromFieldName",
+            "templates": [
+                template
+            ],
+            "signers": [
+                {
+                    "contactId": "f56beec6-8fd0-4633-811e-08da0a7f7607",
+                    "sendingMethod": 2,
+                    "signerFields": [
+                        {
+                            "templateId": template,
+                            "fieldName": "Signature_null"
+                        }
+                    ]
+                }
+            ]
+        }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
+        sleep(2)
+        self.driver.get(json_response)
+        driver = self.driver
+        sleep(3)
+        self.__sign_on_document()
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        assert len(signing_complete_msg) == 1
+        self.__delete_template_created(template)
+
+    def test_document_collection_update_signature_field_description_different_from_field_name_using_only_field_description_success(self):
+        create_template = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+        assert create_template.status_code == StatusCode.OK
+        response = create_template.json()
+        template = response['templateId']
+        templatename = response['templateName']
+        assert len(template) == 36, "Template not created"
+        assert len(templatename) > 0
+        update_template = self.__api_update_template_request('UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName', template)
+        assert update_template.status_code == StatusCode.OK
+        d = {
+            "documentMode": 1,
+            "documentName": "TestSignatureFieldDescriptionDiffrentFromFieldName",
+            "templates": [
+                template
+            ],
+            "signers": [
+                {
+                    "contactId": "f56beec6-8fd0-4633-811e-08da0a7f7607",
+                    "sendingMethod": 2,
+                    "signerFields": [
+                        {
+                            "templateId": template,
+                            "fieldName": "string",
+                            "fieldValue": ""
+                        }
+                    ]
+                }
+            ]
+        }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
+        sleep(2)
+        self.driver.get(json_response)
+        driver = self.driver
+        sleep(3)
+        self.__sign_on_document()
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        assert len(signing_complete_msg) == 1
+        self.__delete_template_created(template)
+
+    def test_document_collection_update_signature_field_description_different_from_field_name_using_only_field_name_hebrew_success(self):
+        create_template = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+        assert create_template.status_code == StatusCode.OK
+        response = create_template.json()
+        template = response['templateId']
+        templatename = response['templateName']
+        assert len(template) == 36, "Template not created"
+        assert len(templatename) > 0
+        #update template
+        update_template = {
+                "name": "dummy",
+                "fields": {
+                    "signatureFields": [
+                        {
+                            "signingType": 1,
+                            "name": "חתימה",
+                            "x": 0.3596638655462185,
+                            "y": 0.11757719714964371,
+                            "width": 0.15999999999999998,
+                            "height": 0.02350000000000004,
+                            "page": 1
+                        }
+                    ]
+                }
+            }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + 'templates/' + template, data=json.dumps(update_template), headers=headers)
+        assert r.status_code == StatusCode.OK
+        d = {
+            "documentMode": 1,
+            "documentName": "TestSignatureFieldDescriptionDiffrentFromFieldName",
+            "templates": [
+                template
+            ],
+            "signers": [
+                {
+                    "contactId": "f56beec6-8fd0-4633-811e-08da0a7f7607",
+                    "sendingMethod": 2,
+                    "signerFields": [
+                        {
+                            "templateId": template,
+                            "fieldName": "חתימה",
+
+                        }
+                    ]
+                }
+            ]
+        }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
+        sleep(2)
+        self.driver.get(json_response)
+        driver = self.driver
+        sleep(3)
+        self.__sign_on_document()
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        assert len(signing_complete_msg) == 1
+        self.__delete_template_created(template)
+
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
     #     assert r.status_code == StatusCode.OK
@@ -1123,3 +1359,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def __assert_number_of_fields(self, number_of_fields):
         total_fields = self.driver.find_elements_by_class_name("ct-input--primary")
         assert len(total_fields) == int(number_of_fields)
+
+    def __api_update_template_request(self, request_file, template):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + 'templates/' + template, data=json.dumps(requests_json), headers=headers)
+        return r
