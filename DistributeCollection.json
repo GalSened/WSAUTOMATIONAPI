@@ -1,6 +1,9 @@
 {
   "chrome_driver": "\\\\fs01\\Users\\NirK\\chromedriver.exe",
   "first_recipient_name": "wesign4611@gmail.com",
+  "first_recipient": "wesign4611",
+  "sixth_recipient_name" : "wesigntesting4611",
+  "sixth_recipient_email" : "wesigntesting4611@yahoo.com",
   "gmail_login_password": "Comsign1!",
   "Base_Url": "https://devtest.comda.co.il/userapi/v3",
   "PDF_file_base64": "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\PDF_File_base64.json",

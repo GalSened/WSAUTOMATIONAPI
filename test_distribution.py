@@ -47,13 +47,20 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver = webdriver.Chrome(executable_path=service, options=options)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         sleep(2)
+        self.__validate_no_emails_yahoo(self.settings['sixth_recipient_name'], self.settings['gmail_login_password'])
+        sleep(2)
+        driver = self.driver
+        driver.execute_script("window.open('');")
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
         self.__enter_mail_to_get_email_value(1)
-        emails = [self.email_address, self.second_email_address]
+        emails = [self.email_address, self.settings['sixth_recipient_email']]
         self.__enter_name_and_email_to_xlsx_file(self.settings["empty_xlsx_file"], self.settings["empty_file_with_no_fields_Copy"], emails)
         data = open(self.settings["empty_file_with_no_fields_Copy"], "rb").read()
         encode_signers_to_base64 = base64.b64encode(data)
         signers_base64 = encode_signers_to_base64.decode('utf-8')
-        signers = self.__api_extract_signers_from_base64({"base64File": "data:application/vnd.ms-excel;base64," + signers_base64 +"" })
+        signers = self.__api_extract_signers_from_base64({"base64File": "data:application/vnd.ms-excel;base64," + signers_base64 + ""})
         signers_json = signers.json()
         assert signers.status_code == StatusCode.OK
         template = self.__api_create_template_request("PDF_file_base64")
@@ -71,6 +78,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             f.truncate()  # remove remaining part
         send_distribution = self.__api_create_distribution_request("DistributeSignersApi_Copy")
         assert send_distribution.status_code == StatusCode.OK
+        sleep(4)
         self.__enter_mail_tm_mail_and_sign(1)
         sleep(1)
         self.driver.switch_to.window(self.driver.window_handles[3])
@@ -83,7 +91,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
-        self.__enter_cryptogmail_and_sign()
+        self.__enter_yahoo_mail_and_sign(self.document_name)
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[4])
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
         sleep(2)
@@ -93,13 +103,15 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[0])
         sleep(2)
+        self.driver.get("https://mail.google.com/mail/u/0/")
+        sleep(4)
         self.driver.refresh()
         sleep(8)
         WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '{} has been completed by all participants')]".format(self.document_name))))
         assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.email_address, self.document_name)), "confirmation email that signer viewed the document wasn't received"
         assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.email_address, self.document_name)), "confirmation email that signer signed the document wasn't received"
-        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.second_email_address, self.document_name)), "confirmation email that signer viewed the document wasn't received"
-        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.second_email_address, self.document_name)), "confirmation email that signer signed the document wasn't received"
+        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.settings['sixth_recipient_email'], self.document_name)), "confirmation email that signer viewed the document wasn't received"
+        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.settings['sixth_recipient_email'], self.document_name)), "confirmation email that signer signed the document wasn't received"
 
     #Bug number = WES-1021
     def test_api_sending_distribution_document_with_duplicated_signer_email_success(self):
@@ -225,40 +237,79 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         options.add_argument("force-device-scale-factor=0.75")
         options.add_argument("high-dpi-support=0.75")
         self.driver = webdriver.Chrome(executable_path=service, options=options)
+        self.__validate_no_emails_yahoo(self.settings['sixth_recipient_name'], self.settings['gmail_login_password'])
+        sleep(2)
         self.__enter_mail_to_get_email_value(0)
-        emails = [self.email_address, self.second_email_address]
+        emails = [self.email_address, self.settings['sixth_recipient_email']]
         self.__enter_name_and_email_to_xlsx_file(self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit"], self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"], emails)
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
         template = template_json['templateId']
+        sleep(1)
         fields_for_template = self.__api_create_template_field_request("Distribute_duplicated_fields_for_template", template)
         assert fields_for_template.status_code == StatusCode.OK
+        sleep(1)
         data = open(self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"], "rb").read()
+        sleep(1)
         encode_signers_to_base64 = base64.b64encode(data)
+        sleep(1)
         signers_base64 = encode_signers_to_base64.decode('utf-8')
-        signers = self.__api_extract_signers_from_base64({"base64File": "data:application/vnd.ms-excel;base64," + signers_base64 +"" })
+        sleep(2)
+        signers = self.__api_extract_signers_from_base64({"base64File": "data:application/vnd.ms-excel;base64," + signers_base64 + ""})
+        sleep(2)
         signers_json = signers.json()
+        sleep(2)
         assert signers.status_code == StatusCode.OK
+        sleep(2)
         print(signers_json['signers'])
+        sleep(1)
         self.document_name = uuid.uuid4().hex
+        sleep(2)
         self._change_values_in_file("DistributeSigners_duplicated_fields_in_xlsx_with_same_name" , template, signers_json['signers'])
+        sleep(2)
         send_distribution = self.__api_create_distribution_request("DistributeSigners_duplicated_fields_in_xlsx_with_same_name")
         assert send_distribution.status_code == StatusCode.OK
         self.__enter_mail_tm_mail_and_sign(0)
-        self.driver.switch_to.window(self.driver.window_handles[3])
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[2])
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
         self.__assert_number_of_fields(10)
         self.__assert_values_in_fields("Test", "5678", "test@comsign.co.il", "504821887", "1989-08-23")
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        self.__enter_cryptogmail_and_sign()
+        driver = self.driver
+        sleep(1)
+        WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']")))
+        finish_button = "//button[@class='ct-button--titlebar-primary ng-star-inserted']"
+        self.driver.find_element_by_xpath(finish_button).click()
+        sleep(1)
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        assert len(signing_complete_msg) == 1
+        sleep(2)
+        driver.execute_script("window.open('');")
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[3])
+        sleep(2)
+        self.__enter_yahoo_mail_and_sign(self.document_name)
         sleep(5)
-        self.driver.switch_to.window(self.driver.window_handles[1])
+        self.driver.switch_to.window(self.driver.window_handles[4])
+        sleep(2)
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
         self.__assert_number_of_fields(10)
         self.__assert_values_in_fields("Test1", "9012", "test1@comsign.co.il", "504821885", "1990-12-17")
+        sleep(1)
+        WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']")))
+        finish_button = "//button[@class='ct-button--titlebar-primary ng-star-inserted']"
+        self.driver.find_element_by_xpath(finish_button).click()
+        sleep(1)
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        assert len(signing_complete_msg) == 1
+
 
     def test_distribution_OTP_xlsx_file_success(self):
         self.token = Shared.login_request_gmail(self)
@@ -574,10 +625,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         return r
 
     def __enter_mail_to_get_email_value(self, window_number):
-        driver = self.driver
         # self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.driver.execute_script("window.open('');")
+        sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[window_number])
+        sleep(2)
         self.driver.get("https://mail.tm/en/")
         while True:
             email = self.driver.find_element(By.ID, 'address').get_attribute('value')
@@ -587,9 +639,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             else:
                 self.email_address = email
                 break
-        self.driver.execute_script("window.open('');")
-        sleep(1)
-        self.driver.switch_to.window(self.driver.window_handles[window_number+1])
+        # self.driver.execute_script("window.open('');")
+        # sleep(1)
+        # self.driver.switch_to.window(self.driver.window_handles[window_number+1])
         # self.driver.get("https://fakermail.com/")
         # try:
         #     WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "email-address")))
@@ -602,24 +654,24 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         #     get_email_address = self.driver.find_element_by_id("email-address")
         #     second_email = get_email_address.get_attribute("value")
         #     self.second_email_address = second_email
-        self.driver.get("https://cryptogmail.com/")
-        try:
-            self.driver.find_element_by_class_name("button--remove").click()
-            WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.XPATH, "//div[@class='field--value js-email']")))
-            sleep(2)
-            get_email_address = self.driver.find_element_by_xpath("//div[@class='field--value js-email']")
-            second_email = get_email_address.text
-            self.second_email_address = second_email
-        except:
-            self.driver.find_element_by_class_name("button--remove").click()
-            sleep(2)
-            WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.XPATH, "//div[@class='field--value js-email']")))
-            sleep(2)
-            get_email_address = self.driver.find_element_by_xpath("//div[@class='field--value js-email']").text
-            second_email = get_email_address.text
-            self.second_email_address = second_email
+        # self.driver.get("https://cryptogmail.com/")
+        # try:
+        #     self.driver.find_element_by_class_name("button--remove").click()
+        #     WebDriverWait(driver, 20).until(
+        #         EC.presence_of_element_located((By.XPATH, "//div[@class='field--value js-email']")))
+        #     sleep(2)
+        #     get_email_address = self.driver.find_element_by_xpath("//div[@class='field--value js-email']")
+        #     second_email = get_email_address.text
+        #     self.second_email_address = second_email
+        # except:
+        #     self.driver.find_element_by_class_name("button--remove").click()
+        #     sleep(2)
+        #     WebDriverWait(driver, 20).until(
+        #         EC.presence_of_element_located((By.XPATH, "//div[@class='field--value js-email']")))
+        #     sleep(2)
+        #     get_email_address = self.driver.find_element_by_xpath("//div[@class='field--value js-email']").text
+        #     second_email = get_email_address.text
+        #     self.second_email_address = second_email
 
     def __enter_name_and_email_to_xlsx_file(self, original_file, copied_file, emails):
         xfile = openpyxl.load_workbook(original_file)
@@ -655,7 +707,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def __enter_mail_tm_mail_and_sign(self, window_number):
         driver = self.driver
         self.driver.switch_to.window(self.driver.window_handles[window_number])
-        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
         refresh_button = self.driver.find_element_by_xpath("//*[contains(text(),'Refresh')]")
         refresh_button.click()
         click_on_email_title = WebDriverWait(driver, 80).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
@@ -667,7 +719,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def _change_values_in_file(self, file_name, tempID,signer):
         with open(self.settings[file_name], 'r+') as f:
             data = json.load(f)
-            data["name"] = uuid.uuid4().hex  # <--- add `id` value.
+            data["name"] = self.document_name  # <--- add `id` value.
             data["templateId"] = tempID
             data["signers"] = signer
             f.seek(0)  # <--- should reset file position to the beginning.
@@ -738,3 +790,49 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         self.driver.find_element_by_xpath("//a[contains(text(),'SIGN NOW')]").click()
+
+    def __enter_yahoo_mail_and_sign(self, document_name):
+        driver = self.driver
+        self.driver.get("https://mail.yahoo.com/")
+        sleep(4)
+        self.driver.refresh()
+        sleep(4)
+        WebDriverWait(driver, 120).until(
+            EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'sent you the document {document_name}')])[1]")))
+        self.driver.find_element_by_xpath(f"(//*[contains(text(),'sent you the document {document_name}')])[1]").click()
+        sleep(3)
+        WebDriverWait(driver, 40).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        self.driver.find_element_by_xpath("//a[contains(text(),'SIGN NOW')]").click()
+
+    def __validate_no_emails_yahoo(self, yahoo_user_name, yahoo_password):
+        driver = self.driver
+        sleep(1)
+        self.driver.get(
+            "https://login.yahoo.com/manage_account?pspid=159600001&activity=mail-direct&.lang=en-IL&.intl=il&src=ym&signin=true&done=https%3A%2F%2Fmail.yahoo.com%2Fd&eid=100")
+        WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable(
+                (By.NAME, "username")))
+        self.driver.find_element_by_name("username").send_keys(yahoo_user_name)
+        WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable(
+                (By.ID, "login-signin")))
+        self.driver.find_element_by_id("login-signin").click()
+        WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable(
+                (By.NAME, "password")))
+        self.driver.find_element_by_name("password").send_keys(yahoo_password)
+        WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable(
+                (By.ID, "login-signin")))
+        self.driver.find_element_by_id("login-signin").click()
+        sleep(2)
+        # try:
+        #     self.driver.find_element_by_xpath("//*[@data-test-id='list-result-empty']").is_displayed()
+        #     pass
+        # except:
+        #     self.driver.find_element_by_xpath("//*[@data-test-id='checkbox']").click()
+        #     sleep(self.settings['element_wait'])
+        #     self.driver.find_element_by_xpath("//*[@data-test-id='toolbar-delete']").click()  ## click on delete button
+        #     sleep(self.settings['element_wait'])
