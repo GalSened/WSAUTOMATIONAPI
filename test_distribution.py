@@ -263,8 +263,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert signers.status_code == StatusCode.OK
         sleep(2)
         print(signers_json['signers'])
-        sleep(1)
-        self.document_name = uuid.uuid4().hex
         sleep(2)
         self._change_values_in_file("DistributeSigners_duplicated_fields_in_xlsx_with_same_name" , template, signers_json['signers'])
         sleep(2)
@@ -292,7 +290,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[3])
         sleep(2)
-        self.__enter_yahoo_mail_and_sign(self.document_name)
+        self.__enter_yahoo_mail_and_sign(self.document)
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[4])
         sleep(2)
@@ -719,12 +717,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def _change_values_in_file(self, file_name, tempID,signer):
         with open(self.settings[file_name], 'r+') as f:
             data = json.load(f)
-            data["name"] = self.document_name  # <--- add `id` value.
+            data["name"] = uuid.uuid4().hex  # <--- add `id` value.
             data["templateId"] = tempID
             data["signers"] = signer
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=3)
             f.truncate()  # remove remaining part
+            self.document = data["name"]
 
     def __change_values_in_file(self, file_name, tempID, name, full_name):
         with open(self.settings[file_name], 'r+') as f:
