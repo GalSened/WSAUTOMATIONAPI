@@ -1157,6 +1157,45 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(signing_complete_msg) == 1
         self.__delete_template_created(template)
 
+    def test_document_collection_download_document_as_json_file(self):
+        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFields')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        document_id = response['documentCollectionId']
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
+        sleep(1)
+        self.driver.get(json_response)
+        sleep(5)
+        signature_field = self.driver.find_elements_by_class_name("is-signature")
+        assert len(signature_field) == 0
+        finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
+        sleep(5)
+        finish_button.click()
+        sleep(3)
+        sign_complete_msg = self.driver.find_elements_by_xpath(
+            '/html/body/app-root/app-main-signer/app-success-page/body/main/h2')
+        sleep(4)
+        assert len(sign_complete_msg) > 0
+        sleep(2)
+        #download request
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        download_json = requests.get(self.settings['Base_Url'] + 'documentcollections/' + document_id + '/json', headers=headers)
+        assert download_json.status_code == StatusCode.OK
+        response = download_json.json()
+        base64 = response['files'][0]['data']
+        assert len(base64) == 35456
+
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
     #     assert r.status_code == StatusCode.OK
