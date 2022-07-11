@@ -630,7 +630,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.get("https://mail.tm/en/")
         while True:
-            email = self.driver.find_element(By.ID, 'address').get_attribute('value')
+            email = self.driver.find_element(By.ID, 'DontUseWEBuseAPI').get_attribute('value')
             if email == "...":
                 self.driver.refresh()
                 sleep(10)
