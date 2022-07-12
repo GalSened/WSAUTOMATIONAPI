@@ -1196,6 +1196,48 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         base64 = response['files'][0]['data']
         assert len(base64) == 35456
 
+    def test_delete_multi_documents_by_document_collection_id_success(self):
+        a = []
+        for x in range(5):
+            document = uuid.uuid4().hex
+            self.document_name = document
+            req = {
+                    "documentMode": 1,
+                    "documentName": self.document_name,
+                    "templates": [
+                        "4f6af355-a798-4b71-be62-08d9fab629bc"
+                    ],
+                    "signers": [
+                        {
+                            "contactId": "f88e9355-1de1-4cdc-907c-08da0a727f61",
+                            "sendingMethod": 2,
+                            "signerFields": [
+                                {
+                                    "templateId": "4f6af355-a798-4b71-be62-08d9fab629bc",
+                                    "fieldName": "sign1"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+            r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(req), headers=headers)
+            assert r.status_code == 200
+            response = r.json()
+            json_response = response['documentCollectionId']
+            a.append(json_response)
+
+        del_req = {
+            "ids": [
+                a[0], a[1], a[2], a[3], a[4]
+            ]
+        }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        delete = requests.put(self.settings['Base_Url'] + 'documentcollections/deletebatch', data=json.dumps(del_req),headers=headers)
+        assert delete.status_code == StatusCode.OK
+
+
+
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
     #     assert r.status_code == StatusCode.OK

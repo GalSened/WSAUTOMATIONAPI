@@ -1,4 +1,5 @@
 import unittest
+import uuid
 import warnings
 from pathlib import Path
 from time import sleep
@@ -220,6 +221,32 @@ class WesignContactsApi(unittest.TestCase):
         response_error = r.json()
         json_response_error = response_error['errors']['error']
         assert json_response_error[0] == ResultCode.SMS_PROVIDER_ERROR
+
+    def test_delete_multi_contacts_by_id_success(self):
+        a = []
+        for x in range(4):
+            contact = uuid.uuid4().hex
+            self.contact_name = contact
+            d = {
+                  "name": self.contact_name,
+                  "email": self.contact_name + "@ApiUser.com",
+                  "defaultSendingMethod": 2
+                }
+            headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+            r = requests.post(self.settings['Base_Url'] + 'contacts', data=json.dumps(d), headers=headers)
+            assert r.status_code == StatusCode.OK
+            response = r.json()
+            json_response = response['contactId']
+            assert len(json_response) > 0
+            a.append(response['contactId'])
+        c = {
+              "ids": [
+                    a[0], a[1], a[2], a[3]
+              ]
+            }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        delete = requests.put(self.settings['Base_Url'] + 'contacts/deletebatch', data=json.dumps(c), headers=headers)
+        assert delete.status_code == StatusCode.OK
 
     # def test_get_all_contacts(self):
     #     #Delete all contacts
