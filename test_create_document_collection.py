@@ -1157,7 +1157,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(signing_complete_msg) == 1
         self.__delete_template_created(template)
 
-    def test_document_collection_download_document_as_json_file(self):
+    def test_document_collection_download_document_as_json_file_success(self):
         r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFields')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -1236,7 +1236,108 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         delete = requests.put(self.settings['Base_Url'] + 'documentcollections/deletebatch', data=json.dumps(del_req),headers=headers)
         assert delete.status_code == StatusCode.OK
 
+    def test_document_collection_send_document_with_meta_data_and_sign_success(self):
+        r = self.__api_create_template_request("CreateTemplateWordBase64WithMetaDataSuccess")
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        template = response['templateId']
+        document = uuid.uuid4().hex
+        self.document_name = document
+        d = {
+            "documentName": self.document_name,
+            "documentMode": 1,
+            "templates": [
+                template
+            ],
+                    "signers": [
+                        {
+                            "otpMode": 0,
+                            "authenticationMode": 0,
+                            "contactName": "nirk",
+                            "contactMeans": "nirk@comsign.co.il",
+                            "sendingMethod": 2,
+                            "phoneExtension": "+972",
+                            "signerFields": [
+                                {
+                                    "templateId": template,
+                                    "fieldName": "sig_1",
 
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "sig_2",
+
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "sig_3",
+
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "txt_3",
+
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "txt_4",
+
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "phone_4",
+
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "number_6",
+
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "date_7",
+
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "cb_2"
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "radio_8"
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "radio_9"
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "radio_10"
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "radio_11"
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "radio_12"
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "radio_13"
+                                },
+                                {
+                                    "templateId": template,
+                                    "fieldName": "chs_14"
+                                }
+                            ]
+                        }
+                    ],
+                }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d),headers=headers)
+        assert r.status_code == StatusCode.OK
+        
 
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()

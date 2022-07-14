@@ -57,5 +57,7 @@
   "documentCollection_duplicated_fields_for_template" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\Distribute_duplicated_fields_for_template.json",
   "UpdateTemplateWithSignatureFieldWithoutFieldDescriptionHebrew" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldWithoutFieldDescriptionHebrew.json",
   "UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName.json",
-  "UpdateTemplateWithSignatureFieldWithoutFieldDescription" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldWithoutFieldDescription.json"
+  "UpdateTemplateWithSignatureFieldWithoutFieldDescription" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldWithoutFieldDescription.json",
+  "CreateTemplateWordBase64WithMetaDataSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json"
+
 }
