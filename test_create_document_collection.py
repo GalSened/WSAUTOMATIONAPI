@@ -1,3 +1,4 @@
+import shutil
 import unittest
 import uuid
 import warnings
@@ -6,6 +7,9 @@ from time import sleep
 import pytest
 import requests
 import json
+
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.select import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from shared import Shared
@@ -1337,7 +1341,796 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d),headers=headers)
         assert r.status_code == StatusCode.OK
-        
+
+    def test_document_collection_send_document_two_recipients_e2e_sign_success(self):
+        r = self.__api_create_template_request("CreateTemplate3PagesPdfBase64Success")
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        template = response['templateId']
+        d = {
+                    "name": "stringA",
+                      "fields": {
+                        "radioGroupFields": [
+                          {
+                            "radioFields": [
+                              {
+                                "groupName": "Group_DyYrL",
+                                "x": 0.08396305625524769,
+                                "y": 0.48990498812351546,
+                                "width": 0.037783375314861464,
+                                "height": 0.02349317102137767,
+                                "page": 3,
+                                "name": "Radio_FI1iF",
+                                "description": "Radio_FI1iF"
+                              },
+                              {
+                                "groupName": "Group_DyYrL",
+                                "x": 0.16792611251049538,
+                                "y": 0.48990498812351546,
+                                "width": 0.037783375314861464,
+                                "height": 0.02349317102137767,
+                                "page": 3,
+                                "name": "Radio_vKi94",
+                                "description": "Radio_vKi94"
+                              }
+                            ],
+                            "name": "Group_DyYrL"
+                          },
+                          {
+                            "radioFields": [
+                              {
+                                "groupName": "Group_OAy97",
+                                "x": 0.16792611251049538,
+                                "y": 0.8456057007125891,
+                                "width": 0.037783375314861464,
+                                "height": 0.02349317102137767,
+                                "page": 2,
+                                "name": "Radio_kvXeS",
+                                "description": "Radio_kvXeS"
+                              },
+                              {
+                                "groupName": "Group_OAy97",
+                                "x": 0.08396305625524769,
+                                "y": 0.8456057007125891,
+                                "width": 0.037783375314861464,
+                                "height": 0.02349317102137767,
+                                "page": 2,
+                                "name": "Radio_nrDJZ",
+                                "description": "Radio_nrDJZ"
+                              }
+                            ],
+                            "name": "Group_OAy97"
+                          },
+                          {
+                            "radioFields": [
+                              {
+                                "groupName": "Group_I3zx7",
+                                "x": 0.3795130142737196,
+                                "y": 0.828978622327791,
+                                "width": 0.037783375314861464,
+                                "height": 0.02349317102137767,
+                                "page": 1,
+                                "name": "Radio_NmpmY",
+                                "description": "Radio_NmpmY"
+                              },
+                              {
+                                "groupName": "Group_I3zx7",
+                                "x": 0.5424013434089001,
+                                "y": 0.7381235154394299,
+                                "width": 0.037783375314861464,
+                                "height": 0.02349317102137767,
+                                "page": 1,
+                                "name": "Radio_YoVQ3",
+                                "description": "Radio_YoVQ3"
+                              }
+                            ],
+                            "name": "Group_I3zx7"
+                          }
+                        ],
+                        "textFields": [
+                          {
+
+                            "textFieldType": 1,
+                            "x": 0.4164567590260285,
+                            "y": 0.503562945368171,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 3,
+                            "name": "Text_EpHgm",
+                            "description": "Text_EpHgm"
+                          },
+                          {
+
+                            "textFieldType": 5,
+                            "x": 0.08396305625524769,
+                            "y": 0.28711401425178146,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 3,
+                            "name": "Email_rh7Jo",
+                            "description": "Email_rh7Jo"
+                          },
+                          {
+
+                            "textFieldType": 2,
+                            "x": 0.29135180520570947,
+                            "y": 0.2975059382422803,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 3,
+                            "name": "Date_eMlHP",
+                            "description": "Date_eMlHP"
+                          },
+                          {
+
+                            "textFieldType": 3,
+                            "x": 0.054575986565911,
+                            "y": 0.5469121140142518,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 3,
+                            "name": "Number_2GGe8",
+                            "description": "Number_2GGe8"
+                          },
+                          {
+
+                            "textFieldType": 5,
+                            "x": 0.08816120906801007,
+                            "y": 0.6689429928741093,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 2,
+                            "name": "Email_c8a6X",
+                            "description": "Email_c8a6X"
+                          },
+                          {
+
+                            "textFieldType": 4,
+                            "x": 0.44920235096557515,
+                            "y": 0.7069477434679335,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 2,
+                            "name": "Phone_LhNvi",
+                            "description": "Phone_LhNvi"
+                          },
+                          {
+
+                            "textFieldType": 3,
+                            "x": 0.35432409739714527,
+                            "y": 0.7862232779097387,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 2,
+                            "name": "Number_yudKx",
+                            "description": "Number_yudKx"
+                          },
+                          {
+
+                            "textFieldType": 1,
+                            "x": 0.5524769101595298,
+                            "y": 0.8610451306413301,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 2,
+                            "name": "Text_ETubB",
+                            "description": "Text_ETubB"
+                          },
+                          {
+
+                            "textFieldType": 1,
+                            "x": 0.5138539042821159,
+                            "y": 0.4002375296912114,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 1,
+                            "name": "Text_dU5E2",
+                            "description": "Text_dU5E2"
+                          },
+                          {
+
+                            "textFieldType": 4,
+                            "x": 0.581024349286314,
+                            "y": 0.538895486935867,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 1,
+                            "name": "Phone_Fcoea",
+                            "description": "Phone_Fcoea"
+                          },
+                          {
+
+                            "textFieldType": 3,
+                            "x": 0.2401343408900084,
+                            "y": 0.5795724465558195,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 1,
+                            "name": "Number_b4iOp",
+                            "description": "Number_b4iOp"
+                          },
+                          {
+
+                            "textFieldType": 2,
+                            "x": 0.08396305625524769,
+                            "y": 0.668646080760095,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 1,
+                            "name": "Date_etWjW",
+                            "description": "Date_etWjW"
+                          },
+                          {
+
+                            "textFieldType": 1,
+                            "x": 0.08396305625524769,
+                            "y": 0.27612826603325413,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 1,
+                            "name": "Text_fQgdk",
+                            "description": "Text_fQgdk"
+                          },
+                          {
+
+                            "textFieldType": 5,
+                            "x": 0.3988245172124265,
+                            "y": 0.4759501187648456,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 1,
+                            "name": "Email_J8UiH",
+                            "description": "Email_J8UiH"
+                          },
+                          {
+
+                            "textFieldType": 1,
+                            "x": 0.08396305625524769,
+                            "y": 0.4168646080760095,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 2,
+                            "name": "Text_ziyZg",
+                            "description": "Text_ziyZg"
+                          },
+                          {
+
+                            "textFieldType": 5,
+                            "x": 0.08396305625524769,
+                            "y": 0.5834323040380047,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 2,
+                            "name": "Email_1bY45",
+                            "description": "Email_1bY45"
+                          }
+                        ],
+                        "checkBoxFields": [
+                          {
+
+                            "x": 0.056255247691015954,
+                            "y": 0.35243467933491684,
+                            "width": 0.037783375314861464,
+                            "height": 0.02672209026128266,
+                            "page": 3,
+                            "name": "Checkbox_L6DpR",
+                            "description": "Checkbox_L6DpR"
+                          },
+                          {
+
+                            "x": 0.08396305625524769,
+                            "y": 0.47891923990498814,
+                            "width": 0.037783375314861464,
+                            "height": 0.02672209026128266,
+                            "page": 1,
+                            "name": "Checkbox_jejnz",
+                            "description": "Checkbox_jejnz"
+                          }
+                        ],
+                        "choiceFields": [
+                          {
+
+                            "options": [
+                              "option",
+                              "option A",
+                              "option B"
+                            ],
+                            "x": 0.08396305625524769,
+                            "y": 0.7384204275534442,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 2,
+                            "name": "Choice_LzjnP",
+                            "description": "Choice_LzjnP"
+                          },
+                          {
+
+                            "options": [
+                              "אופציה א",
+                              "אופיצה ב",
+                              "אופיצה ג",
+                              "אופיצה ד"
+                            ],
+
+
+                            "x": 0.08396305625524769,
+                            "y": 0.41953681710213775,
+                            "width": 0.16,
+                            "height": 0.0235,
+                            "page": 1,
+                            "name": "Choice_aLc8y",
+                            "description": "Choice_aLc8y"
+                          }
+                        ],
+                        "signatureFields": [
+                          {
+
+                            "signingType": 1,
+                            "x": 0.36859781696053734,
+                            "y": 0.3830166270783848,
+                            "width": 0.16,
+                            "height": 0.05938242280285035,
+                            "page": 3,
+                            "name": "Signature_zbCNA",
+                            "description": "Signature_zbCNA",
+                            "image": ""
+                          },
+                          {
+
+                            "signingType": 1,
+                            "x": 0.5356842989084802,
+                            "y": 0.7660332541567696,
+                            "width": 0.16,
+                            "height": 0.05938242280285035,
+                            "page": 3,
+                            "name": "Signature_e4hGu",
+                            "description": "Signature_e4hGu",
+                            "image": ""
+                          },
+                          {
+
+                            "signingType": 1,
+                            "x": 0.08396305625524769,
+                            "y": 0.6549881235154394,
+                            "width": 0.16,
+                            "height": 0.05938242280285035,
+                            "page": 3,
+                            "name": "Signature_67OV7",
+                            "description": "Signature_67OV7",
+                            "image": ""
+                          },
+                          {
+
+                            "signingType": 1,
+                            "x": 0.4441645675902603,
+                            "y": 0.28919239904988125,
+                            "width": 0.16,
+                            "height": 0.05938242280285035,
+                            "page": 1,
+                            "name": "Signature_j1m7q",
+                            "description": "Signature_j1m7q",
+                            "image": ""
+                          },
+                          {
+
+                            "signingType": 1,
+                            "x": 0.5575146935348446,
+                            "y": 0.3913301662707839,
+                            "width": 0.16,
+                            "height": 0.05938242280285035,
+                            "page": 2,
+                            "name": "Signature_cj5Fu",
+                            "description": "Signature_cj5Fu",
+                            "image": ""
+                          },
+                          {
+
+                            "signingType": 1,
+                            "x": 0.3904282115869018,
+                            "y": 0.5213776722090261,
+                            "width": 0.16,
+                            "height": 0.05938242280285035,
+                            "page": 2,
+                            "name": "Signature_VlDyU",
+                            "description": "Signature_VlDyU",
+                            "image": ""
+                          },
+                          {
+
+                            "signingType": 1,
+                            "x": 0.08396305625524769,
+                            "y": 0.2980997624703088,
+                            "width": 0.16,
+                            "height": 0.05938242280285035,
+                            "page": 2,
+                            "name": "Signature_qRJRG",
+                            "description": "Signature_qRJRG",
+                            "image": ""
+                          }
+                        ]
+                      }
+                    }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        update_template = requests.put(self.settings['Base_Url'] + 'templates/' + template, data=json.dumps(d),headers=headers)
+        assert update_template.status_code == 200
+        document = uuid.uuid4().hex
+        self.document_name = document
+        document_collection = {
+                       "documentName": self.document_name,
+                      "documentMode": 1,
+                      "templates": [
+                        template
+                      ],
+                      "signers": [
+                        {
+                          "otpMode": 0,
+                          "authenticationMode": 0,
+                          "contactName": "Nirk",
+                          "contactMeans": "nirk@comsign.co.il",
+                          "sendingMethod": 2,
+                          "phoneExtension": "+972",
+                          "signerFields": [
+                            {
+                              "templateId": template,
+                              "fieldName": "Signature_j1m7q",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Signature_zbCNA",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Signature_e4hGu",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Signature_67OV7",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Text_fQgdk",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Phone_Fcoea",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Number_b4iOp",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Date_etWjW",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Checkbox_jejnz"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Radio_NmpmY"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Radio_YoVQ3"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Text_ETubB",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Text_ziyZg",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Email_1bY45",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Choice_LzjnP"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Text_EpHgm",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Number_2GGe8",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Checkbox_L6DpR"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Radio_FI1iF"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Radio_vKi94"
+                            }
+                          ]
+                        },
+                        {
+                          "otpMode": 0,
+                          "authenticationMode": 0,
+                          "contactName": "Terra Thome",
+                          "contactMeans": "wesignautomation1989@gmail.com",
+                          "sendingMethod": 2,
+                          "phoneExtension": "+972",
+                          "signerFields": [
+                            {
+                              "templateId": template,
+                              "fieldName": "Signature_qRJRG",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Signature_cj5Fu",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Signature_VlDyU",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Email_c8a6X",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Number_yudKx",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Phone_LhNvi",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Radio_kvXeS"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Radio_nrDJZ"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Date_eMlHP",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Email_rh7Jo",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Email_J8UiH",
+
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Choice_aLc8y"
+                            },
+                            {
+                              "templateId": template,
+                              "fieldName": "Text_dU5E2",
+
+                            }
+                          ]
+                        }
+                      ]
+                    }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(document_collection), headers=headers)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['signerLinks'][0]['link']
+        assert len(json_response) == 85
+        service = ChromeDriverManager().install()
+        options = webdriver.ChromeOptions()
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        self.driver = webdriver.Chrome(executable_path=service, options=options)
+        sleep(1)
+        self.driver.get(json_response)
+        driver = self.driver
+        WebDriverWait(driver, 50).until(EC.presence_of_element_located((By.XPATH, "//input[@type='text']")))
+        text = self.driver.find_elements_by_xpath("//input[@type='text']")
+        tel = self.driver.find_elements_by_xpath("//input[@type='tel']")
+        number = self.driver.find_elements_by_xpath("//input[@type='number']")
+        date_field = self.driver.find_elements_by_xpath("//*[@type='date']")
+        email = self.driver.find_elements_by_xpath("//input[@type='email']")
+        check_box = self.driver.find_elements_by_xpath("//input[@class='ng-untouched ng-pristine ng-valid ng-star-inserted']")
+        for x in number:
+            try:
+                x.send_keys("5870")
+            except:
+                pass
+        for x in text:
+            try:
+                x.send_keys("בדיקה שלי")
+            except:
+                pass
+        for x in tel:
+            try:
+                x.send_keys("0504821881")
+            except:
+                pass
+        for x in date_field:
+            try:
+                sleep(2)
+                x.click()
+                sleep(1)
+                x.send_keys(Keys.SPACE)
+                sleep(1)
+                x.send_keys(Keys.ENTER)
+                sleep(2)
+            except:
+                pass
+        for x in email:
+            try:
+                x.send_keys("test@comda.co.il")
+            except:
+                pass
+        for x in check_box:
+            try:
+                x.click()
+            except:
+                pass
+        radio_button_one = self.driver.find_element_by_id("Group_I3zx7_Radio_YoVQ3")
+        radio_button_one.click()
+        sleep(2)
+        radio_button_two= self.driver.find_element_by_id("Group_DyYrL_Radio_vKi94")
+        radio_button_two.click()
+        sleep(2)
+        select = Select(self.driver.find_element_by_id("Choice_LzjnP"))
+        select.select_by_index(2)
+        sleep(2)
+        self.driver.find_element_by_xpath("//*[@name='feather']").click()
+        sleep(4)
+        canvas = self.driver.find_element_by_xpath("//div[@class='signature-pad__canvas']")
+        drawing = ActionChains(self.driver) \
+            .click_and_hold(canvas) \
+            .move_by_offset(-200, 10) \
+            .move_by_offset(-10, -50) \
+            .move_by_offset(-25, -10) \
+            .move_by_offset(100, -100) \
+            .move_by_offset(10, 60) \
+            .move_by_offset(10, 100) \
+            .move_by_offset(-10, -120) \
+            .release()
+        drawing.perform()
+        for x in range(25):
+            action = webdriver.common.action_chains.ActionChains(driver)
+            action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
+            action.click()
+            action.perform()
+        use_signature_all_fields = self.driver.find_element_by_xpath("(//span[@class='ct-checkbox__checkmark'])[1]")
+        use_signature_all_fields.click()
+        sleep(4)
+        self.driver.find_element_by_class_name("ct-button--primary").click()  ##Sign button
+        sleep(4)
+        self.driver.find_element_by_class_name("ct-button--titlebar-primary").click()  ##Finish button
+        sleep(5)
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        assert len(signing_complete_msg) == 1
+        sleep(1)
+        driver.execute_script("window.open('');")
+        sleep(3)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        self.__validate_no_emails_gmail(self.settings['nine_recipient_email'], self.settings['gmail_login_password'])
+        sleep(2)
+        self.__enter_gmail_mail_and_sign(document)
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[2])
+        sleep(2)
+        WebDriverWait(driver, 50).until(EC.presence_of_element_located((By.XPATH, "//input[@type='text']")))
+        text = self.driver.find_elements_by_xpath("//input[@type='text']")
+        tel = self.driver.find_elements_by_xpath("//input[@type='tel']")
+        number = self.driver.find_elements_by_xpath("//input[@type='number']")
+        date_field = self.driver.find_elements_by_xpath("//*[@type='date']")
+        email = self.driver.find_elements_by_xpath("//input[@type='email']")
+        for x in number:
+            try:
+                x.send_keys("1234")
+            except:
+                pass
+        for x in text:
+            try:
+                x.send_keys("My tests")
+            except:
+                pass
+        for x in tel:
+            try:
+                x.send_keys("0504821882")
+            except:
+                pass
+        for x in date_field:
+            try:
+                sleep(2)
+                x.click()
+                sleep(1)
+                x.send_keys(Keys.SPACE)
+                sleep(1)
+                x.send_keys(Keys.ENTER)
+                sleep(2)
+            except:
+                pass
+        for x in email:
+            try:
+                x.send_keys("test2@comda.co.il")
+            except:
+                pass
+        radio_button_one = self.driver.find_element_by_id("Group_OAy97_Radio_kvXeS")
+        radio_button_one.click()
+        sleep(2)
+        select = Select(self.driver.find_element_by_id("Choice_aLc8y"))
+        select.select_by_index(2)
+        sleep(4)
+        self.driver.find_element_by_xpath("//*[@name='feather']").click()
+        sleep(4)
+        canvas = self.driver.find_element_by_xpath("//div[@class='signature-pad__canvas']")
+        drawing = ActionChains(self.driver) \
+            .click_and_hold(canvas) \
+            .move_by_offset(-200, 10) \
+            .move_by_offset(-10, -50) \
+            .move_by_offset(-25, -10) \
+            .move_by_offset(100, -100) \
+            .move_by_offset(10, 60) \
+            .move_by_offset(10, 100) \
+            .move_by_offset(-10, -120) \
+            .release()
+        drawing.perform()
+        for x in range(25):
+            action = webdriver.common.action_chains.ActionChains(driver)
+            action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
+            action.click()
+            action.perform()
+        use_signature_all_fields = self.driver.find_element_by_xpath("(//span[@class='ct-checkbox__checkmark'])[1]")
+        use_signature_all_fields.click()
+        sleep(4)
+        self.driver.find_element_by_class_name("ct-button--primary").click()  ##Sign button
+        sleep(4)
+        self.driver.find_element_by_class_name("ct-button--titlebar-primary").click()  ##Finish button
+        sleep(2)
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        assert len(signing_complete_msg) == 1
+        self.__download_document()
+        sleep(3)
+        try:
+            src_path = rf"C:\Users\ComdaIT\Downloads\{document}.pdf"
+            dst_path = r"\\fs01\Users\NirK\pdfs"
+            shutil.copy(src_path, dst_path)
+        except:
+            pass
+
 
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
@@ -1549,3 +2342,64 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.put(self.settings['Base_Url'] + 'templates/' + template, data=json.dumps(requests_json), headers=headers)
         return r
+
+    def __validate_no_emails_gmail(self, gmail_user_name, gmail_password):
+        driver = self.driver
+        self.driver.get('https://mail.google.com/')
+        sleep(1)
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//input[@type='email']")))
+        sleep(1)
+        self.driver.find_element_by_xpath("//input[@type='email']").send_keys(gmail_user_name)
+        sleep(1)
+        WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.ID, "identifierNext")))
+        self.driver.find_element_by_id("identifierNext").click()
+        sleep(1)
+        WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, "//input[@type='password']")))
+        sleep(1)
+        self.driver.find_element_by_xpath("//input[@type='password']").send_keys(gmail_password)
+        sleep(1)
+        WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[@id='passwordNext']")))
+        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+        sleep(2)
+        # sleep(self.settings['max_wait_time'])
+        # try:
+        #     self.driver.find_element_by_xpath("//span[contains(text(),'devtest')]").is_displayed()
+        #     self.driver.find_element_by_xpath("//body/div[7]/div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/span[1]").click() ##click on email checkbox
+        #     sleep(self.settings['min_wait_time'])
+        #     self.driver.find_element_by_xpath("(//div[@role='button'])[11]").click() ##delete button
+        #     sleep(self.settings['min_wait_time'])
+        # except:
+        #     pass
+
+    def __enter_gmail_mail_and_sign(self, document_name):
+        self.driver.get('https://mail.google.com/')
+        sleep(3)
+        self.driver.refresh()
+        driver = self.driver
+        sleep(3)
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]")))
+        # self.driver.find_element_by_xpath("(//span[contains(text(),'devtest')])[2]").click()
+        sleep(3)
+        self.driver.find_element_by_xpath(f"(//span[contains(text(),'document {document_name}')])[2]").click()
+        sleep(2)
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        sleep(3)
+        self.driver.find_element_by_xpath("//a[contains(text(),'SIGN NOW')]").click()
+        sleep(4)
+
+    def __download_document(self):
+        driver = self.driver
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "//*[@class='ct-button--primary']")))
+        download_document = self.driver.find_element_by_xpath("//*[@class='ct-button--primary']")
+        download_document.is_displayed()
+        download_document.is_enabled()
+        download_document.click()
+        sleep(4)
