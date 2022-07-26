@@ -331,6 +331,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("Distribution_OTP", template, document_name, full_name)
         send_distribution = self.__api_create_distribution_request("Distribution_OTP")
         assert send_distribution.status_code == StatusCode.OK
+        sleep(8)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
+        sleep(2)
         WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
         self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
@@ -366,9 +369,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("distribute_elements_values", template, document_name, name)
         send_distribution = self.__api_create_distribution_request("distribute_elements_values")
         assert send_distribution.status_code == StatusCode.OK
+        sleep(8)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
+        sleep(2)
         WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
         sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name)).click()
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
         sleep(1)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
@@ -431,9 +437,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("distribution_with_date_field", template, document_name, name)
         send_distribution = self.__api_create_distribution_request("distribution_with_date_field")
         assert send_distribution.status_code == StatusCode.OK
+        sleep(8)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
+        sleep(2)
         WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
         sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name)).click()
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
         sleep(1)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
@@ -468,10 +477,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("distribute_date_and_number_fiels", template, document_name, name)
         send_distribution = self.__api_create_distribution_request("distribute_date_and_number_fiels")
         assert send_distribution.status_code == StatusCode.OK
+        sleep(8)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
+        sleep(2)
         WebDriverWait(self.driver, 80).until(EC.presence_of_element_located(
             (By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
         sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(
             document_name)).click()
         sleep(1)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
@@ -518,10 +530,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             f.truncate()  # remove remaining part
         send_distribution = self.__api_create_distribution_request("distribute_file_with_number_field")
         assert send_distribution.status_code == StatusCode.OK
+        sleep(8)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
         WebDriverWait(self.driver, 80).until(EC.presence_of_element_located(
             (By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(file_name))))
         sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(
             file_name)).click()
         sleep(1)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
@@ -557,9 +571,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("distribution_bug1011", template, document_name, name)
         send_distribution = self.__api_create_distribution_request("distribution_bug1011")
         assert send_distribution.status_code == StatusCode.OK
+        sleep(8)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
+        sleep(1)
         WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
         sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name)).click()
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
         sleep(1)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
@@ -691,6 +708,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         password.send_keys(gmail_password)
         self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "qj ")))
+
+
 
         # try:
         #     self.driver.find_element_by_xpath("//span[contains(text(),'devtest')]").is_displayed()

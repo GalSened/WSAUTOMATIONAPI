@@ -896,8 +896,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self._change_values_in_file("DocumentCollectionDuplicatedFields", template, document_name)
         send_distribution = self.__api_create_documentCollection_request("DocumentCollectionDuplicatedFields")
         assert send_distribution.status_code == StatusCode.OK
-        WebDriverWait(self.driver, 50).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name))))
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'wesign test sent you the document {}')])[2]".format(document_name)).click()
+        sleep(8)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
+        sleep(1)
+        WebDriverWait(self.driver, 50).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
+        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'SIGN NOW')]")))
         self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
         sleep(2)

@@ -3,6 +3,7 @@ import json
 import requests
 
 class Shared:
+
         def login_request(self):
             p = Path(__file__).with_name('settings.json')
             with open(p) as f:
