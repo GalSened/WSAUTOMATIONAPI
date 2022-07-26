@@ -85,7 +85,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(1)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
         sleep(2)
-        self.driver.find_element_by_xpath("//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
+        self.driver.find_element(By.XPATH,"//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
         sleep(3)
@@ -97,7 +97,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
         sleep(2)
-        self.driver.find_element_by_xpath("//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
+        self.driver.find_element(By.XPATH,"//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
         sleep(3)
@@ -280,10 +280,10 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']")))
         finish_button = "//button[@class='ct-button--titlebar-primary ng-star-inserted']"
-        self.driver.find_element_by_xpath(finish_button).click()
+        self.driver.find_element(By.XPATH,finish_button).click()
         sleep(1)
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
         sleep(2)
         driver.execute_script("window.open('');")
@@ -302,10 +302,10 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']")))
         finish_button = "//button[@class='ct-button--titlebar-primary ng-star-inserted']"
-        self.driver.find_element_by_xpath(finish_button).click()
+        self.driver.find_element(By.XPATH, finish_button).click()
         sleep(1)
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
 
 
@@ -340,6 +340,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(1)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'OTP' )] ")))
         OTP = self.driver.find_element(By.XPATH, "//*[contains(text(), 'OTP' )] ")
         assert OTP != 0, " no OTP requirement "
@@ -381,7 +382,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        get_value_from_text_field = self.driver.find_element_by_xpath("//*[@type='text']")
+        get_value_from_text_field = self.driver.find_element(By.XPATH,"//*[@type='text']")
         assert get_value_from_text_field.get_attribute('value') == "old erech" , "value wasnt added to field"
         fields_for_template = self.__api_create_template_field_request("changed_values_for_template", template)
         assert fields_for_template.status_code == StatusCode.OK
@@ -391,7 +392,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
-        get_new_value_from_text_field = self.driver.find_element_by_xpath("//*[@type='text']")
+        get_new_value_from_text_field = self.driver.find_element(By.XPATH,"//*[@type='text']")
         assert get_new_value_from_text_field.get_attribute('value') == "old erech" , "value changed"
 
 
@@ -449,7 +450,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        get_value_from_date_field = self.driver.find_element_by_xpath("//*[@type='date']")
+        get_value_from_date_field = self.driver.find_element(By.XPATH,"//*[@type='date']")
         assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
 
     # Bug number = WES-1050
@@ -491,7 +492,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        get_value_from_date_field = self.driver.find_element_by_xpath("//*[@type='date']")
+        get_value_from_date_field = self.driver.find_element(By.XPATH,"//*[@type='date']")
         get_value_from_number_field = self.driver.find_element(By.ID, "Number")
         assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
         assert get_value_from_number_field.get_attribute('value') == "1234", "Check number field"
@@ -583,7 +584,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        get_value_from_text_field = self.driver.find_element_by_xpath("//*[@type='text']")
+        get_value_from_text_field = self.driver.find_element(By.XPATH,"//*[@type='text']")
         assert get_value_from_text_field.get_attribute('value') == "new erech" , "value changed"
 
     def tearDown(self):
@@ -702,11 +703,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         # self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.driver.get('https://mail.google.com/')
         WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID, "identifierId")))
-        self.driver.find_element_by_xpath("//input[@type='email']").send_keys(gmail_user_name)
-        self.driver.find_element_by_id("identifierNext").click()
+        self.driver.find_element(By.XPATH,"//input[@type='email']").send_keys(gmail_user_name)
+        self.driver.find_element(By.ID,"identifierNext").click()
         password = WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//input[@type='password']")))
         password.send_keys(gmail_password)
-        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+        self.driver.find_element(By.XPATH,"//div[@id='passwordNext']").click()
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "qj ")))
 
 
@@ -725,12 +726,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         driver = self.driver
         self.driver.switch_to.window(self.driver.window_handles[window_number])
         WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
-        refresh_button = self.driver.find_element_by_xpath("//*[contains(text(),'Refresh')]")
+        refresh_button = self.driver.find_element(By.XPATH,"//*[contains(text(),'Refresh')]")
         refresh_button.click()
         click_on_email_title = WebDriverWait(driver, 80).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
         click_on_email_title.click()
         WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iFrameResizer0")))
-        self.driver.find_element_by_xpath("//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
 
 
     def _change_values_in_file(self, file_name, tempID,signer):
@@ -755,35 +756,35 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             f.truncate()  # remove remaining part
 
     def __assert_values_in_fields(self, text_fields_value, number_fields_value, email_fields_value, phone_number_value, date_fields_value):
-        get_value_from_text_field = self.driver.find_elements_by_xpath("//*[@type='text']")
+        get_value_from_text_field = self.driver.find_elements(By.XPATH,"//*[@type='text']")
         for value in get_value_from_text_field:
             assert value.get_attribute('value') == text_fields_value
             break
-        get_value_from_number_field = self.driver.find_elements_by_xpath("//*[@placeholder='123456']")
+        get_value_from_number_field = self.driver.find_elements(By.XPATH,"//*[@placeholder='123456']")
         for value in get_value_from_number_field:
             assert value.get_attribute('value') == number_fields_value, "Check number field"
             break
-        get_value_from_email_field = self.driver.find_elements_by_xpath("//*[@type='email']")
+        get_value_from_email_field = self.driver.find_elements(By.XPATH,"//*[@type='email']")
         for value in get_value_from_email_field:
             assert value.get_attribute('value') == email_fields_value, "Check email field"
             break
-        get_value_from_tel_field = self.driver.find_elements_by_xpath("//*[@type='tel']")
+        get_value_from_tel_field = self.driver.find_elements(By.XPATH,"//*[@type='tel']")
         for value in get_value_from_tel_field:
             assert value.get_attribute('value') == phone_number_value, "Check phone field"
             break
-        get_value_from_date_field = self.driver.find_elements_by_xpath("//*[@type='date']")
+        get_value_from_date_field = self.driver.find_elements(By.XPATH,"//*[@type='date']")
         for value in get_value_from_date_field:
             assert value.get_attribute('value') == date_fields_value, "Check date field"
             break
 
 
     def __assert_number_of_fields(self, number_of_fields):
-        total_fields = self.driver.find_elements_by_class_name("ct-input--primary")
+        total_fields = self.driver.find_elements(By.CLASS_NAME,"ct-input--primary")
         assert len(total_fields) == int(number_of_fields)
 
     def __enter_temp_faker_mail_and_sign(self):
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'wesign')]")))
-        click_on_email_title = self.driver.find_element_by_xpath("//*[contains(text(),'sent you the document')]")
+        click_on_email_title = self.driver.find_element(By.XPATH,"//*[contains(text(),'sent you the document')]")
         click_on_email_title.click()
         click_on_email_title = WebDriverWait(self.driver, 80).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         click_on_email_title.click()
@@ -799,15 +800,15 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         actions.perform()
         sleep(5)
         try:
-            click_on_email_title = self.driver.find_element_by_class_name("message--container-bold")
+            click_on_email_title = self.driver.find_element(By.CLASS_NAME,"message--container-bold")
             click_on_email_title.click()
         except:
-            click_on_email_title = self.driver.find_element_by_class_name("message--container-bold")
+            click_on_email_title = self.driver.find_element(By.CLASS_NAME, "message--container-bold")
             click_on_email_title.click()
         sleep(3)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element_by_xpath("//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
 
     def __enter_yahoo_mail_and_sign(self, document_name):
         driver = self.driver
@@ -817,12 +818,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(4)
         WebDriverWait(driver, 120).until(
             EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'sent you the document {document_name}')])[1]")))
-        self.driver.find_element_by_xpath(f"(//*[contains(text(),'sent you the document {document_name}')])[1]").click()
+        self.driver.find_element(By.XPATH,f"(//*[contains(text(),'sent you the document {document_name}')])[1]").click()
         sleep(3)
         WebDriverWait(driver, 40).until(
             EC.presence_of_element_located(
                 (By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element_by_xpath("//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
 
     def __validate_no_emails_yahoo(self, yahoo_user_name, yahoo_password):
         driver = self.driver
@@ -832,19 +833,19 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable(
                 (By.NAME, "username")))
-        self.driver.find_element_by_name("username").send_keys(yahoo_user_name)
+        self.driver.find_element(By.NAME,"username").send_keys(yahoo_user_name)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable(
                 (By.ID, "login-signin")))
-        self.driver.find_element_by_id("login-signin").click()
+        self.driver.find_element(By.ID,"login-signin").click()
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable(
                 (By.NAME, "password")))
-        self.driver.find_element_by_name("password").send_keys(yahoo_password)
+        self.driver.find_element(By.NAME,"password").send_keys(yahoo_password)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable(
                 (By.ID, "login-signin")))
-        self.driver.find_element_by_id("login-signin").click()
+        self.driver.find_element(By.ID,"login-signin").click()
         sleep(2)
         # try:
         #     self.driver.find_element_by_xpath("//*[@data-test-id='list-result-empty']").is_displayed()

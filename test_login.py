@@ -9,7 +9,7 @@ from status_codes import StatusCode
 from status_codes import ResultCode
 import pytest
 
-@pytest.mark.flaky(max_runs=5)
+@pytest.mark.flaky(max_runs=10)
 class WesignApiLoginTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('settings.json')

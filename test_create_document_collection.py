@@ -7,7 +7,6 @@ from time import sleep
 import pytest
 import requests
 import json
-
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from webdriver_manager.chrome import ChromeDriverManager
@@ -91,7 +90,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        personal_note_popup_window = self.driver.find_elements_by_class_name("modal__container")
+        personal_note_popup_window = self.driver.find_elements(By.CLASS_NAME,"modal__container")
         assert len(personal_note_popup_window) > 0
 
     @pytest.mark.run(order=20)
@@ -116,7 +115,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(10)
-        otp_box = self.driver.find_elements_by_id("auth")
+        otp_box = self.driver.find_elements(By.ID,"auth")
         assert len(otp_box) > 0
 
 
@@ -140,14 +139,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        send_request_button = self.driver.find_element_by_xpath(
-            "/html/body/app-root/app-main-signer/app-otp-details/body/main/div[2]/div/div[3]/form/div[1]/a")
+        send_request_button = self.driver.find_element(By.XPATH, "/html/body/app-root/app-main-signer/app-otp-details/body/main/div[2]/div/div[3]/form/div[1]/a")
         send_request_button.click()
         sleep(3)
-        validate_phone = self.driver.find_element_by_class_name("is-confirm")
+        validate_phone = self.driver.find_element(By.CLASS_NAME, "is-confirm")
         assert validate_phone.text == "OTP code sent successfully to 050482*****87"
         sleep(2)
-        otp_box = self.driver.find_elements_by_id("auth")
+        otp_box = self.driver.find_elements(By.ID,"auth")
         assert len(otp_box) > 0
 
     @pytest.mark.run(order=18)
@@ -170,7 +168,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(10)
-        document_code = self.driver.find_elements_by_id("id")
+        document_code = self.driver.find_elements(By.ID,"id")
         assert len(document_code) > 0
 
     @pytest.mark.run(order=17)
@@ -193,13 +191,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        document_code = self.driver.find_element_by_xpath("//input[@type='text']")
+        document_code = self.driver.find_element(By.XPATH, "//input[@type='text']")
         document_code.send_keys(self.settings['DocumentCode'])
         sleep(5)
-        send_request_button = self.driver.find_element_by_xpath("/html/body/app-root/app-main-signer/app-otp-details/body/main/div[2]/div/div[2]/form/input")
+        send_request_button = self.driver.find_element(By.XPATH, "/html/body/app-root/app-main-signer/app-otp-details/body/main/div[2]/div/div[2]/form/input")
         send_request_button.click()
         sleep(5)
-        otp_box = self.driver.find_elements_by_id("auth")
+        otp_box = self.driver.find_elements(By.ID, "auth")
         assert len(otp_box) > 0
 
     @pytest.mark.run(order=16)
@@ -320,7 +318,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         self.__enter_gmail()
         sleep(8)
-        email = self.driver.find_elements_by_xpath(f"//span[contains(text(),'{self.document_name}')]")
+        email = self.driver.find_elements(By.XPATH, f"//span[contains(text(),'{self.document_name}')]")
         assert len(email) == 0, "Check if email sent"
         sleep(6)
         self.driver.quit()
@@ -355,7 +353,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.__enter_gmail()
         sleep(8)
-        email = self.driver.find_elements_by_xpath(f"//span[contains(text(),'{self.document_name}')]")
+        email = self.driver.find_elements(By.XPATH, f"//span[contains(text(),'{self.document_name}')]")
         assert len(email) > 0, "Email didn't sent"
         sleep(8)
         self.driver.quit()
@@ -397,10 +395,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(4)
         self.__enter_gmail()
         sleep(10)
-        email_notification = self.driver.find_element_by_xpath(f"(//*[contains(text(),'{self.document_name}')])[2]")
+        email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[2]")
         email_notification.click()
         sleep(8)
-        attached_document = self.driver.find_elements_by_xpath("//img[@id=':70']")
+        attached_document = self.driver.find_elements(By.XPATH,"//img[@id=':70']")
         assert len(attached_document) == 0, "Pdf document attached"
 
 
@@ -440,10 +438,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(4)
         self.__enter_gmail()
         sleep(15)
-        email_notification = self.driver.find_element_by_xpath(f"(//*[contains(text(),'{self.document_name}')])[2]")
+        email_notification = self.driver.find_element(By.XPATH,f"(//*[contains(text(),'{self.document_name}')])[2]")
         email_notification.click()
         sleep(10)
-        attached_document = self.driver.find_elements_by_xpath(f"(//span[contains(text(),'{self.document_name}.pdf')])[3]")
+        attached_document = self.driver.find_elements(By.XPATH,f"(//span[contains(text(),'{self.document_name}.pdf')])[3]")
         assert len(attached_document) > 0, "Pdf document attached"
 
     # @pytest.mark.run(order=1)
@@ -501,7 +499,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         self.__sign_on_document()
         sleep(2)
-        attachment_window_pop_up = self.driver.find_elements_by_class_name("ct-animate-slide-down")
+        attachment_window_pop_up = self.driver.find_elements(By.CLASS_NAME,"ct-animate-slide-down")
         assert len(attachment_window_pop_up) == 1
         sleep(1)
         self.driver.quit()
@@ -525,13 +523,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        appendices_icon = self.driver.find_elements_by_class_name("feather-bookmark")
+        appendices_icon = self.driver.find_elements(By.CLASS_NAME,"feather-bookmark")
         assert len(appendices_icon) == 1
         sleep(2)
-        appendices_icon = self.driver.find_element_by_class_name("feather-bookmark")
+        appendices_icon = self.driver.find_element(By.CLASS_NAME, "feather-bookmark")
         appendices_icon.click()
         sleep(2)
-        appendices_pop_up = self.driver.find_elements_by_class_name("ct-animate-slide-down")
+        appendices_pop_up = self.driver.find_elements(By.CLASS_NAME,"ct-animate-slide-down")
         assert len(appendices_pop_up) == 1
         sleep(1)
         self.driver.quit()
@@ -619,13 +617,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        signature_field = self.driver.find_elements_by_class_name("is-signature")
+        signature_field = self.driver.find_elements(By.CLASS_NAME, "is-signature")
         assert len(signature_field) == 0
-        finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
+        finish_button = self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary")
         sleep(5)
         finish_button.click()
         sleep(3)
-        sign_complete_msg = self.driver.find_elements_by_xpath('/html/body/app-root/app-main-signer/app-success-page/body/main/h2')
+        sign_complete_msg = self.driver.find_elements(By.XPATH,'/html/body/app-root/app-main-signer/app-success-page/body/main/h2')
         sleep(4)
         assert len(sign_complete_msg) > 0
 
@@ -718,7 +716,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        text_field = self.driver.find_elements_by_id("text1")
+        text_field = self.driver.find_elements(By.ID,"text1")
         assert len(text_field) == 0, 'Text field displayed'
         self.__delete_template_created(template)
 
@@ -766,7 +764,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        text_field = self.driver.find_elements_by_id("text1")
+        text_field = self.driver.find_elements(By.ID,"text1")
         assert len(text_field) > 0, 'Text field not displayed'
         self.__delete_template_created(template)
 
@@ -843,7 +841,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
         driver = self.driver
         WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.CLASS_NAME, "ct-button--titlebar-primary")))
-        finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
+        finish_button = self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary")
         finish_button.click()
 
     def test_document_collection_send_global_number_without_extension_to_local_number_twilio_provider_success(self):
@@ -869,7 +867,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert self.driver.current_url != 'https://devtest.comda.co.il/signer/', "Link is broken"
         driver = self.driver
         WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.CLASS_NAME, "ct-button--titlebar-primary")))
-        finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
+        finish_button = self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary")
         finish_button.click()
 
     #Bug number = WES-1106
@@ -907,10 +905,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
         self.__assert_number_of_fields(2)
-        get_value_from_text_field = self.driver.find_elements_by_xpath("//*[@type='text']")
+        get_value_from_text_field = self.driver.find_elements(By.XPATH,"//*[@type='text']")
         for value in get_value_from_text_field:
             assert value.get_attribute('value') == "string", " value wasn't added to the fields"
-        total_fields = self.driver.find_elements_by_class_name("ct-input--primary")
+        total_fields = self.driver.find_elements(By.CLASS_NAME,"ct-input--primary")
         assert len(total_fields) == int(2), "field wasn't duplicated"
 
     #Bug number = WES-1123
@@ -975,7 +973,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(3)
         self.__sign_on_document()
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
         self.__delete_template_created(template)
 
@@ -1030,7 +1028,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(3)
         self.__sign_on_document()
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
         self.__delete_template_created(template)
 
@@ -1086,7 +1084,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(3)
         self.__sign_on_document()
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
         self.__delete_template_created(template)
 
@@ -1160,7 +1158,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(3)
         self.__sign_on_document()
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
         self.__delete_template_created(template)
 
@@ -1184,14 +1182,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        signature_field = self.driver.find_elements_by_class_name("is-signature")
+        signature_field = self.driver.find_elements(By.CLASS_NAME,"is-signature")
         assert len(signature_field) == 0
-        finish_button = self.driver.find_element_by_class_name("ct-button--titlebar-primary")
+        finish_button = self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary")
         sleep(5)
         finish_button.click()
         sleep(3)
-        sign_complete_msg = self.driver.find_elements_by_xpath(
-            '/html/body/app-root/app-main-signer/app-success-page/body/main/h2')
+        sign_complete_msg = self.driver.find_elements(By.XPATH,'/html/body/app-root/app-main-signer/app-success-page/body/main/h2')
         sleep(4)
         assert len(sign_complete_msg) > 0
         sleep(2)
@@ -1962,12 +1959,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.get(json_response)
         driver = self.driver
         WebDriverWait(driver, 50).until(EC.presence_of_element_located((By.XPATH, "//input[@type='text']")))
-        text = self.driver.find_elements_by_xpath("//input[@type='text']")
-        tel = self.driver.find_elements_by_xpath("//input[@type='tel']")
-        number = self.driver.find_elements_by_xpath("//input[@type='number']")
-        date_field = self.driver.find_elements_by_xpath("//*[@type='date']")
-        email = self.driver.find_elements_by_xpath("//input[@type='email']")
-        check_box = self.driver.find_elements_by_xpath("//input[@class='ng-untouched ng-pristine ng-valid ng-star-inserted']")
+        text = self.driver.find_elements(By.XPATH,"//input[@type='text']")
+        tel = self.driver.find_elements(By.XPATH,"//input[@type='tel']")
+        number = self.driver.find_elements(By.XPATH,"//input[@type='number']")
+        date_field = self.driver.find_elements(By.XPATH,"//*[@type='date']")
+        email = self.driver.find_elements(By.XPATH,"//input[@type='email']")
+        check_box = self.driver.find_elements(By.XPATH,"//input[@class='ng-untouched ng-pristine ng-valid ng-star-inserted']")
         for x in number:
             try:
                 x.send_keys("5870")
@@ -2004,18 +2001,18 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 x.click()
             except:
                 pass
-        radio_button_one = self.driver.find_element_by_id("Group_I3zx7_Radio_YoVQ3")
+        radio_button_one = self.driver.find_element(By.ID,"Group_I3zx7_Radio_YoVQ3")
         radio_button_one.click()
         sleep(2)
-        radio_button_two= self.driver.find_element_by_id("Group_DyYrL_Radio_vKi94")
+        radio_button_two= self.driver.find_element(By.ID,"Group_DyYrL_Radio_vKi94")
         radio_button_two.click()
         sleep(2)
-        select = Select(self.driver.find_element_by_id("Choice_LzjnP"))
+        select = Select(self.driver.find_element(By.ID,"Choice_LzjnP"))
         select.select_by_index(2)
         sleep(2)
-        self.driver.find_element_by_xpath("//*[@name='feather']").click()
+        self.driver.find_element(By.XPATH, "//*[@name='feather']").click()
         sleep(4)
-        canvas = self.driver.find_element_by_xpath("//div[@class='signature-pad__canvas']")
+        canvas = self.driver.find_element(By.XPATH, "//div[@class='signature-pad__canvas']")
         drawing = ActionChains(self.driver) \
             .click_and_hold(canvas) \
             .move_by_offset(-200, 10) \
@@ -2032,15 +2029,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
             action.click()
             action.perform()
-        use_signature_all_fields = self.driver.find_element_by_xpath("(//span[@class='ct-checkbox__checkmark'])[1]")
+        use_signature_all_fields = self.driver.find_element(By.XPATH,"(//span[@class='ct-checkbox__checkmark'])[1]")
         use_signature_all_fields.click()
         sleep(4)
-        self.driver.find_element_by_class_name("ct-button--primary").click()  ##Sign button
+        self.driver.find_element(By.CLASS_NAME,"ct-button--primary").click()  ##Sign button
         sleep(4)
-        self.driver.find_element_by_class_name("ct-button--titlebar-primary").click()  ##Finish button
+        self.driver.find_element(By.CLASS_NAME,"ct-button--titlebar-primary").click()  ##Finish button
         sleep(5)
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
         sleep(1)
         driver.execute_script("window.open('');")
@@ -2054,11 +2051,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
         WebDriverWait(driver, 50).until(EC.presence_of_element_located((By.XPATH, "//input[@type='text']")))
-        text = self.driver.find_elements_by_xpath("//input[@type='text']")
-        tel = self.driver.find_elements_by_xpath("//input[@type='tel']")
-        number = self.driver.find_elements_by_xpath("//input[@type='number']")
-        date_field = self.driver.find_elements_by_xpath("//*[@type='date']")
-        email = self.driver.find_elements_by_xpath("//input[@type='email']")
+        text = self.driver.find_elements(By.XPATH,"//input[@type='text']")
+        tel = self.driver.find_elements(By.XPATH,"//input[@type='tel']")
+        number = self.driver.find_elements(By.XPATH,"//input[@type='number']")
+        date_field = self.driver.find_elements(By.XPATH,"//*[@type='date']")
+        email = self.driver.find_elements(By.XPATH,"//input[@type='email']")
         for x in number:
             try:
                 x.send_keys("1234")
@@ -2090,15 +2087,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 x.send_keys("test2@comda.co.il")
             except:
                 pass
-        radio_button_one = self.driver.find_element_by_id("Group_OAy97_Radio_kvXeS")
+        radio_button_one = self.driver.find_element(By.ID,"Group_OAy97_Radio_kvXeS")
         radio_button_one.click()
         sleep(2)
-        select = Select(self.driver.find_element_by_id("Choice_aLc8y"))
+        select = Select(self.driver.find_element(By.ID,"Choice_aLc8y"))
         select.select_by_index(2)
         sleep(4)
-        self.driver.find_element_by_xpath("//*[@name='feather']").click()
+        self.driver.find_element(By.XPATH,"//*[@name='feather']").click()
         sleep(4)
-        canvas = self.driver.find_element_by_xpath("//div[@class='signature-pad__canvas']")
+        canvas = self.driver.find_element(By.XPATH,"//div[@class='signature-pad__canvas']")
         drawing = ActionChains(self.driver) \
             .click_and_hold(canvas) \
             .move_by_offset(-200, 10) \
@@ -2115,15 +2112,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
             action.click()
             action.perform()
-        use_signature_all_fields = self.driver.find_element_by_xpath("(//span[@class='ct-checkbox__checkmark'])[1]")
+        use_signature_all_fields = self.driver.find_element(By.XPATH,"(//span[@class='ct-checkbox__checkmark'])[1]")
         use_signature_all_fields.click()
         sleep(4)
-        self.driver.find_element_by_class_name("ct-button--primary").click()  ##Sign button
+        self.driver.find_element(By.CLASS_NAME,"ct-button--primary").click()  ##Sign button
         sleep(4)
-        self.driver.find_element_by_class_name("ct-button--titlebar-primary").click()  ##Finish button
+        self.driver.find_element(By.CLASS_NAME,"ct-button--titlebar-primary").click()  ##Finish button
         sleep(2)
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements_by_xpath("//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
         self.__download_document()
         sleep(3)
@@ -2155,6 +2152,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     def tearDown(self):
         try:
+            self.driver.close()
             self.driver.quit()
         except:
             pass
@@ -2211,9 +2209,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def __sign_on_document(self):
         driver = self.driver
         sleep(4)
-        self.driver.find_element_by_xpath("//*[@name='feather']").click()
+        self.driver.find_element(By.XPATH,"//*[@name='feather']").click()
         sleep(4)
-        canvas = self.driver.find_element_by_xpath("//div[@class='signature-pad__canvas']")
+        canvas = self.driver.find_element(By.XPATH,"//div[@class='signature-pad__canvas']")
         drawing = ActionChains(self.driver) \
             .click_and_hold(canvas) \
             .move_by_offset(-200, 10) \
@@ -2231,30 +2229,30 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             action.click()
             action.perform()
         sleep(4)
-        self.driver.find_element_by_class_name("ct-button--primary").click() ##Sign button
+        self.driver.find_element(By.CLASS_NAME,"ct-button--primary").click() ##Sign button
         sleep(4)
-        self.driver.find_element_by_class_name("ct-button--titlebar-primary").click() ##Finish button
+        self.driver.find_element(By.CLASS_NAME,"ct-button--titlebar-primary").click() ##Finish button
         sleep(5)
 
     def __delete_gmail_emails(self):
         sleep(4)
-        self.driver.find_element_by_xpath("(//table[@cellpadding='0'])[6]").is_displayed()
-        self.driver.find_element_by_xpath(
+        self.driver.find_element(By.XPATH, "(//table[@cellpadding='0'])[6]").is_displayed()
+        self.driver.find_element(By.XPATH,
                 "//body/div[7]/div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/span[1]").click()  ##click on email checkbox
         sleep(4)
-        self.driver.find_element_by_xpath("(//div[@role='button'])[11]").click()  ##delete button
+        self.driver.find_element(By.XPATH, "(//div[@role='button'])[11]").click()  ##delete button
         sleep(3)
         self.driver.quit()
 
     def __enter_gmail(self):
         self.driver.get('https://mail.google.com/')
         sleep(8)
-        self.driver.find_element_by_xpath("//input[@type='email']").send_keys("wesigntesting@gmail.com")
-        self.driver.find_element_by_id("identifierNext").click()
+        self.driver.find_element(By.XPATH,"//input[@type='email']").send_keys("wesigntesting@gmail.com")
+        self.driver.find_element(By.ID,"identifierNext").click()
         sleep(8)
-        self.driver.find_element_by_xpath("//input[@type='password']").send_keys("Comsign1!")
+        self.driver.find_element(By.XPATH, "//input[@type='password']").send_keys("Comsign1!")
         sleep(8)
-        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+        self.driver.find_element(By.XPATH,"//div[@id='passwordNext']").click()
 
     def __api_create_template_request(self, request_file):
         file = open(self.settings[request_file], 'r')
@@ -2327,15 +2325,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         # self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.driver.get('https://mail.google.com/')
         WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID, "identifierId")))
-        self.driver.find_element_by_xpath("//input[@type='email']").send_keys(gmail_user_name)
-        self.driver.find_element_by_id("identifierNext").click()
+        self.driver.find_element(By.XPATH,"//input[@type='email']").send_keys(gmail_user_name)
+        self.driver.find_element(By.ID, "identifierNext").click()
         password = WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//input[@type='password']")))
         password.send_keys(gmail_password)
-        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+        self.driver.find_element(By.XPATH,"//div[@id='passwordNext']").click()
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "qj ")))
 
     def __assert_number_of_fields(self, number_of_fields):
-        total_fields = self.driver.find_elements_by_class_name("ct-input--primary")
+        total_fields = self.driver.find_elements(By.CLASS_NAME,"ct-input--primary")
         assert len(total_fields) == int(number_of_fields)
 
     def __api_update_template_request(self, request_file, template):
@@ -2353,20 +2351,20 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, "//input[@type='email']")))
         sleep(1)
-        self.driver.find_element_by_xpath("//input[@type='email']").send_keys(gmail_user_name)
+        self.driver.find_element(By.XPATH,"//input[@type='email']").send_keys(gmail_user_name)
         sleep(1)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable((By.ID, "identifierNext")))
-        self.driver.find_element_by_id("identifierNext").click()
+        self.driver.find_element(By.ID,"identifierNext").click()
         sleep(1)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable((By.XPATH, "//input[@type='password']")))
         sleep(1)
-        self.driver.find_element_by_xpath("//input[@type='password']").send_keys(gmail_password)
+        self.driver.find_element(By.XPATH,"//input[@type='password']").send_keys(gmail_password)
         sleep(1)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable((By.XPATH, "//div[@id='passwordNext']")))
-        self.driver.find_element_by_xpath("//div[@id='passwordNext']").click()
+        self.driver.find_element(By.XPATH,"//div[@id='passwordNext']").click()
         sleep(2)
         # sleep(self.settings['max_wait_time'])
         # try:
@@ -2388,12 +2386,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             EC.presence_of_element_located((By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]")))
         # self.driver.find_element_by_xpath("(//span[contains(text(),'devtest')])[2]").click()
         sleep(3)
-        self.driver.find_element_by_xpath(f"(//span[contains(text(),'document {document_name}')])[2]").click()
+        self.driver.find_element(By.XPATH,f"(//span[contains(text(),'document {document_name}')])[2]").click()
         sleep(2)
         WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         sleep(3)
-        self.driver.find_element_by_xpath("//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
         sleep(4)
 
     def __download_document(self):
@@ -2401,7 +2399,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(
             EC.presence_of_element_located(
                 (By.XPATH, "//*[@class='ct-button--primary']")))
-        download_document = self.driver.find_element_by_xpath("//*[@class='ct-button--primary']")
+        download_document = self.driver.find_element(By.XPATH,"//*[@class='ct-button--primary']")
         download_document.is_displayed()
         download_document.is_enabled()
         download_document.click()
