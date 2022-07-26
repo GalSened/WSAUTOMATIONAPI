@@ -340,7 +340,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
+        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'OTP' )] ")))
         OTP = self.driver.find_element(By.XPATH, "//*[contains(text(), 'OTP' )] ")
         assert OTP != 0, " no OTP requirement "
 
