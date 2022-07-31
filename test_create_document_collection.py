@@ -1,3 +1,4 @@
+import logging
 import shutil
 import unittest
 import uuid
@@ -31,11 +32,20 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=26)
     def test_document_collection_document_sending_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
-        assert r.status_code == StatusCode.OK
-        response = r.json()
-        json_response = response['signerLinks'][0]['link']
-        assert len(json_response) == 85
+        try:
+            logging.info(" ---Test Start---  test_document_collection_document_sending_success  ---Test Start--- ")
+            r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+            assert r.status_code == StatusCode.OK
+            logging.info("Request response is : " + str(r.status_code))
+            response = r.json()
+            json_response = response['signerLinks'][0]['link']
+            logging.info("Link is : " + str(json_response))
+            logging.info(" ---Test Complete---  test_document_collection_document_sending_success  ---Test Complete--- ")
+            assert len(json_response) == 85
+        except Exception as exception:
+            logging.error(" ------ Test Fail ------  test_document_collection_document_sending_success  ------ Test Fail ------")
+            logging.error(exception, exc_info=True)
+            raise
 
     @pytest.mark.run(order=25)
     def test_document_collection_document_sending_two_contacts_by_order_success(self):
@@ -2130,6 +2140,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             shutil.copy(src_path, dst_path)
         except:
             pass
+
+    @pytest.mark.success
+    def test_send_sms_with_success_results(self):
+        r = self.__api_document_collection_request('sms')
+        assert r.status_code == StatusCode.OK
 
 
     # def test_delete_all_documents(self):

@@ -62,5 +62,6 @@
   "UpdateTemplateWithSignatureFieldWithoutFieldDescription" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldWithoutFieldDescription.json",
   "CreateTemplateWordBase64WithMetaDataSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json",
   "UpdateTemplateSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateSuccess.json",
-  "CreateTemplate3PagesPdfBase64Success" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplate3PagesPdfBase64Success.json"
+  "CreateTemplate3PagesPdfBase64Success" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplate3PagesPdfBase64Success.json",
+  "sms" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\sms_success.json"
 }

@@ -1,5 +1,4 @@
 import unittest
-import uuid
 import warnings
 from pathlib import Path
 from time import sleep
@@ -8,6 +7,9 @@ import requests
 import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
+import logging
+import uuid
+
 
 @pytest.mark.flaky(max_runs=10)
 class WesignApiCreateTemplateTests(unittest.TestCase):
@@ -20,24 +22,45 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         self.token = Shared.login_request(self)
 
     def test_create_pdf_template_base64_success(self):
-        r = self.__api_create_template_request("CreateTemplatePdfBase64Success")
-        assert r.status_code == StatusCode.OK
-        response = r.json()
-        template = response['templateId']
-        templatename = response['templateName']
-        assert len(template) == 36, "Template not created"
-        assert len(templatename) > 0
-        self.__delete_template_created(template)
+        try:
+            logging.info(" ---Test Start---         test_create_pdf_template_base64_success         ---Test Start--- ")
+            r = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+            assert r.status_code == StatusCode.OK
+            logging.info("Request response is : " + str(r.status_code))
+            logging.info("Template created successfully")
+            response = r.json()
+            template = response['templateId']
+            templatename = response['templateName']
+            logging.info("Template id is " + str(template) + " and template name is : " + str(templatename))
+            assert len(template) == 36, "Template not created"
+            assert len(templatename) > 0
+            self.__delete_template_created(template)
+            logging.info(f" Template {templatename} as deleted successfully")
+        except Exception as exception:
+            logging.error(" ------ Test Fail ------     test_create_pdf_template_base64_success     ------ Test Fail ------")
+            logging.error(exception, exc_info=True)
+            raise
+
 
     def test_create_word_template_base64_success(self):
-        r = self.__api_create_template_request("CreateTemplateWordBase64Success")
-        assert r.status_code == StatusCode.OK
-        response = r.json()
-        template = response['templateId']
-        templatename = response['templateName']
-        assert len(template) == 36, "Template not created"
-        assert len(templatename) > 0
-        self.__delete_template_created(template)
+        try:
+            r = self.__api_create_template_request("CreateTemplateWordBase64Success")
+            logging.info(" ---Test Start---         test_create_word_template_base64_success        ---Test Start--- ")
+            assert r.status_code == StatusCode.OK
+            logging.info("Request response is : " + str(r.status_code))
+            logging.info("Template created successfully")
+            response = r.json()
+            template = response['templateId']
+            templatename = response['templateName']
+            logging.info("Template id is " + str(template) + "and template name is : " + str(templatename))
+            assert len(template) == 36, "Template not created"
+            assert len(templatename) > 0
+            self.__delete_template_created(template)
+            logging.info(f" Template {templatename} as deleted successfully")
+        except Exception as exception:
+            logging.error(" ------ Test Fail ------     test_create_word_template_base64_success     ------ Test Fail ------")
+            logging.error(exception, exc_info=True)
+            raise
 
     def test_create_xlsx_template_base64_success(self):
         r = self.__api_create_template_request("CreateTemplateXlsxBase64Success")
