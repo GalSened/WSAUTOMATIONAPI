@@ -725,13 +725,26 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def __enter_mail_tm_mail_and_sign(self, window_number):
         driver = self.driver
         self.driver.switch_to.window(self.driver.window_handles[window_number])
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
-        refresh_button = self.driver.find_element(By.XPATH,"//*[contains(text(),'Refresh')]")
-        refresh_button.click()
-        click_on_email_title = WebDriverWait(driver, 80).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
-        click_on_email_title.click()
-        WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iFrameResizer0")))
-        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
+        try:
+            sleep(3)
+            refresh_button = self.driver.find_element(By.XPATH, "//*[contains(text(),'Refresh')]")
+            refresh_button.click()
+            WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
+            click_on_email_title = WebDriverWait(driver, 80).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
+            click_on_email_title.click()
+            WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iFrameResizer0")))
+            self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
+        except:
+            sleep(3)
+            refresh_button = self.driver.find_element(By.XPATH, "//*[contains(text(),'Refresh')]")
+            refresh_button.click()
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
+            click_on_email_title = WebDriverWait(driver, 80).until(
+                EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
+            click_on_email_title.click()
+            WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iFrameResizer0")))
+            self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
 
 
     def _change_values_in_file(self, file_name, tempID,signer):
