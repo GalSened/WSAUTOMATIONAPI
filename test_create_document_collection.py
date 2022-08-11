@@ -484,7 +484,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.get(json_response)
         self.__sign_on_document()
         sleep(5)
-        self.driver.switch_to.alert.accept()
+        # self.driver.switch_to.alert.accept()
         sleep(5)
         assert self.driver.current_url == "https://www.comsign.co.il/"
 
