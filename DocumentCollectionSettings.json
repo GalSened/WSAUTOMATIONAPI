@@ -6,8 +6,6 @@
   "templateId" : "4f6af355-a798-4b71-be62-08d9fab629bc",
   "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
   "DocumentCode" : "123456",
-  "nine_recipient_name": "wesignautomation1989",
-  "nine_recipient_email" : "wesignautomation1989@gmail.com",
   "PDF_file_base64" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\PDF_File_base64.json",
   "LoginRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccess.json",
   "DocumentCollectionDocumentSendingSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingSuccess.json",

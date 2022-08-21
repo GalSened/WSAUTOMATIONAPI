@@ -36,6 +36,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def test_api_sending_distribution_and_receiving_confirmation_for_document_viewed_and_signed_success(self):
         self.token = Shared.login_request_gmail(self)
         self.__setup()
+        sleep(3)
         self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
         sleep(2)
         self.__validate_no_emails_yahoo(self.settings['sixth_recipient_name'], self.settings['gmail_login_password'])
@@ -45,8 +46,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        self.__enter_mail_to_get_email_value(1)
-        emails = [self.email_address, self.settings['sixth_recipient_email']]
+        emails = [self.settings['sixth_recipient_email']]
         self.__enter_name_and_email_to_xlsx_file(self.settings["empty_xlsx_file"], self.settings["empty_file_with_no_fields_Copy"], emails)
         data = open(self.settings["empty_file_with_no_fields_Copy"], "rb").read()
         encode_signers_to_base64 = base64.b64encode(data)
@@ -70,21 +70,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = self.__api_create_distribution_request("DistributeSignersApi_Copy")
         assert send_distribution.status_code == StatusCode.OK
         sleep(4)
-        self.__enter_mail_tm_mail_and_sign(1)
-        sleep(1)
-        self.driver.switch_to.window(self.driver.window_handles[3])
-        sleep(1)
-        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
-        sleep(2)
-        self.driver.find_element(By.XPATH,"//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
-        sleep(2)
-        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
-        sleep(3)
-        self.driver.switch_to.window(self.driver.window_handles[2])
+        self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
         self.__enter_yahoo_mail_and_sign(self.document_name)
         sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[4])
+        self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
         sleep(2)
@@ -99,8 +89,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver.refresh()
         sleep(8)
         WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '{} has been completed by all participants')]".format(self.document_name))))
-        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.email_address, self.document_name)), "confirmation email that signer viewed the document wasn't received"
-        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.email_address, self.document_name)), "confirmation email that signer signed the document wasn't received"
         assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.settings['sixth_recipient_email'], self.document_name)), "confirmation email that signer viewed the document wasn't received"
         assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.settings['sixth_recipient_email'], self.document_name)), "confirmation email that signer signed the document wasn't received"
 
@@ -219,10 +207,15 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     #Bug number = WES-1106
     def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
         self.__setup()
-        self.__validate_no_emails_yahoo(self.settings['sixth_recipient_name'], self.settings['gmail_login_password'])
+        sleep(3)
+        self.__enter_gmail_mail(self.settings['third_recipient_email'], self.settings['gmail_login_password'])
+        sleep(1)
+        self.driver.execute_script("window.open('');")
         sleep(2)
-        self.__enter_mail_to_get_email_value(0)
-        emails = [self.email_address, self.settings['sixth_recipient_email']]
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        self.__validate_no_emails_yahoo(self.settings['seventh_recipient_email'], self.settings['gmail_login_password'])
+        emails = [self.settings['seventh_recipient_email'], self.settings['third_recipient_email']]
         self.__enter_name_and_email_to_xlsx_file(self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit"], self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"], emails)
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -250,13 +243,14 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         send_distribution = self.__api_create_distribution_request("DistributeSigners_duplicated_fields_in_xlsx_with_same_name")
         assert send_distribution.status_code == StatusCode.OK
-        self.__enter_mail_tm_mail_and_sign(0)
+        sleep(2)
+        self.__enter_gmail_mail_and_sign(self.document)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[2])
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
         self.__assert_number_of_fields(10)
-        self.__assert_values_in_fields("Test", "5678", "test@comsign.co.il", "504821887", "1989-08-23")
+        self.__assert_values_in_fields("Test1", "9012", "test1@comsign.co.il", "504821885", "1990-12-17")
         driver = self.driver
         sleep(1)
         WebDriverWait(driver, 20).until(
@@ -279,7 +273,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
         self.__assert_number_of_fields(10)
-        self.__assert_values_in_fields("Test1", "9012", "test1@comsign.co.il", "504821885", "1990-12-17")
+        self.__assert_values_in_fields("Test", "5678", "test@comsign.co.il", "504821887", "1989-08-23")
         sleep(1)
         WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']")))
@@ -809,3 +803,21 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         options.add_argument("force-device-scale-factor=0.75")
         options.add_argument("high-dpi-support=0.75")
         self.driver = webdriver.Chrome(executable_path=service, options=options)
+
+    def __enter_gmail_mail_and_sign(self, document_name):
+        self.driver.get('https://mail.google.com/')
+        sleep(3)
+        self.driver.refresh()
+        driver = self.driver
+        sleep(3)
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]")))
+        # self.driver.find_element_by_xpath("(//span[contains(text(),'devtest')])[2]").click()
+        sleep(3)
+        self.driver.find_element(By.XPATH,f"(//span[contains(text(),'document {document_name}')])[2]").click()
+        sleep(2)
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        sleep(3)
+        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
+        sleep(4)
