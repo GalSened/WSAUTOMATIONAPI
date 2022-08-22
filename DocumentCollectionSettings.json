@@ -3,6 +3,8 @@
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
   "first_recipient_name" : "wesign4611@gmail.com",
   "gmail_login_password" : "Comsign1!",
+  "nine_recipient_name": "wesignautomation1989",
+  "nine_recipient_email" : "wesignautomation1989@gmail.com",
   "templateId" : "4f6af355-a798-4b71-be62-08d9fab629bc",
   "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
   "DocumentCode" : "123456",
