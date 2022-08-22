@@ -794,7 +794,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def __setup(self):
         service = ChromeDriverManager().install()
         options = webdriver.ChromeOptions()
-        options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"')
+        # options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"')
         options.add_argument("start-maximized")
         options.add_argument("window-size=1920,1080")
         options.add_argument("--disable-notifications")
@@ -802,6 +802,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         options.add_argument("disable-infobars")
         options.add_argument("force-device-scale-factor=0.75")
         options.add_argument("high-dpi-support=0.75")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
         self.driver = webdriver.Chrome(executable_path=service, options=options)
 
     def __enter_gmail_mail_and_sign(self, document_name):
