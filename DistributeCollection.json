@@ -60,5 +60,10 @@
   "distribute_date_and_number_fiels": "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\distribute_date_and_number_fiels.json",
   "field_for_template_number_field" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\field_for_template_number_field.json",
   "signer_base64_for_distribution_with_fields_from_xlsx_and_template" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\signer_base64_for_distribution_with_fields_from_xlsx_and_template.json",
-  "distribute_file_with_number_field" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\distribute_file_with_number_field.json"
+  "distribute_file_with_number_field" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\distribute_file_with_number_field.json",
+  "dev_email" : "devtest9@comda.co.il",
+  "dev_name": "devtest9",
+  "second_dev_email" : "devtest10@comda.co.il",
+  "second_dev_name": "devtest10",
+  "comda_mail_password" : "Comsign1!"
 }

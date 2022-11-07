@@ -12,5 +12,12 @@
   "db_name" : "WeSign",
   "db_user" : "sa",
   "db_password" : "Aa123456",
-  "jobs_url" : "https://devtest.comda.co.il:10443/managementApi/jobs/recurring"
+  "jobs_url" : "https://devtest.comda.co.il:10443/managementApi/jobs/recurring",
+  "wesign_url" : "https://devtest.comda.co.il",
+  "company_user" : "devtest10@comda.co.il",
+  "company_user_password" : "Comsign1!",
+  "max_wait_time": 4,
+  "short_wait_time": 4,
+  "min_wait_time": 4,
+  "element_wait" : 9
 }

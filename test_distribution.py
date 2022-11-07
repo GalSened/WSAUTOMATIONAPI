@@ -23,7 +23,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-@pytest.mark.flaky(max_runs=10)
+@pytest.mark.flaky(max_runs=1)
 class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('DistributeCollection.json')
@@ -34,19 +34,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.token = Shared.login_request(self)
 
     def test_api_sending_distribution_and_receiving_confirmation_for_document_viewed_and_signed_success(self):
-        self.token = Shared.login_request_gmail(self)
+        self.token = Shared.login_request(self)
         self.__setup()
-        sleep(3)
-        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
-        sleep(2)
-        self.__validate_no_emails_yahoo(self.settings['sixth_recipient_name'], self.settings['gmail_login_password'])
-        sleep(2)
         driver = self.driver
-        driver.execute_script("window.open('');")
         sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
-        emails = [self.settings['sixth_recipient_email']]
+        emails = [self.settings['dev_email']]
         self.__enter_name_and_email_to_xlsx_file(self.settings["empty_xlsx_file"], self.settings["empty_file_with_no_fields_Copy"], emails)
         data = open(self.settings["empty_file_with_no_fields_Copy"], "rb").read()
         encode_signers_to_base64 = base64.b64encode(data)
@@ -69,12 +61,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             f.truncate()  # remove remaining part
         send_distribution = self.__api_create_distribution_request("DistributeSignersApi_Copy")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(4)
+        sleep(2)
+        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
+        sleep(2)
+        self.__enter_comda_mail_and_sign(self.document_name)
+        sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
-        self.__enter_yahoo_mail_and_sign(self.document_name)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
         sleep(2)
@@ -83,14 +75,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
         sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(2)
-        self.driver.get("https://mail.google.com/mail/u/0/")
         sleep(4)
-        self.driver.refresh()
+        self.__change_comda_mail_box("devtest10@comda.co.il", self.settings['comda_mail_password'])
         sleep(8)
         WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '{} has been completed by all participants')]".format(self.document_name))))
-        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.settings['sixth_recipient_email'], self.document_name)), "confirmation email that signer viewed the document wasn't received"
-        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.settings['sixth_recipient_email'], self.document_name)), "confirmation email that signer signed the document wasn't received"
+        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.settings['dev_email'], self.document_name)), "confirmation email that signer viewed the document wasn't received"
+        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.settings['dev_email'], self.document_name)), "confirmation email that signer signed the document wasn't received"
 
     #Bug number = WES-1021
     def test_api_sending_distribution_document_with_duplicated_signer_email_success(self):
@@ -208,14 +198,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
         self.__setup()
         sleep(3)
-        self.__enter_gmail_mail(self.settings['third_recipient_email'], self.settings['gmail_login_password'])
-        sleep(1)
-        self.driver.execute_script("window.open('');")
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
-        self.__validate_no_emails_yahoo(self.settings['seventh_recipient_email'], self.settings['gmail_login_password'])
-        emails = [self.settings['seventh_recipient_email'], self.settings['third_recipient_email']]
+        emails = [self.settings['dev_email'], self.settings['second_dev_email']]
         self.__enter_name_and_email_to_xlsx_file(self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit"], self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"], emails)
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -244,7 +227,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = self.__api_create_distribution_request("DistributeSigners_duplicated_fields_in_xlsx_with_same_name")
         assert send_distribution.status_code == StatusCode.OK
         sleep(2)
-        self.__enter_gmail_mail_and_sign(self.document)
+        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
+        sleep(2)
+        self.__enter_comda_mail_and_sign(template)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[2])
         WebDriverWait(self.driver, 80).until(
@@ -266,7 +251,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[3])
         sleep(2)
-        self.__enter_yahoo_mail_and_sign(self.document)
+        self.__change_comda_mail_box("devtest10@comda.co.il", self.settings['comda_mail_password'])
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[4])
         sleep(2)
@@ -286,9 +271,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
 
     def test_distribution_OTP_xlsx_file_success(self):
-        self.token = Shared.login_request_gmail(self)
+        self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -298,13 +283,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("Distribution_OTP", template, document_name, full_name)
         send_distribution = self.__api_create_distribution_request("Distribution_OTP")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(8)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
         sleep(2)
-        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.__enter_comda_mail_and_sign(document_name)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(1)
@@ -314,9 +294,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     # #bug number = WES-1049
     def test_elements_values_in_distribution_doesnt_change_when_template_is_changed_success(self):
-        self.token = Shared.login_request_gmail(self)
+        self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -328,15 +308,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("distribute_elements_values", template, document_name, name)
         send_distribution = self.__api_create_distribution_request("distribute_elements_values")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(8)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
         sleep(2)
-        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
-        sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
-        sleep(1)
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.__enter_comda_mail_and_sign(document_name)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
@@ -373,9 +346,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     # # Bug number = WES-1019
     def test_distribution_add_date_field_with_value_validate_date_displayed_to_signer_success(self):
-        self.token = Shared.login_request_gmail(self)
+        self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -387,15 +360,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("distribution_with_date_field", template, document_name, name)
         send_distribution = self.__api_create_distribution_request("distribution_with_date_field")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(8)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
         sleep(2)
-        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
-        sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
-        sleep(1)
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.__enter_comda_mail_and_sign(document_name)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
@@ -404,9 +370,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     # Bug number = WES-1050
     def test_distribution_add_date_field_and_number_with_value_validate_date_and_number_displayed_to_signer_success(self):
-        self.token = Shared.login_request_gmail(self)
+        self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -418,17 +384,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("distribute_date_and_number_fiels", template, document_name, name)
         send_distribution = self.__api_create_distribution_request("distribute_date_and_number_fiels")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(8)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
-        sleep(2)
-        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located(
-            (By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
         sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(
-            document_name)).click()
-        sleep(1)
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.__enter_comda_mail_and_sign(document_name)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
@@ -439,9 +396,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     # Bug number = WES-1023
     def test_distribution_validate_values_displayed_to_signer_from_xlsx_and_not_from_template_success(self):
-        self.token = Shared.login_request_gmail(self)
+        self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -462,16 +419,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             f.truncate()  # remove remaining part
         send_distribution = self.__api_create_distribution_request("distribute_file_with_number_field")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(8)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
-        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located(
-            (By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(file_name))))
         sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(
-            file_name)).click()
-        sleep(1)
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.__enter_comda_mail_and_sign(file_name)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
@@ -480,9 +429,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     # bug number  =  WES-1110
     def test_distribution_doesnt_update_value_in_fields(self):
-        self.token = Shared.login_request_gmail(self)
+        self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_gmail_mail(self.settings['first_recipient_name'], self.settings['gmail_login_password'])
+        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = self.__api_create_template_request("PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -494,15 +443,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file("distribution_bug1011", template, document_name, name)
         send_distribution = self.__api_create_distribution_request("distribution_bug1011")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(8)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'דואר נכנס')]").click()
         sleep(1)
-        WebDriverWait(self.driver, 80).until(EC.presence_of_element_located((By.XPATH,"(//*[contains(text(),'sent you the document {}')])[2]".format(document_name))))
-        sleep(1)
-        self.driver.find_element(By.XPATH, "(//*[contains(text(),'sent you the document {}')])[2]".format(document_name)).click()
-        sleep(1)
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.__enter_comda_mail_and_sign(document_name)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
@@ -823,3 +765,53 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(3)
         self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
         sleep(4)
+
+    def __enter_comda_mail_and_sign(self, document_name):
+        self.driver.get('https://email.comda.co.il/owa/')
+        sleep(3)
+        self.driver.refresh()
+        driver = self.driver
+        sleep(3)
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.XPATH, f"(//span[contains(text(),'{document_name}')])[1]")))
+        # self.driver.find_element(By.XPATH,"(//span[contains(text(),'devtest')])[2]").click()
+        sleep(3)
+        self.driver.find_element(By.XPATH, f"(//span[contains(text(),'{document_name}')])[1]").click()
+        sleep(2)
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        sleep(3)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+
+    def __change_comda_mail_box(self, user, user_pass):
+        driver = self.driver
+        profile_image = self.driver.find_element(By.XPATH, "//button[@autoid='_ho2_0']")
+        profile_image.click()
+        sleep(3)
+        sign_out_button = self.driver.find_element(By.XPATH, "(//button[@autoid='_ho2_1'])[2]")
+        sign_out_button.click()
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "username")))
+        user_name = self.driver.find_element(By.ID, "username")
+        user_name.clear()
+        user_name.send_keys(user)
+        sleep(1)
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "password")))
+        user_password = self.driver.find_element(By.ID, "password")
+        user_password.send_keys(user_pass)
+        sleep(2)
+        signin_button = self.driver.find_element(By.XPATH, '//*[@id="lgnDiv"]/div[9]/div')
+        signin_button.click()
+
+    def __enter_comda_mail(self, user, user_pass):
+        driver = self.driver
+        self.driver.get("https://email.comda.co.il/")
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "username")))
+        user_name = self.driver.find_element(By.ID, "username")
+        user_name.send_keys(user)
+        sleep(1)
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "password")))
+        user_password = self.driver.find_element(By.ID, "password")
+        user_password.send_keys(user_pass)
+        sleep(2)
+        signin_button = self.driver.find_element(By.XPATH, '//*[@id="lgnDiv"]/div[9]/div')
+        signin_button.click()

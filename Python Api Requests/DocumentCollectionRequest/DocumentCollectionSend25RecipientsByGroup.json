@@ -1,0 +1,387 @@
+{
+  "readOnlyFields": [],
+  "senderAppendices": [],
+  "shouldSignUsingSigner1AfterDocumentSigningFlow": false,
+  "signers": [
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "3efc3b51fa3743beb941291b35392a76",
+      "contactMeans": "3efc3b51fa3743beb941291b35392a76@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign1",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "35a41cc83bea4f1497515bc14e688cd4",
+      "contactMeans": "35a41cc83bea4f1497515bc14e688cd4@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign2",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "f6cdbb062e2d446ab213861c6b4a6987",
+      "contactMeans": "f6cdbb062e2d446ab213861c6b4a6987@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign3",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
+      "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign4",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "ac833a2512db4023935b3f265921a808",
+      "contactMeans": "ac833a2512db4023935b3f265921a808@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign5",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "0d6992ce432d49eb8ca6b9dbfc45a4be",
+      "contactMeans": "0d6992ce432d49eb8ca6b9dbfc45a4be@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign6",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "0d5f7ec292b643f2935354227a5c6c08",
+      "contactMeans": "0d5f7ec292b643f2935354227a5c6c08@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign7",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "76500ff0a2184b3d8f7cc9dfd824a174",
+      "contactMeans": "76500ff0a2184b3d8f7cc9dfd824a174@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign8",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "b3d5c9706807478a908e1cc4ba381c92",
+      "contactMeans": "b3d5c9706807478a908e1cc4ba381c92@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign9",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "2f384bbaf22d4cf9a97169ff3621f222",
+      "contactMeans": "2f384bbaf22d4cf9a97169ff3621f222@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign10",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "182c8227e5ed4d7ba65b5f9c37213d71",
+      "contactMeans": "182c8227e5ed4d7ba65b5f9c37213d71@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign11",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "b509941d08da49ff87042fc7303d7df1",
+      "contactMeans": "b509941d08da49ff87042fc7303d7df1@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign12",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "9ae850fc0806477ca7785d4fd681fd6e",
+      "contactMeans": "9ae850fc0806477ca7785d4fd681fd6e@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign13",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "826ca7140f14468da46865fbf4899bb4",
+      "contactMeans": "826ca7140f14468da46865fbf4899bb4@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign14",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "776a3adcee654793bb8081a07b99c5b2",
+      "contactMeans": "776a3adcee654793bb8081a07b99c5b2@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign15",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "9c2a166e1206461294ead0af24b734d7",
+      "contactMeans": "9c2a166e1206461294ead0af24b734d7@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign16",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "b8a86919ab9548cfa39aa573a120ee58",
+      "contactMeans": "b8a86919ab9548cfa39aa573a120ee58@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign17",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "6a7335c17bfb4e688aeeaa4c3bf09e9c",
+      "contactMeans": "6a7335c17bfb4e688aeeaa4c3bf09e9c@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign18",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "a762a65d61e945998205198085380f2e",
+      "contactMeans": "a762a65d61e945998205198085380f2e@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign19",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "9af9872a4bc74818b3565bf313c0c53d",
+      "contactMeans": "9af9872a4bc74818b3565bf313c0c53d@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign20",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "94f05c0e140044bd9f84ca145df5cc2c",
+      "contactMeans": "94f05c0e140044bd9f84ca145df5cc2c@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign21",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "3ad82e93161e40b1a9b035ddf89574f6",
+      "contactMeans": "3ad82e93161e40b1a9b035ddf89574f6@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign22",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "30e0f675b7664ba4a448a21e70dc7d92",
+      "contactMeans": "30e0f675b7664ba4a448a21e70dc7d92@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign23",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "7506b19783d542eda18f25458e7c1b1d",
+      "contactMeans": "7506b19783d542eda18f25458e7c1b1d@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign24",
+          "fieldValue": null
+        }
+      ]
+    },
+    {
+      "otpMode": 0,
+      "authenticationMode": 0,
+      "contactName": "5e2dc2f2bb7c46d784101087cb0332e9",
+      "contactMeans": "5e2dc2f2bb7c46d784101087cb0332e9@comda.co.il",
+      "sendingMethod": 2,
+      "phoneExtension": "+972",
+      "signerFields": [
+        {
+          "templateId": "c3f28c17-d6f2-49bf-4142-08da96d74315",
+          "fieldName": "sign25",
+          "fieldValue": null
+        }
+      ]
+    }
+  ],
+  "documentName": "Dummy3Pages - Copy_vLm0yoCm",
+  "documentMode": 2,
+  "templates": [
+    "c3f28c17-d6f2-49bf-4142-08da96d74315"
+  ]
+}

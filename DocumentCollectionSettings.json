@@ -1,11 +1,18 @@
 {
   "chrome_driver" : "\\\\fs01\\Users\\NirK\\chromedriver.exe",
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
+  "wesign_url" : "https://devtest.comda.co.il",
+  "company_user" : "wesignautomation@gmail.com",
+  "company_user_password" : "Comsign1!",
+  "max_wait_time": 4,
+  "short_wait_time": 4,
+  "min_wait_time": 4,
+  "element_wait" : 9,
   "first_recipient_name" : "wesign4611@gmail.com",
   "gmail_login_password" : "Comsign1!",
   "nine_recipient_name": "wesignautomation1989",
   "nine_recipient_email" : "wesignautomation1989@gmail.com",
-  "templateId" : "4f6af355-a798-4b71-be62-08d9fab629bc",
+  "templateId" : "89ce8b6c-f3fe-49d3-83dd-08dac0825c40",
   "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
   "DocumentCode" : "123456",
   "PDF_file_base64" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\PDF_File_base64.json",
@@ -63,5 +70,9 @@
   "CreateTemplateWordBase64WithMetaDataSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json",
   "UpdateTemplateSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateSuccess.json",
   "CreateTemplate3PagesPdfBase64Success" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplate3PagesPdfBase64Success.json",
-  "sms" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\sms_success.json"
+  "DocumentCollectionSend25RecipientsByGroup" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionSend25RecipientsByGroup.json",
+  "sms" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\sms_success.json",
+  "dev_email" : "devtest9@comda.co.il",
+  "dev_name": "devtest1",
+  "comda_mail_password" : "Comsign1!"
 }

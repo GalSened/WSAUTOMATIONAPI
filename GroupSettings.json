@@ -5,6 +5,6 @@
   "CreateEmptyGroupNameRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\CreateEmptyGroupNameRequest.json",
   "ChangeGroupNameRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\ChangeGroupNameRequest.json",
   "ChangeGroupNameToOriginalRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\ChangeGroupNameToOriginalRequest.json",
-  "GroupID" : "3051d282-27d0-43ac-e3cf-08d98e449cd2",
+  "GroupID" : "f6bea538-ebce-4f77-1d0a-08dac08536b6",
   "InvalidGroupID" : "3051d282-27d0-43ac-e3cf-08d98e441cd8"
 }

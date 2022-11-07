@@ -68,7 +68,7 @@ class WesignApiGroupTests(unittest.TestCase):
         json_response_group_id = response['groups'][0]['groupId']
         json_response_group_name = response['groups'][0]['name']
         assert json_response_group_id == self.settings['GroupID']
-        assert json_response_group_name == 'TestApi2'
+        assert json_response_group_name == 'api testing'
 
     def test_delete_group_success(self):
         r = self.__api_create_group_request('CreateNewGroupRequest')
