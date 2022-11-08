@@ -9,7 +9,7 @@ from status_codes import StatusCode
 from status_codes import ResultCode
 import pytest
 
-@pytest.mark.flaky(max_runs=10)
+@pytest.mark.flaky(max_runs=4)
 class WesignApiLoginTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('settings.json')
@@ -64,7 +64,7 @@ class WesignApiLoginTests(unittest.TestCase):
         assert json_response[1] == ResultCode.PLEASE_SPECIFY_A_VALID_EMAIL
 
     def tearDown(self):
-        sleep(4)
+        sleep(1)
 
     if __name__ == "__main__":
         unittest.main()
