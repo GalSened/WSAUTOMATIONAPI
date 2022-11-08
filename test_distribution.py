@@ -453,7 +453,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     def tearDown(self):
         try:
-            sleep(3)
+            sleep(1)
             self.driver.close()
             self.driver.quit()
         except:

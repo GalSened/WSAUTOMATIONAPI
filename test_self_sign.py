@@ -9,7 +9,7 @@ import json
 from shared import Shared
 from status_codes import StatusCode
 
-@pytest.mark.flaky(max_runs=10)
+@pytest.mark.flaky(max_runs=4)
 class WesignApiSelfSignTestTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('SelfSignSettings.json')
@@ -86,7 +86,7 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
             self.driver.quit()
         except:
             pass
-        sleep(3)
+        sleep(1)
 
     if __name__ == "__main__":
         unittest.main()

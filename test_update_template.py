@@ -8,7 +8,7 @@ from shared import Shared
 from status_codes import StatusCode, ResultCode
 import pytest
 
-@pytest.mark.flaky(max_runs=10)
+@pytest.mark.flaky(max_runs=4)
 class WesignApiUpdateTemplateTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('UpdateTemplateSettings.json')
@@ -161,7 +161,7 @@ class WesignApiUpdateTemplateTests(unittest.TestCase):
         self.__delete_template_created(template)
 
     def tearDown(self):
-        sleep(2)
+        sleep(1)
 
     if __name__ == "__main__":
         unittest.main()

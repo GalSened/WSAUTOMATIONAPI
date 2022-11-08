@@ -11,7 +11,7 @@ import logging
 import uuid
 
 
-@pytest.mark.flaky(max_runs=10)
+@pytest.mark.flaky(max_runs=4)
 class WesignApiCreateTemplateTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('CreateTemplateSettings.json')
@@ -164,7 +164,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
 
 
     def tearDown(self):
-        sleep(5)
+        sleep(1)
 
     if __name__ == "__main__":
         unittest.main()

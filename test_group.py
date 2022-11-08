@@ -9,7 +9,7 @@ import json
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 
-@pytest.mark.flaky(max_runs=10)
+@pytest.mark.flaky(max_runs=4)
 class WesignApiGroupTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('GroupSettings.json')
@@ -94,7 +94,7 @@ class WesignApiGroupTests(unittest.TestCase):
         assert json_response[0] == ResultCode.INVALID_GROUP_ID
 
     def tearDown(self):
-        sleep(4)
+        sleep(1)
 
     if __name__ == "__main__":
         unittest.main()
