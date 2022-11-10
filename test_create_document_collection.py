@@ -20,7 +20,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
-@pytest.mark.flaky(max_runs=4)
+@pytest.mark.flaky(max_runs=3)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('DocumentCollectionSettings.json')
@@ -998,7 +998,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert download_json.status_code == StatusCode.OK
         response = download_json.json()
         base64 = response['files'][0]['data']
-        assert len(base64) == 35456
+        assert len(base64) == 61388
 
     def test_delete_multi_documents_by_document_collection_id_success(self):
         a = []

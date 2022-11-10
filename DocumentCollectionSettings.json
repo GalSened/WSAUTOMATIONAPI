@@ -2,7 +2,7 @@
   "chrome_driver" : "\\\\fs01\\Users\\NirK\\chromedriver.exe",
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
   "wesign_url" : "https://devtest.comda.co.il",
-  "company_user" : "wesignautomation@gmail.com",
+  "company_user" : "devtest10@comda.co.il",
   "company_user_password" : "Comsign1!",
   "max_wait_time": 4,
   "short_wait_time": 4,
