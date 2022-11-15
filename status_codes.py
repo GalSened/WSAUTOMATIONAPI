@@ -40,3 +40,4 @@ class ResultCode:
     NAME_IS_MISSING = 'Name Is Missing'
     NAME_SHOULD_CONTAIN_ONLY_CHARACTERS = 'Name should contain only characters'
     SMS_PROVIDER_ERROR = "Your SMS provider not support sending SMS globally"
+    INVALID_FORMAT = 'Cannot parse *.xlsx file to contacts'
