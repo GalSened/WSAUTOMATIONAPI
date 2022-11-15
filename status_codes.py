@@ -21,7 +21,7 @@ class ResultCode:
     SIGNATURE_FIELDS_MUST_BE_UNIQUE = "Signature fields must be unique, remove duplication fields- [sign1]"
     INVALID_TEMPLATE_ID = 'Invalid template id'
     RADIOGROUP_FIELDS_MUST_BE_UNIQUE_REMOVE_DUPLICATION_FIELDS = "RadioGroup fields must be unique, remove duplication fields- [test]"
-    INVALID_FIELD_TYPE_NUMBER = 'Field type [8] for a text field named [text1] not supported'
+    INVALID_FIELD_TYPE_NUMBER = 'Field type [10] for a text field named [text1] not supported'
     BASE_64_FILE_UNSUPPORTED_TYPE = 'Supported FileType are: PDF, DOCX, PNG, JPG , JPEG. Please specify a valid Base64File in format data:application/FILE_TYPE;base64,.... '
     READ_ONLY_FIELDS_SHOULD_CONTAIN_NAME_AND_VALUE = 'Read only fields should contain name and value'
     PLEASE_SPECIFY_VALID_SIGNERS = 'Please specify valid signers (signer should contain contactId with valid sendingMethod (sms-1,email-2 or tablet-3) or contantMeans with contactName)'

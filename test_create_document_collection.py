@@ -998,7 +998,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert download_json.status_code == StatusCode.OK
         response = download_json.json()
         base64 = response['files'][0]['data']
-        assert len(base64) == 61388
+        assert len(base64) == 64928
 
     def test_delete_multi_documents_by_document_collection_id_success(self):
         a = []
@@ -1566,7 +1566,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "Nirk",
+                    "contactName": "nirk",
                     "contactMeans": "nirk@comsign.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
@@ -1669,8 +1669,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "Terra Thome",
-                    "contactMeans": "wesignautomation1989@gmail.com",
+                    "contactName": "Devtest9",
+                    "contactMeans": "Devtest9@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -1948,8 +1948,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign1",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_lOa7B",
 
                 }
               ]
@@ -1963,8 +1963,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign2",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_pb9bT",
 
                 }
               ]
@@ -1978,8 +1978,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign3",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_lT9Wd",
 
                 }
               ]
@@ -1993,8 +1993,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign4",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_caME1",
 
                 }
               ]
@@ -2008,8 +2008,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign5",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_93MRi",
 
                 }
               ]
@@ -2023,8 +2023,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign6",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_NUFB1",
 
                 }
               ]
@@ -2038,8 +2038,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign7",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_nO6Xq",
 
                 }
               ]
@@ -2053,8 +2053,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign8",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_GuamX",
 
                 }
               ]
@@ -2068,8 +2068,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign9",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_7u6Zb",
 
                 }
               ]
@@ -2083,8 +2083,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign10",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_dcXSi",
 
                 }
               ]
@@ -2098,8 +2098,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign11",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_IgBZC",
 
                 }
               ]
@@ -2113,8 +2113,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign12",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_WnMl8",
 
                 }
               ]
@@ -2128,8 +2128,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign13",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_eA4O3",
 
                 }
               ]
@@ -2143,8 +2143,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign14",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_ZbZPY",
 
                 }
               ]
@@ -2158,8 +2158,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign15",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_yi57y",
 
                 }
               ]
@@ -2173,8 +2173,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign16",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_NirVa",
 
                 }
               ]
@@ -2188,8 +2188,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign17",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_4dPsl",
 
                 }
               ]
@@ -2203,8 +2203,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign18",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_paGWr",
 
                 }
               ]
@@ -2218,8 +2218,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign19",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_PnWjx",
 
                 }
               ]
@@ -2233,8 +2233,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign20",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_yivJ0",
 
                 }
               ]
@@ -2248,8 +2248,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign21",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_majYh",
 
                 }
               ]
@@ -2263,8 +2263,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign22",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_H4Lkw",
 
                 }
               ]
@@ -2278,8 +2278,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign23",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_ektGu",
 
                 }
               ]
@@ -2293,8 +2293,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign24",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_n4c3n",
                 }
               ]
             },
@@ -2307,8 +2307,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "ffd0cd14-83d6-4533-0d36-08dac1718f9b",
-                  "fieldName": "sign25",
+                  "templateId": "a94937b8-bbce-49f8-8f9f-08dac70402d3",
+                  "fieldName": "Signature_rupre",
 
                 }
               ]
@@ -2317,7 +2317,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
           "documentName": self.document_name,
           "documentMode": 2,
           "templates": [
-            "ffd0cd14-83d6-4533-0d36-08dac1718f9b"
+            "a94937b8-bbce-49f8-8f9f-08dac70402d3"
           ]
         }
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}

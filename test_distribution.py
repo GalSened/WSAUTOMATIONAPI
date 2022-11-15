@@ -9,11 +9,9 @@ import json
 import names
 import openpyxl
 import base64
-
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
-
 from shared import Shared
 from status_codes import StatusCode, ResultCode
 from telnetlib import EC
@@ -220,18 +218,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         assert signers.status_code == StatusCode.OK
         sleep(2)
-        print(signers_json['signers'])
-        sleep(2)
-        self._change_values_in_file("DistributeSigners_duplicated_fields_in_xlsx_with_same_name" , template, signers_json['signers'])
+        self._change_values_in_file("DistributeSigners_duplicated_fields_in_xlsx_with_same_name", template, signers_json['signers'])
         sleep(2)
         send_distribution = self.__api_create_distribution_request("DistributeSigners_duplicated_fields_in_xlsx_with_same_name")
         assert send_distribution.status_code == StatusCode.OK
         sleep(2)
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
+        self.__enter_comda_mail(self.settings['second_dev_email'], self.settings['comda_mail_password'])
         sleep(2)
-        self.__enter_comda_mail_and_sign(template)
+        self.__enter_comda_mail_and_sign(self.document)
         sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[2])
+        self.driver.switch_to.window(self.driver.window_handles[1])
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
         self.__assert_number_of_fields(10)
@@ -247,13 +243,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
         sleep(2)
-        driver.execute_script("window.open('');")
+        self.driver.switch_to.window(self.driver.window_handles[0])
         sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[3])
+        self.__change_comda_mail_box("devtest9@comda.co.il", self.settings['comda_mail_password'])
         sleep(2)
-        self.__change_comda_mail_box("devtest10@comda.co.il", self.settings['comda_mail_password'])
-        sleep(5)
-        self.driver.switch_to.window(self.driver.window_handles[4])
+        self.__enter_comda_mail_and_sign(self.document)
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))

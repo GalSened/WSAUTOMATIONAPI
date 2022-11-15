@@ -1,6 +1,130 @@
-2022-11-08 15:03:57 INFO logger.py:27 
-
-2022-11-08 15:03:57 INFO logger.py:27 ====== WebDriver manager ======
-2022-11-08 15:03:59 INFO logger.py:27 Current google-chrome version is 107.0.5304
-2022-11-08 15:03:59 INFO logger.py:27 Get LATEST chromedriver version for 107.0.5304 google-chrome
-2022-11-08 15:03:59 INFO logger.py:27 Driver [C:\Users\nirk\.wdm\drivers\chromedriver\win32\107.0.5304.62\chromedriver.exe] found in cache
+2022-11-15 12:11:14 INFO test_create_document_collection.py:36  ---Test Start---  test_document_collection_document_sending_success  ---Test Start--- 
+2022-11-15 12:11:14 INFO test_create_document_collection.py:39 Request response is : 200
+2022-11-15 12:11:14 INFO test_create_document_collection.py:42 Link is : https://devtest.comda.co.il:443/signer/signature/4a56656e2022-11-15 12:11:34 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:11:34 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:11:38 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:11:41 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:11:59 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:11:59 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:12:02 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:12:06 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:12:27 WARNING connectionpool.py:780 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001BC833C13A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/7e74394930d0d3a230afdfa5e7ceaf05/window
+2022-11-15 12:12:31 WARNING connectionpool.py:780 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) afte2022-11-15 12:14:36 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:14:36 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:14:39 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:14:42 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:16:56 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:16:56 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:16:59 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:17:02 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:19:19 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:19:19 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:19:22 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:19:25 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:19:39 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:19:39 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:19:42 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:19:46 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:20:00 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:20:00 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:20:03 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:20:05 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:20:34 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:20:34 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:20:38 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:20:42 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:20:58 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:20:58 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:21:03 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:21:06 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:21:53 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:21:53 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:21:56 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:21:59 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:22:42 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:22:42 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:22:45 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:22:50 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:23:33 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:23:33 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:23:36 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:23:42 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:24:25 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:24:25 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:24:28 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:24:33 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:25:31 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:25:31 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:25:34 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:25:37 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:25:52 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:25:52 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:25:55 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:25:59 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:26:28 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:26:28 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:26:32 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:26:35 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:27:46 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:27:46 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:27:50 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:27:53 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:29:03 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:29:03 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:29:06 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:29:10 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:30:22 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:30:22 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:30:25 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:30:28 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:30:50 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:30:50 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:30:53 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:30:57 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:31:03 INFO logger.py:11 xdist worker is: gw0
+2022-11-15 12:31:03 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:31:07 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:31:10 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+ver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:20:01 INFO test_create_templates.py:26  ---Test Start---         test_create_pdf_template_base64_success         ---Test Start--- 
+2022-11-15 12:20:01 INFO test_create_templates.py:29 Request response is : 200
+2022-11-15 12:20:01 INFO test_create_templates.py:30 Template created successfully
+2022-11-15 12:20:01 INFO test_create_templates.py:34 Template id is 40fe52ca-6a52-4cca-c1cc-08dac6e1ed4a and template name is : Test - Copy_tflmyHRe
+2022-11-15 12:20:01 INFO test_create_templates.py:38  Template Test - Copy_tflmyHRe as deleted successfully
+2022-11-15 12:20:12 INFO test_create_templates.py:48  ---Test Start---         test_create_word_template_base64_success        ---Test Start--- 
+2022-11-15 12:20:12 INFO test_create_templates.py:50 Request response is : 200
+2022-11-15 12:20:12 INFO test_create_templates.py:51 Template created successfully
+2022-11-15 12:20:12 INFO test_create_templates.py:55 Template id is 44dd6d4f-0216-46ee-c1d0-08dac6e1ed4aand template name is : WordBase64
+2022-11-15 12:20:12 INFO test_create_templates.py:59  Template WordBase64 as deleted successfully
+2022-11-15 12:20:29 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:20:29 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:20:33 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:20:38 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:22:09 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:22:09 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:22:12 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:22:16 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:22:48 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:22:48 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:22:51 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:22:54 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:23:28 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:23:28 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:23:31 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:23:34 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:24:08 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:24:08 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:24:11 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:24:15 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:24:47 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:24:47 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:24:51 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:24:54 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:25:29 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:25:29 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:25:32 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:25:35 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
+2022-11-15 12:26:15 INFO logger.py:11 xdist worker is: gw1
+2022-11-15 12:26:15 INFO logger.py:11 ====== WebDriver manager ======
+2022-11-15 12:26:18 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 107.0.5304
+2022-11-15 12:26:21 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\107.0.5304\chromedriver.exe] found in cache
