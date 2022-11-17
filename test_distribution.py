@@ -21,7 +21,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-@pytest.mark.flaky(max_runs=1)
+@pytest.mark.flaky(max_runs=3)
 class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def setUp(self):
         p = Path(__file__).with_name('DistributeCollection.json')
