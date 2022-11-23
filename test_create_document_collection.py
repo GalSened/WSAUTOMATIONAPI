@@ -1797,6 +1797,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 x.click()
             except:
                 pass
+        sleep(2)
         radio_button_one = self.driver.find_element(By.ID, "Group_I3zx7_Radio_YoVQ3")
         radio_button_one.click()
         sleep(2)
