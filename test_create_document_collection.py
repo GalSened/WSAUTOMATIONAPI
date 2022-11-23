@@ -93,7 +93,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         sleep(5)
-        personal_note_popup_window = self.driver.find_elements(By.CLASS_NAME, "modal__container")
+        personal_note_popup_window = self.driver.find_elements(By.CLASS_NAME, "notes_modal__container")
         assert len(personal_note_popup_window) > 0
 
     @pytest.mark.run(order=20)
@@ -1921,7 +1921,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.__download_document()
         sleep(3)
         try:
-            src_path = rf"C:\Users\ComdaIT\Downloads\{document}.pdf"
+            src_path = rf"C:\Users\JenkinsSVC\Downloads\{document}.pdf"
             dst_path = r"\\fs01\Users\NirK\pdfs"
             shutil.copy(src_path, dst_path)
         except:
