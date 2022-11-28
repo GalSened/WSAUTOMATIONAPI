@@ -18,7 +18,9 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-
+from bs4 import BeautifulSoup
+import re
+import PyPDF2 as pypdf
 
 @pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
@@ -1756,7 +1758,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(driver, 50).until(EC.presence_of_element_located((By.XPATH, "//input[@type='text']")))
         text = self.driver.find_elements(By.XPATH, "//input[@type='text']")
         tel = self.driver.find_elements(By.XPATH, "//input[@type='tel']")
-        number = self.driver.find_elements(By.XPATH, "//input[@type='number']")
+        number = self.driver.find_elements(By.XPATH, "//input[@placeholder='123456']")
         date_field = self.driver.find_elements(By.XPATH, "//*[@type='date']")
         email = self.driver.find_elements(By.XPATH, "//input[@type='email']")
         check_box = self.driver.find_elements(By.XPATH,
@@ -1850,7 +1852,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(driver, 50).until(EC.presence_of_element_located((By.XPATH, "//input[@type='text']")))
         text = self.driver.find_elements(By.XPATH, "//input[@type='text']")
         tel = self.driver.find_elements(By.XPATH, "//input[@type='tel']")
-        number = self.driver.find_elements(By.XPATH, "//input[@type='number']")
+        number = self.driver.find_elements(By.XPATH, "//input[@placeholder='123456']")
         date_field = self.driver.find_elements(By.XPATH, "//*[@type='date']")
         email = self.driver.find_elements(By.XPATH, "//input[@type='email']")
         for x in number:
@@ -1927,6 +1929,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             shutil.copy(src_path, dst_path)
         except:
             pass
+
+        pdfobject = open(f'\\\\fs01\\Users\\NirK\\pdfs\\{document}.pdf', 'rb')
+        pdf = pypdf.PdfFileReader(pdfobject)
+        check_fields = pdf.get_fields()
+        for x in check_fields.values():
+            assert x['/V'] != '' and x['/V'] != "/Off" and x['/V'] != '/'
 
     @pytest.mark.success
     def test_send_sms_with_success_results(self):
@@ -2431,8 +2439,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_input = file.read()
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json),
-                          headers=headers)
+        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json),headers=headers)
         return r
 
     def __api_delete_document_request(self, document_collection_id):
