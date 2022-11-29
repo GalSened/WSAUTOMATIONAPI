@@ -1755,6 +1755,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(1)
         self.driver.get(json_response)
         driver = self.driver
+        sleep(4)
         WebDriverWait(driver, 50).until(EC.presence_of_element_located((By.XPATH, "//input[@type='text']")))
         text = self.driver.find_elements(By.XPATH, "//input[@type='text']")
         tel = self.driver.find_elements(By.XPATH, "//input[@type='tel']")
@@ -1763,6 +1764,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         email = self.driver.find_elements(By.XPATH, "//input[@type='email']")
         check_box = self.driver.find_elements(By.XPATH,
                                               "//input[@class='ng-untouched ng-pristine ng-valid ng-star-inserted']")
+        sleep(4)
         for x in number:
             try:
                 sleep(4)
@@ -1860,6 +1862,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         number = self.driver.find_elements(By.XPATH, "//input[@placeholder='123456']")
         date_field = self.driver.find_elements(By.XPATH, "//*[@type='date']")
         email = self.driver.find_elements(By.XPATH, "//input[@type='email']")
+        sleep(3)
         for x in number:
             try:
                 sleep(4)
