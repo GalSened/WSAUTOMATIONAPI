@@ -1765,19 +1765,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                                               "//input[@class='ng-untouched ng-pristine ng-valid ng-star-inserted']")
         for x in number:
             try:
-                sleep(2)
+                sleep(4)
                 x.send_keys("5870")
             except:
                 pass
         for x in text:
             try:
-                sleep(2)
+                sleep(4)
                 x.send_keys("בדיקה שלי")
             except:
                 pass
         for x in tel:
             try:
-                sleep(2)
+                sleep(4)
                 x.send_keys("0504821881")
             except:
                 pass
@@ -1794,26 +1794,26 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 pass
         for x in email:
             try:
-                sleep(2)
+                sleep(4)
                 x.send_keys("test@comda.co.il")
             except:
                 pass
         for x in check_box:
             try:
-                sleep(2)
+                sleep(4)
                 x.click()
             except:
                 pass
-        sleep(2)
+        sleep(4)
         radio_button_one = self.driver.find_element(By.ID, "Group_I3zx7_Radio_YoVQ3")
         radio_button_one.click()
-        sleep(2)
+        sleep(4)
         radio_button_two = self.driver.find_element(By.ID, "Group_DyYrL_Radio_vKi94")
         radio_button_two.click()
-        sleep(2)
+        sleep(4)
         select = Select(self.driver.find_element(By.ID, "Choice_LzjnP"))
         select.select_by_index(2)
-        sleep(2)
+        sleep(4)
         self.driver.find_element(By.XPATH, "//*[@name='feather']").click()
         sleep(4)
         canvas = self.driver.find_element(By.XPATH, "//div[@class='signature-pad__canvas']")
@@ -1862,19 +1862,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         email = self.driver.find_elements(By.XPATH, "//input[@type='email']")
         for x in number:
             try:
-                sleep(2)
+                sleep(4)
                 x.send_keys("1234")
             except:
                 pass
         for x in text:
             try:
-                sleep(2)
+                sleep(4)
                 x.send_keys("My tests")
             except:
                 pass
         for x in tel:
             try:
-                sleep(2)
+                sleep(4)
                 x.send_keys("0504821882")
             except:
                 pass
@@ -1891,14 +1891,14 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 pass
         for x in email:
             try:
-                sleep(2)
+                sleep(4)
                 x.send_keys("test2@comda.co.il")
             except:
                 pass
-        sleep(2)
+        sleep(4)
         radio_button_one = self.driver.find_element(By.ID, "Group_OAy97_Radio_kvXeS")
         radio_button_one.click()
-        sleep(2)
+        sleep(4)
         select = Select(self.driver.find_element(By.ID, "Choice_aLc8y"))
         select.select_by_index(2)
         sleep(4)
