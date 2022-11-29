@@ -1765,16 +1765,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                                               "//input[@class='ng-untouched ng-pristine ng-valid ng-star-inserted']")
         for x in number:
             try:
+                sleep(2)
                 x.send_keys("5870")
             except:
                 pass
         for x in text:
             try:
+                sleep(2)
                 x.send_keys("בדיקה שלי")
             except:
                 pass
         for x in tel:
             try:
+                sleep(2)
                 x.send_keys("0504821881")
             except:
                 pass
@@ -1791,11 +1794,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 pass
         for x in email:
             try:
+                sleep(2)
                 x.send_keys("test@comda.co.il")
             except:
                 pass
         for x in check_box:
             try:
+                sleep(2)
                 x.click()
             except:
                 pass
@@ -1842,9 +1847,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         driver.execute_script("window.open('');")
         sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
+        sleep(4)
         self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
-        sleep(2)
+        sleep(4)
         self.__enter_comda_mail_and_sign(document)
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[2])
@@ -1857,16 +1862,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         email = self.driver.find_elements(By.XPATH, "//input[@type='email']")
         for x in number:
             try:
+                sleep(2)
                 x.send_keys("1234")
             except:
                 pass
         for x in text:
             try:
+                sleep(2)
                 x.send_keys("My tests")
             except:
                 pass
         for x in tel:
             try:
+                sleep(2)
                 x.send_keys("0504821882")
             except:
                 pass
@@ -1883,9 +1891,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 pass
         for x in email:
             try:
+                sleep(2)
                 x.send_keys("test2@comda.co.il")
             except:
                 pass
+        sleep(2)
         radio_button_one = self.driver.find_element(By.ID, "Group_OAy97_Radio_kvXeS")
         radio_button_one.click()
         sleep(2)
@@ -1929,7 +1939,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             shutil.copy(src_path, dst_path)
         except:
             pass
-
+        sleep(3)
         pdfobject = open(f'\\\\fs01\\Users\\NirK\\pdfs\\{document}.pdf', 'rb')
         pdf = pypdf.PdfFileReader(pdfobject)
         check_fields = pdf.get_fields()
