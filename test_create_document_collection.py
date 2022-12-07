@@ -2418,6 +2418,53 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             assert signed_status.text != "", f"signed status not displayed to {recipient_email.text}"
             index += 1
 
+    def test_download_batch_document_collection(self):
+        r = self.__api_document_collections()
+        assert r.status_code == StatusCode.OK
+        response = json.loads(r.content)
+        document_collection = response["documentCollections"]
+        list_of_ids = []
+        for x in document_collection:
+            list_of_ids.append(x["documentCollectionId"])
+        n = self.__api_download_document_collection_batch(list_of_ids)
+        assert n.status_code == StatusCode.OK
+
+    def test_download_batch_with_incorrect_document_id(self):
+        r = self.__api_document_collections()
+        assert r.status_code == StatusCode.OK
+        response = json.loads(r.content)
+        document_collection = response["documentCollections"]
+        list_of_ids = []
+        for x in document_collection:
+            list_of_ids.append(x["documentCollectionId"])
+        # change the id of the first document
+        list_of_ids[0] = '888888e-888e-8888-8620-08dad731f3a6'
+        n = self.__api_download_document_collection_batch(list_of_ids)
+        assert n.status_code == StatusCode.BAD_REQUEST
+
+    def test_download_batch_with_unsigned_document(self):
+        r = self.__api_document_collections_unsigned()
+        assert r.status_code == StatusCode.OK
+        response = json.loads(r.content)
+        document_collection = response["documentCollections"]
+        list_of_ids = []
+        for x in document_collection:
+            list_of_ids.append(x["documentCollectionId"])
+        n = self.__api_download_document_collection_batch(list_of_ids)
+        assert n.status_code == StatusCode.BAD_REQUEST
+
+    def test_download_batch_with_30_documents(self):
+        r = self.__api_document_collections_limit_30()
+        assert r.status_code == StatusCode.OK
+        response = json.loads(r.content)
+        document_collection = response["documentCollections"]
+        list_of_ids = []
+        for x in document_collection:
+            list_of_ids.append(x["documentCollectionId"])
+        l = len(list_of_ids)
+        n = self.__api_download_document_collection_batch(list_of_ids)
+        assert n.status_code == StatusCode.BAD_REQUEST
+
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
     #     assert r.status_code == StatusCode.OK
@@ -2767,3 +2814,33 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         signin_button = self.driver.find_element(By.XPATH, '//*[@id="lgnDiv"]/div[9]/div')
         signin_button.click()
 
+    def __api_document_collections(self):
+        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false", "sendingFailed": "false", "canceled": "false"}
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.get(self.settings['Base_Url'] + 'documentcollections/', params=parameters, headers=header)
+        return new_request
+
+    def __api_download_document_collection_batch(self, list_of_ids):
+        ids_str = ""
+        for x in range(len(list_of_ids)-1):
+            ids_str = ids_str + '"' + list_of_ids[x] + '",'
+        ids_str = ids_str + '"' + list_of_ids[len(list_of_ids)-1] + '"'
+        data = '{"ids": [' + ids_str + ']}'
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.post(self.settings['Base_Url'] + 'documentcollections/downloadbatch/', data=data, headers=header)
+        return new_request
+
+    def __api_document_collections_unsigned(self):
+        #parameters = {"sent": "true", "viewed": "true", "signed": "false", "declined": "true", "sendingFailed": "true", "canceled": "true"}
+        parameters = {"signed": "false"}
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.get(self.settings['Base_Url'] + 'documentcollections/', params=parameters, headers=header)
+        return new_request
+
+    def __api_document_collections_limit_30(self):
+        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
+                      "sendingFailed": "false", "canceled": "false", "limit": "30"}
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.get(self.settings['Base_Url'] + 'documentcollections/', params=parameters,
+                                   headers=header)
+        return new_request
