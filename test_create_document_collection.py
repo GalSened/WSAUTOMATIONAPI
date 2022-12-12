@@ -21,6 +21,7 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import re
 import PyPDF2 as pypdf
+import base64
 
 @pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
@@ -2419,7 +2420,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             index += 1
 
     def test_download_batch_document_collection(self):
-        r = self.__api_document_collections()
+        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
+                      "sendingFailed": "false", "canceled": "false"}
+        r = self.__api_document_collections_get(parameters)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2430,7 +2433,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert n.status_code == StatusCode.OK
 
     def test_download_batch_with_incorrect_document_id(self):
-        r = self.__api_document_collections()
+        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
+                      "sendingFailed": "false", "canceled": "false"}
+        r = self.__api_document_collections_get(parameters)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2454,16 +2459,51 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert n.status_code == StatusCode.BAD_REQUEST
 
     def test_download_batch_with_30_documents(self):
-        r = self.__api_document_collections_limit_30()
+        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
+                      "sendingFailed": "false", "canceled": "false", "limit": "30"}
+        r = self.__api_document_collections_get(parameters)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
         list_of_ids = []
         for x in document_collection:
             list_of_ids.append(x["documentCollectionId"])
-        l = len(list_of_ids)
+        list_len = len(list_of_ids)
         n = self.__api_download_document_collection_batch(list_of_ids)
-        assert n.status_code == StatusCode.BAD_REQUEST
+        if list_len <= 20:
+            assert n.status_code == StatusCode.OK
+        else:
+            assert n.status_code == StatusCode.BAD_REQUEST
+
+    def test_tablet_sign(self):
+        create_template = self.__api_create_template_request('CreateTemplatePdfBase64Success')
+        template_response = json.loads(create_template.content)
+        template_id = template_response["templateId"]
+        template_name = template_response["templateName"]
+        sig_data = '{"name": "' + template_name +\
+                   '", "fields": {"signatureFields": [{"signingType": 1, "name": "GG8D", "width": 0.2, "height": 0.5, "page": 1}]}}}'
+        sig_field = self.__api_templates_put(template_id, sig_data)
+        assert sig_field.status_code == StatusCode.OK
+        template_data = '{"documentMode": 1, "documentName": "' + template_name + '", "templates": ["' + template_id + \
+                        '"], "Signers": [{"sendingMethod": 3, "contactName": "1", "signerFields": [{"templateId": "' +\
+                        template_id + '", "fieldName": "GG8D"}]}]}'
+        assigned_and_send = self.__api_document_collections_post(template_data)
+        assert assigned_and_send.status_code == StatusCode.OK
+        tablet_response = json.loads(assigned_and_send.content)
+        document_link = tablet_response["signerLinks"][0]["link"]
+        # sign with Selenium
+        self.__setup()
+        sleep(2)
+        self.driver.get(document_link)
+        sleep(2)
+        self.__sign_on_document()
+        sleep(2)
+        parameters = {"key": template_name}
+        check_doc = self.__api_document_collections_get(parameters)
+        assert check_doc.status_code == StatusCode.OK
+        r = json.loads(check_doc.content)
+        is_signed = r["documentCollections"][0]["documentStatus"]
+        assert is_signed == 4, "document isn't signed"
 
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
@@ -2814,12 +2854,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         signin_button = self.driver.find_element(By.XPATH, '//*[@id="lgnDiv"]/div[9]/div')
         signin_button.click()
 
-    def __api_document_collections(self):
-        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false", "sendingFailed": "false", "canceled": "false"}
-        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        new_request = requests.get(self.settings['Base_Url'] + 'documentcollections/', params=parameters, headers=header)
-        return new_request
-
     def __api_download_document_collection_batch(self, list_of_ids):
         ids_str = ""
         for x in range(len(list_of_ids)-1):
@@ -2831,16 +2865,25 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         return new_request
 
     def __api_document_collections_unsigned(self):
-        #parameters = {"sent": "true", "viewed": "true", "signed": "false", "declined": "true", "sendingFailed": "true", "canceled": "true"}
         parameters = {"signed": "false"}
         header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         new_request = requests.get(self.settings['Base_Url'] + 'documentcollections/', params=parameters, headers=header)
         return new_request
 
-    def __api_document_collections_limit_30(self):
-        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
-                      "sendingFailed": "false", "canceled": "false", "limit": "30"}
+    def __api_document_collections_get(self, parameters):
         header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         new_request = requests.get(self.settings['Base_Url'] + 'documentcollections/', params=parameters,
                                    headers=header)
         return new_request
+
+    def __api_templates_put(self, template_id, data):
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        request = requests.put(self.settings['Base_Url'] + 'templates/' + template_id, data=data, headers=header)
+        return request
+
+    def __api_document_collections_post(self, data):
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        request = requests.post(self.settings['Base_Url'] + 'documentcollections/', data=data, headers=header)
+        return request
+
+
