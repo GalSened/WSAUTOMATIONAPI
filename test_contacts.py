@@ -257,7 +257,7 @@ class WesignContactsApi(unittest.TestCase):
         list_of_names = self.__api_get_list_of_random_hebrew_names(number_of_contacts)
         list_of_emails = self.__api_get_list_of_random_emails(number_of_contacts)
         book = openpyxl.load_workbook(self.settings['openXlsxFileForUploadContacts'])
-        sheet = book.active
+        sheet = book.active ###
         for i in range(number_of_contacts):
             sheet.cell(row=i+2, column=1).value = list_of_names[i]  # FullName
             sheet.cell(row=i + 2, column=2).value = list_of_emails[i]  # Email
