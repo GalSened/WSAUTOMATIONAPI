@@ -1,8 +1,12 @@
+import base64
+import random
 import unittest
 import uuid
 import warnings
 from pathlib import Path
 from time import sleep
+
+import openpyxl
 import pytest
 import requests
 import json
@@ -248,6 +252,30 @@ class WesignContactsApi(unittest.TestCase):
         delete = requests.put(self.settings['Base_Url'] + 'contacts/deletebatch', data=json.dumps(c), headers=headers)
         assert delete.status_code == StatusCode.OK
 
+    def test_upload_hebrew_contacts_from_xlsx_file_and_check_names(self):
+        number_of_contacts = 10
+        list_of_names = self.__api_get_list_of_random_hebrew_names(number_of_contacts)
+        list_of_emails = self.__api_get_list_of_random_emails(number_of_contacts)
+        book = openpyxl.load_workbook(self.settings['openXlsxFileForUploadContacts'])
+        sheet = book.active
+        for i in range(number_of_contacts):
+            sheet.cell(row=i+2, column=1).value = list_of_names[i]  # FullName
+            sheet.cell(row=i + 2, column=2).value = list_of_emails[i]  # Email
+            sheet.cell(row=i + 2, column=4).value = 2
+        book.save(self.settings['openXlsxFileForUploadContacts'])
+        data = open(self.settings['openXlsxFileForUploadContacts'], 'rb').read()
+        base64_encoded = base64.b64encode(data).decode('UTF-8')
+        base64_string = '"base64File": "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + base64_encoded
+        contacts_id = self.__api_contacts_bulk_post(base64_string)
+        assert contacts_id.status_code == StatusCode.OK
+        response = contacts_id.json()
+        contacts_list = response['contactsId']
+        self.__check_hebrew_contacts(contacts_list, number_of_contacts)
+        sheet.delete_rows(2, number_of_contacts)  # Delete contacts from xlsx file
+        book.save(self.settings['openXlsxFileForUploadContacts'])
+        for contact_id in contacts_list:
+            self.__api_delete_contact_request(contact_id)
+
     # def test_get_all_contacts(self):
     #     #Delete all contacts
     #     for x in range(1000):
@@ -258,13 +286,11 @@ class WesignContactsApi(unittest.TestCase):
     #         for id in json_response['contacts']:
     #             self.__api_delete_contact_request(id['id'])
 
-
     def tearDown(self):
         sleep(1)
 
     if __name__ == "__main__":
         unittest.main()
-
 
     def __api_create_contact_request(self, request_file):
         file = open(self.settings[request_file], 'r')
@@ -298,4 +324,40 @@ class WesignContactsApi(unittest.TestCase):
     def __api_get_all_contacts(self):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.get(self.settings['Base_Url'] + 'contacts/' + "?limit=20&includeTabletMode=true", headers=headers)
+        return r
+
+    def __api_get_list_of_random_hebrew_names(self, number_of_names):
+        first_names = ['דנה', 'חנה', 'רינה', 'צילה', 'גילה', 'אבי', 'שלום', 'דני', 'חיים', 'משה']
+        last_names = ['כהן', 'לוי', 'בן חיים', 'ציון', 'מזרחי', 'פרץ', 'פרידמן', 'כץ', 'חדד', 'גבאי']
+        names = []
+        for i in range(number_of_names):
+            first = ''.join(random.choice(first_names))
+            last = ''.join(random.choice(last_names))
+            names.append(f"{first} {last}")
+        return names
+
+    def __api_get_list_of_random_emails(self, number_of_emails):
+        emails = []
+        for i in range(number_of_emails):
+            email_name = str(uuid.uuid4())
+            emails.append(f"{email_name}@comdaUser.co.il")
+        return emails
+
+    def __api_contacts_bulk_post(self, base64_string):
+        data = '{' + base64_string + '"}'
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'contacts/bulk', data=data, headers=headers)
+        return r
+
+    def __check_hebrew_contacts(self, contacts_list, number_of_contacts):
+        for i in range(number_of_contacts):
+            contact_details = self.__api_contacts_id_get(contacts_list[i])
+            assert contact_details.status_code == StatusCode.OK
+            r = contact_details.json()
+            name = r['name']
+            assert '?' not in name, "Hebrew name contains ?"
+
+    def __api_contacts_id_get(self, contact_id):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'contacts/' + contact_id, headers=headers)
         return r
