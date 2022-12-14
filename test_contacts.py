@@ -23,6 +23,7 @@ class WesignContactsApi(unittest.TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
+        ##test
 
     def test_create_new_contact_by_email_success(self):
         r = WesignMethodssApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
