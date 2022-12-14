@@ -27,5 +27,6 @@
   "CreateNewContactWithGlobalPhoneWhenProviderTwiiloPhoneExtensionInvalid": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderTwiiloPhoneExtensionInvalid.json",
   "CreateNewContactWithGlobalPhoneWhenProviderIsGoldman" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderIsGoldman.json",
   "CreateNewContactWithLocalPhoneWhenProviderTwiilo": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithLocalPhoneWhenProviderTwiilo.json",
-  "CreateNewContactWithGlobalPhoneWhenProviderTwiilo": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderTwiilo.json"
+  "CreateNewContactWithGlobalPhoneWhenProviderTwiilo": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderTwiilo.json",
+  "openXlsxFileForUploadContacts" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\Contacts.xlsx"
 }
