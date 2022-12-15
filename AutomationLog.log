@@ -1,70 +1,24 @@
-2022-12-14 16:30:34 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:30:34 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:30:37 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:30:40 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:31:03 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:31:03 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:31:07 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:31:09 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:31:28 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:31:28 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:31:30 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:31:33 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:31:53 WARNING connectionpool.py:780 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002476C475520>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/848e0ba04a04434774777e5a25b32294/window
-2022-12-14 16:31:57 WARNING connectionpool.py:780 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) afte2022-12-14 16:32:36 WARNING connectionpool.py:780 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000023EECF63B50>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/f3ee6d5cab21c5b436a1154e2130715d/window
-2022-12-14 16:32:40 WARNING connectionpool.py:780 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000023EECF63E20>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/f3ee6d5cab21c5b436a1154e2130715d/window
-2022-12-14 16:32:44 WARNING connectionpool.py:780 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000023EECF63550>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused 2022-12-14 16:32:46 INFO logger.py:11 Get LATEST chromedr2022-12-14 16:32:51 INFO logger.py:11 xdist worker is: gw1
-2022-12-14 16:32:51 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:32:54 INFO logger.py:11 Get LATEST chro2022-12-14 16:33:53 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:33:53 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:33:56 INFO logger.py:11 Get LATEST chromedr2022-12-14 16:38:21 INFO logger.py:11 xdist worker is: gw1
-2022-12-14 16:38:21 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:38:24 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:38:28 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:43:41 INFO logger.py:11 xdist worker is: gw1
-2022-12-14 16:43:41 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:43:44 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:43:47 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:51:33 INFO logger.py:11 xdist worker is: gw1
-2022-12-14 16:51:33 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:51:36 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:51:39 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:56:52 INFO logger.py:11 xdist worker is: gw1
-2022-12-14 16:56:52 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:56:55 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:56:58 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:58:40 INFO logger.py:11 xdist worker is: gw1
-2022-12-14 16:58:40 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:58:46 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:58:48 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw1\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:59:20 WARNING connectionpool.py:780 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000023EED0CB9D0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/ac974d91824197ef89672c3fffecefe7/element/8d71ace5-fbe3-4345-ad87-cb2aebc1b6aa/value
-otal=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002476C475310>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/ce0eb7f90515675357bed659da42ebd9/window
-2022-12-14 16:35:31 WARNING connectionpool.py:780 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002476C45C070>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/ce0eb7f90515675357bed659da42ebd9/window
-2022-12-14 16:35:37 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:35:37 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:35:40 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:35:43 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:37:00 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:37:00 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:37:02 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:37:05 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:38:18 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:38:18 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:38:21 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:38:24 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:38:57 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:38:57 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:38:59 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:39:02 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:45:34 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:45:34 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:45:37 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:45:39 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:52:11 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:52:11 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:52:13 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:52:16 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
-2022-12-14 16:58:47 INFO logger.py:11 xdist worker is: gw0
-2022-12-14 16:58:47 INFO logger.py:11 ====== WebDriver manager ======
-2022-12-14 16:58:54 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
-2022-12-14 16:58:57 INFO logger.py:11 Driver [C:\Users\nirk\.wdm\gw0\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
+2022-12-15 10:54:02 INFO logger.py:11 ====== WebDriver manager ======
+2022-12-15 10:54:06 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
+2022-12-15 10:54:09 INFO logger.py:11 Driver [C:\Users\nitsans\.wdm\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
+2022-12-15 10:55:23 INFO logger.py:11 ====== WebDriver manager ======
+2022-12-15 10:55:26 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
+2022-12-15 10:55:30 INFO logger.py:11 Driver [C:\Users\nitsans\.wdm\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
+2022-12-15 10:56:01 INFO logger.py:11 ====== WebDriver manager ======
+2022-12-15 10:56:04 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
+2022-12-15 10:56:07 INFO logger.py:11 Driver [C:\Users\nitsans\.wdm\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
+2022-12-15 10:56:38 INFO logger.py:11 ====== WebDriver manager ======
+2022-12-15 10:56:41 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
+2022-12-15 10:56:45 INFO logger.py:11 Driver [C:\Users\nitsans\.wdm\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
+2022-12-15 10:57:16 INFO logger.py:11 ====== WebDriver manager ======
+2022-12-15 10:57:20 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
+2022-12-15 10:57:24 INFO logger.py:11 Driver [C:\Users\nitsans\.wdm\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
+2022-12-15 10:57:55 INFO logger.py:11 ====== WebDriver manager ======
+2022-12-15 10:57:58 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
+2022-12-15 10:58:02 INFO logger.py:11 Driver [C:\Users\nitsans\.wdm\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
+2022-12-15 10:58:35 INFO logger.py:11 ====== WebDriver manager ======
+2022-12-15 10:58:38 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
+2022-12-15 10:58:42 INFO logger.py:11 Driver [C:\Users\nitsans\.wdm\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
+2022-12-15 10:59:18 INFO logger.py:11 ====== WebDriver manager ======
+2022-12-15 10:59:22 INFO logger.py:11 Get LATEST chromedriver version for google-chrome 108.0.5359
+2022-12-15 10:59:25 INFO logger.py:11 Driver [C:\Users\nitsans\.wdm\drivers\chromedriver\win32\108.0.5359\chromedriver.exe] found in cache
