@@ -105,6 +105,34 @@ class WesignMethodsApi:
         r = requests.put(self.settings["Base_Url"] + f'/templates/{template_id}', data=json.dumps(requests_json), headers=headers)
         return r
 
+    # Self sign
+
+    def self_sign_post_json_file(self, request_file: str):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def self_sign_put_json_file(self, request_file: str):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def self_sign_id_delete(self, document_id: int):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.delete(self.settings['Base_Url'] + 'selfsign/' + document_id, headers=headers)
+        return r
+
+    def self_sign_download_smart_card_get(self):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'selfsign/download/smartcard', headers=headers)
+        return r
+
 
 
 
