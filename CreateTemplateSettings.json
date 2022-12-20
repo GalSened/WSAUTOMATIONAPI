@@ -1,5 +1,5 @@
 {
-  "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
+  "Base_Url" : "https://devtest.comda.co.il/userapi/v3",
   "CreateTemplatePdfBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatePdfBase64Success.json",
   "CreateTemplateWordBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64Success.json",
   "CreateTemplateXlsxBase64Success": "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateXlsxBase64Success.json",
@@ -8,5 +8,21 @@
   "CreateTemplatePdfBase64EmptyName" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatePdfBase64EmptyName.json",
   "CreateTemplatefBase64WithoutFileType" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatefBase64WithoutFileType.json",
   "CreateTemplateDuplicateTemplate" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateDuplicateTemplate.json",
-  "CreateTemplateWordBase64WithMetaDataSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json"
+  "CreateTemplateWordBase64WithMetaDataSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json",
+  "CreateTemplatePdfBase64UniqueNameSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatePdfBase64UniqueNameSuccess.json",
+
+  "templateId" : "4f6af355-a798-4b71-be62-08d9fab629bc",
+  "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
+  "UpdateTemplateWithSignatureFieldSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldSuccess.json",
+  "UpdateTemplateWithTwoSignatureFieldSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithTwoSignatureFieldSuccess.json",
+  "UpdateTemplateWithMinimizedFieldSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithMinimizedFieldSuccess.json",
+  "UpdateTemplateWithMaximizedFieldSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithMaximizedFieldSuccess.json",
+  "UpdateTemplateWithOverlayingFieldsFields": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithOverlayingFieldsFields.json",
+  "UpdateTemplateWithTwoSignatureFieldWithSameFieldsName": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithTwoSignatureFieldWithSameFieldsName.json",
+  "UpdateTemplateWithInvalidTemplateId": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithInvalidTemplateId.json",
+  "UpdateTemplateWithRadioButtonsWithTwoSameGroupName": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithRadioButtonsWithTwoSameGroupName.json",
+  "UpdateTemplateWithInvalidFieldType": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithInvalidFieldType.json",
+  "UpdateTemplateWithoutNameParameter": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithoutNameParameter.json",
+  "UpdateTemplateToOriginal": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateToOriginal.json",
+  "UpdateTemplatePdfBase64With0TextParameter" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplatePdfBase64With0TextParameter.json"
 }

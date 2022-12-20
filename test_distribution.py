@@ -265,7 +265,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
         assert len(signing_complete_msg) == 1
 
-
     def test_distribution_OTP_xlsx_file_success(self):
         self.token = Shared.login_request(self)
         self.__setup()

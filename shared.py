@@ -1,6 +1,7 @@
 from pathlib import Path
 import json
 import requests
+from all_api_methods import WesignMethodsApi
 
 class Shared:
 
