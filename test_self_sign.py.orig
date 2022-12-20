@@ -89,25 +89,3 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
 
     if __name__ == "__main__":
         unittest.main()
-
-
-    def __api_self_sign_create_document(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
-        return r
-
-    def __api_self_sign_document_signing(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
-        return r
-
-    def __api_self_sign_delete_document(self, documentid):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.delete(self.settings['Base_Url'] + 'selfsign/' + documentid, headers=headers)
-        return r
