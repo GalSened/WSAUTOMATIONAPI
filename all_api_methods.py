@@ -123,21 +123,6 @@ class WesignMethodsApi:
         r = requests.put(self.settings['Base_Url'] + '/templates/deletebatch', data=json.dumps(del_req), headers=headers)
         return r
 
-    # change name - __api_create_template_request
-    # def templates_post_json_file(self, request_file):
-    #     file = open(self.settings_create_template[request_file], 'r')
-    #     json_input = file.read()
-    #     requests_json = json.loads(json_input)
-    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-    #     r = requests.post(self.settings_create_template['Base_Url'] + 'templates', data=json.dumps(requests_json), headers=headers)
-    #     return r
-
-    # change name - __delete_template_created
-    # def templates_id_delete(self, template_guid):
-    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-    #     r = requests.delete(self.settings_create_template['Base_Url'] + 'templates/' + template_guid, headers=headers)
-    #     assert r.status_code == 200
-
     # Admins
 
     def admins_groups_post_json_file(self, request_file: str):
@@ -231,10 +216,4 @@ class WesignMethodsApi:
         r = requests.get(self.settings['Base_Url'] + 'selfsign/download/smartcard', headers=headers)
         return r
 
-    def _self_sign_post_json_file(self, request_file: str):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
-        return r
+
