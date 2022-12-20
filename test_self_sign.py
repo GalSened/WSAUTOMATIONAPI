@@ -27,7 +27,7 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
 
     def test_self_sign_xlsx_document_upload_success(self):
-        r = self.__api_self_sign_create_document('SelfSignUploadXlsxDocument')
+        r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadXlsxDocument')
         assert r.status_code == StatusCode.OK
 
     def test_self_sign_png_document_upload_success(self):
@@ -67,18 +67,8 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
 
     def test_self_sign_download_smart_card(self):
-        url = "https://devtest.comda.co.il/userapi/v3/selfsign/download/smartcard"
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get(url, headers=headers)
+        r = WesignMethodsApi.self_sign_download_smartcard_get(self)
         assert r.status_code == StatusCode.OK
-
-    def self_sign_create_document(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
-        return r
 
     def tearDown(self):
         try:
@@ -89,25 +79,3 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
 
     if __name__ == "__main__":
         unittest.main()
-
-
-    def __api_self_sign_create_document(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
-        return r
-
-    def __api_self_sign_document_signing(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
-        return r
-
-    def __api_self_sign_delete_document(self, documentid):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.delete(self.settings['Base_Url'] + 'selfsign/' + documentid, headers=headers)
-        return r
