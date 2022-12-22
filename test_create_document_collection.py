@@ -22,6 +22,7 @@ from bs4 import BeautifulSoup
 import re
 import PyPDF2 as pypdf
 import base64
+from  all_api_methods import WesignMethodsApi
 
 @pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
@@ -37,7 +38,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def test_document_collection_document_sending_success(self):
         try:
             logging.info(" ---Test Start---  test_document_collection_document_sending_success  ---Test Start--- ")
-            r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+            r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSuccess')
             assert r.status_code == StatusCode.OK
             logging.info("Request response is : " + str(r.status_code))
             response = r.json()
@@ -54,7 +55,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=25)
     def test_document_collection_document_sending_two_contacts_by_order_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -64,7 +65,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=24)
     def test_document_collection_document_sending_two_contacts_by_group_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingTwoRecipientByGroupSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingTwoRecipientByGroupSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -77,7 +78,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=23)
     def test_document_collection_document_sending_with_text_field_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithTextFieldSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithTextFieldSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -85,7 +86,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=21)
     def test_document_collection_document_sending_with_personal_note_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithPersonalNoteSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithPersonalNoteSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -101,7 +102,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=20)
     def test_document_collection_document_sending_using_otp_code_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingOtpCodeSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingUsingOtpCodeSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -117,7 +118,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=19)
     def test_document_collection_document_sending_using_otp_code_send_to_phone_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -138,7 +139,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=18)
     def test_document_collection_document_sending_using_document_code_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingUsingDocumentCodeSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingUsingDocumentCodeSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -152,8 +153,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=17)
     def test_document_collection_document_sending_using_document_code_and_otp_code_success(self):
-        r = self.__api_document_collection_request(
-            'DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -174,7 +174,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=16)
     def test_document_collection_document_sending_with_invalid_sign_field_name(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithInvalidSignFieldName')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidSignFieldName')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['error']
@@ -182,7 +182,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=15)
     def test_document_collection_document_sending_with_empty_field_name_in_read_only_fields(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithEmptyFieldNameReadOnly')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithEmptyFieldNameReadOnly')
         assert r.status_code == StatusCode.BAD_REQUEST, "Status " + str(r.status_code) + " incorrect"
         response = r.json()
         json_response = response['errors']['']
@@ -190,7 +190,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=14)
     def test_document_collection_document_sending_with_invalid_field_name_in_read_only_fields(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithInvalidFieldNameReadOnly')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidFieldNameReadOnly')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['error']
@@ -198,7 +198,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=13)
     def test_document_collection_document_sending_with_empty_value_field_in_read_only_fields(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWitheEmptyFieldValueReadOnly')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWitheEmptyFieldValueReadOnly')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['']
@@ -206,7 +206,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=12)
     def test_document_collection_document_sending_with_invalid_template_id(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWitheInvalidTemplateId')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWitheInvalidTemplateId')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['']
@@ -215,7 +215,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=11)
     def test_document_collection_document_sending_with_empty_document_name(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWitheEmptyDocumentName')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWitheEmptyDocumentName')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['DocumentName']
@@ -223,7 +223,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=10)
     def test_document_collection_document_sending_with_invalid_document_mode(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithInvalidDocumentMode')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidDocumentMode')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['DocumentMode']
@@ -231,7 +231,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=9)
     def test_document_collection_document_sending_with_invalid_contact_id(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithInvalidContactId')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidContactId')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['error']
@@ -239,7 +239,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=8)
     def test_document_collection_document_sending_with_duplicate_fields_name(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithDuplicateFieldsName')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithDuplicateFieldsName')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['Signers']
@@ -247,7 +247,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=7)
     def test_document_collection_document_sending_not_feet_contact_means(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingNotFeetContactMeans')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingNotFeetContactMeans')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['error']
@@ -255,7 +255,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=6)
     def test_document_collection_document_sending_with_invalid_sending_method(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithInvalidSendingMethod')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidSendingMethod')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['Signers']
@@ -273,7 +273,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=3)
             f.truncate()  # remove remaining part
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithShouldSendParamaterFlase')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithShouldSendParamaterFlase')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -299,7 +299,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=3)
             f.truncate()  # remove remaining part
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithShouldSendParamaterTrue')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithShouldSendParamaterTrue')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -325,8 +325,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=3)
             f.truncate()  # remove remaining part
-        r = self.__api_document_collection_request(
-            'DocumentCollectionDocumentSendingWithshouldSendSignedParamaterFalse')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithshouldSendSignedParamaterFalse')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -359,7 +358,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=3)
             f.truncate()  # remove remaining part
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -392,7 +391,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     #         self.driver.quit()
 
     def test_document_collection_document_sending_with_redirect_url(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingWithRedirectUrlSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithRedirectUrlSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -407,8 +406,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert self.driver.current_url == "https://www.comsign.co.il/"
 
     def test_document_collection_document_sending_using_signer_attachments_as_mandatory_success(self):
-        r = self.__api_document_collection_request(
-            'DocumentCollectionDocumentSendingSignerAttachmentsAsMandatorySuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSignerAttachmentsAsMandatorySuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -425,7 +423,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.quit()
 
     def test_document_collection_document_sending_using_signer_appendices_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSignerAppendicesSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSignerAppendicesSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -446,42 +444,42 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.quit()
 
     def test_document_collection_delete_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['documentCollectionId']
-        r = self.__api_delete_document_request(json_response)
+        r = WesignMethodsApi.document_collections_id_delete(self, json_response)
         assert r.status_code == StatusCode.OK
 
     def test_document_collection_cancel_document_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['documentCollectionId']
-        r = self.__api_cancel_document_request(json_response)
+        r = WesignMethodsApi.document_collections_id_cancel_put(self, json_response)
         assert r.status_code == StatusCode.OK
 
     def test_document_collection_resend_document_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response_document_id = response['documentCollectionId']
         json_response_signer_id = response['signerLinks'][0]['signerId']
-        r = self.__api_resend_document_request(json_response_document_id, json_response_signer_id)
+        r = WesignMethodsApi.document_collections_id_signers_signerId_method_sendingMethod_get(self, json_response_document_id, json_response_signer_id)
         assert r.status_code == StatusCode.OK
 
     def test_document_collection_replace_signer_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response_document_id = response['documentCollectionId']
         json_response_signer_id = response['signerLinks'][0]['signerId']
-        r = self.__api_replace_signer_request(json_response_signer_id, json_response_document_id,
+        r = WesignMethodsApi.document_collections_id_signer_signerId_replace_put(self, json_response_signer_id, json_response_document_id,
                                               'DocumentCollectionReplaceSuccess')
         assert r.status_code == StatusCode.OK
 
     def test_document_collection_share_document_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response_document_id = response['documentCollectionId']
@@ -499,12 +497,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.get(json_response_link)
         sleep(8)
         self.__sign_on_document()
-        r = self.__api_share_document_request('DocumentCollectionShareDocuemnt')
+        r = WesignMethodsApi.document_collections_share_post_json_file(self, 'DocumentCollectionShareDocuemnt')
         assert r.status_code == StatusCode.OK
 
     @pytest.mark.run(order=31)
     def test_document_collection_without_fields_one_recipient_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFields')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithoutFields')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -526,7 +524,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=30)
     def test_document_collection_without_fields_two_recipient_by_group_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFieldsTwoRecipients')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithoutFieldsTwoRecipients')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -539,7 +537,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=29)
     def test_document_collection_without_fields_two_recipient_by_order_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFieldsTwoRecipientsOrder')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithoutFieldsTwoRecipientsOrder')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -549,8 +547,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=28)
     def test_document_collection_with_only_one_signature_field_two_recipient_by_order_success(self):
-        r = self.__api_document_collection_request(
-            'DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipients')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipients')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -560,8 +557,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.run(order=27)
     def test_document_collection_with_only_one_signature_field_two_recipient_by_group_success(self):
-        r = self.__api_document_collection_request(
-            'DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipientsGroup')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipientsGroup')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -573,10 +569,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response_three) == 2
 
     def test_document_collection_with_hidden_field_as_true(self):
-        r = self.__api_create_template_request('CreateTemplatePdfBase64Success')
+        r = WesignMethodsApi.templates_post_json_file(self, 'CreateTemplatePdfBase64Success')
         response = r.json()
         template = response['templateId']
-        self.__api_update_template_request_hidden_field('UpdateTemplateWithTextFieldAsHidden', template)
+        WesignMethodsApi.templates_id_put_json_file(self, 'UpdateTemplateWithTextFieldAsHidden', template)
         d = {
             "documentMode": 1,
             "documentName": "TestApiHiddenAsTrue",
@@ -596,8 +592,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 }
             ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -608,13 +603,14 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         text_field = self.driver.find_elements(By.ID, "text1")
         assert len(text_field) == 0, 'Text field displayed'
-        self.__delete_template_created(template)
+        WesignMethodsApi.templates_id_delete(self, template)
 
     def test_document_collection_with_hidden_field_as_false(self):
-        r = self.__api_create_template_request('CreateTemplatePdfBase64Success')
+        r = WesignMethodsApi.templates_post_json_file(self, 'CreateTemplatePdfBase64Success')
         response = r.json()
         template = response['templateId']
-        self.__api_update_template_request_hidden_field('UpdateTemplateWithTextFieldAsHiddenAsFalse', template)
+        # self.__api_update_template_request_hidden_field('UpdateTemplateWithTextFieldAsHiddenAsFalse', template)
+        WesignMethodsApi.templates_id_put_json_file(self, 'UpdateTemplateWithTextFieldAsHiddenAsFalse', template)
         d = {
             "documentMode": 1,
             "documentName": "TestApiHiddenAsFalse",
@@ -634,8 +630,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 }
             ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -646,11 +641,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         text_field = self.driver.find_elements(By.ID, "text1")
         assert len(text_field) > 0, 'Text field not displayed'
-        self.__delete_template_created(template)
+        WesignMethodsApi.templates_id_delete(self, template)
 
     # Bug number - WES-1030
     def test_document_collection_send_twice_to_same_contact(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingTwiceToSameContact')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingTwiceToSameContact')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -663,14 +658,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     # bug number - WES-1102
     def test_document_collection_download_document_collection_invalid_id(self):
-        r = self.__api_document_collection_download_document('827b5c63-4951-4098-2ce4-08da2cedfaa9')
+        r = WesignMethodsApi.document_collections_id_get(self, '827b5c63-4951-4098-2ce4-08da2cedfaa9')
         assert r.status_code == StatusCode.BAD_REQUEST
 
     # Bug number - WES-1066
     def test_document_collection_send_global_number_with_extension_twilio_provider_success(self):
         self.token_twillio = Shared.login_request_twillo(self)
-        r = self.__api_document_collection_request_twilio(
-            'DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file_using_twillio(self, 'DocumentCollectionDocumentSendingTwilioProviderWithExtensionsSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -683,8 +677,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     def test_document_collection_send_global_number_with_extension_and_local_number_twilio_provider_success(self):
         self.token_twillio = Shared.login_request_twillo(self)
-        r = self.__api_document_collection_request_twilio(
-            'DocumentCollectionDocumentSendingTwilioProviderWithExtensionsAndLocalNumberSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file_using_twillio(self, 'DocumentCollectionDocumentSendingTwilioProviderWithExtensionsAndLocalNumberSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -701,8 +694,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     def test_document_collection_send_global_number_without_extension_to_local_number_twilio_provider_success(self):
         self.token_twillio = Shared.login_request_twillo(self)
-        r = self.__api_document_collection_request_twilio(
-            'DocumentCollectionDocumentSendingTwilioProviderWithoutExtensionsLocalNumberSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file_using_twillio(self, 'DocumentCollectionDocumentSendingTwilioProviderWithoutExtensionsLocalNumberSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -722,16 +714,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.token = Shared.login_request_gmail(self)
         self.__setup()
         self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
-        template = self.__api_create_template_request("PDF_file_base64")
+        template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
         template = template_json['templateId']
-        fields_for_template = self.__api_create_template_field_request(
-            "documentCollection_duplicated_fields_for_template", template)
+        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "documentCollection_duplicated_fields_for_template", template)
         assert fields_for_template.status_code == StatusCode.OK
         document_name = uuid.uuid4().hex
         self._change_values_in_file("DocumentCollectionDuplicatedFields", template, document_name)
-        send_distribution = self.__api_create_documentCollection_request("DocumentCollectionDuplicatedFields")
+        send_distribution = WesignMethodsApi.document_collections_post_json_file(self, "DocumentCollectionDuplicatedFields")
         assert send_distribution.status_code == StatusCode.OK
         sleep(1)
         self.driver.refresh()
@@ -754,24 +745,25 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     # Bug number = WES-1123
     def test_document_collection_download_cancel_document(self):
-        r = self.__api_document_collection_request('DocumentCollectionDocumentSendingSuccess')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingSuccess')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['documentCollectionId']
-        cancel_document_request = self.__api_cancel_document_request(json_response)
+        cancel_document_request = WesignMethodsApi.document_collections_id_cancel_put(self, json_response)
         assert cancel_document_request.status_code == StatusCode.OK
-        download_document = self.__api_document_collection_download_document(json_response)
+        sleep(5)
+        download_document = WesignMethodsApi.document_collections_id_get(self, json_response)
         assert download_document.status_code == 400, "Document still can be download after cancelation"
 
     def test_document_collection_update_signature_field_description_is_empty_success(self):
-        create_template = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+        create_template = WesignMethodsApi.templates_post_json_file(self, "CreateTemplatePdfBase64Success")
         assert create_template.status_code == StatusCode.OK
         response = create_template.json()
         template = response['templateId']
         templatename = response['templateName']
         assert len(template) == 36, "Template not created"
         assert len(templatename) > 0
-        update_template = self.__api_update_template_request('UpdateTemplateWithSignatureFieldWithoutFieldDescription',
+        update_template = WesignMethodsApi.templates_id_put_json_file(self, 'UpdateTemplateWithSignatureFieldWithoutFieldDescription',
                                                              template)
         assert update_template.status_code == StatusCode.OK
         d = {
@@ -793,8 +785,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 }
             ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -808,19 +799,18 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
         signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
         assert len(signing_complete_msg) == 1
-        self.__delete_template_created(template)
+        WesignMethodsApi.templates_id_delete(self, template)
 
     def test_document_collection_update_signature_field_description_different_from_field_name_using_field_name_success(
             self):
-        create_template = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+        create_template = WesignMethodsApi.templates_post_json_file(self, "CreateTemplatePdfBase64Success")
         assert create_template.status_code == StatusCode.OK
         response = create_template.json()
         template = response['templateId']
         templatename = response['templateName']
         assert len(template) == 36, "Template not created"
         assert len(templatename) > 0
-        update_template = self.__api_update_template_request(
-            'UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName', template)
+        update_template = WesignMethodsApi.templates_id_put_json_file(self, 'UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName', template)
         assert update_template.status_code == StatusCode.OK
         d = {
             "documentMode": 1,
@@ -841,8 +831,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 }
             ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -856,19 +845,18 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
         signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
         assert len(signing_complete_msg) == 1
-        self.__delete_template_created(template)
+        WesignMethodsApi.templates_id_delete(self, template)
 
     def test_document_collection_update_signature_field_description_different_from_field_name_using_only_field_description_success(
             self):
-        create_template = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+        create_template = WesignMethodsApi.templates_post_json_file(self, "CreateTemplatePdfBase64Success")
         assert create_template.status_code == StatusCode.OK
         response = create_template.json()
         template = response['templateId']
         templatename = response['templateName']
         assert len(template) == 36, "Template not created"
         assert len(templatename) > 0
-        update_template = self.__api_update_template_request(
-            'UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName', template)
+        update_template = WesignMethodsApi.templates_id_put_json_file(self, 'UpdateTemplateWithSignatureDescriptionDiffrentFromFieldName', template)
         assert update_template.status_code == StatusCode.OK
         d = {
             "documentMode": 1,
@@ -890,8 +878,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 }
             ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -905,11 +892,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
         signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
         assert len(signing_complete_msg) == 1
-        self.__delete_template_created(template)
+        WesignMethodsApi.templates_id_delete(self, template)
 
     def test_document_collection_update_signature_field_description_different_from_field_name_using_only_field_name_hebrew_success(
             self):
-        create_template = self.__api_create_template_request("CreateTemplatePdfBase64Success")
+        create_template = WesignMethodsApi.templates_post_json_file(self, "CreateTemplatePdfBase64Success")
         assert create_template.status_code == StatusCode.OK
         response = create_template.json()
         template = response['templateId']
@@ -933,9 +920,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 ]
             }
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'templates/' + template, data=json.dumps(update_template),
-                         headers=headers)
+        r = WesignMethodsApi.templates_id_put_dict(self, update_template, template)
         assert r.status_code == StatusCode.OK
         d = {
             "documentMode": 1,
@@ -957,8 +942,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 }
             ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -972,10 +956,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
         signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
         assert len(signing_complete_msg) == 1
-        self.__delete_template_created(template)
+        WesignMethodsApi.templates_id_delete(self, template)
 
     def test_document_collection_download_document_as_json_file_success(self):
-        r = self.__api_document_collection_request('DocumentCollectionSendDocumentWithoutFields')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithoutFields')
         assert r.status_code == StatusCode.OK
         response = r.json()
         document_id = response['documentCollectionId']
@@ -997,9 +981,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(sign_complete_msg) > 0
         sleep(2)
         # download request
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        download_json = requests.get(self.settings['Base_Url'] + 'documentcollections/' + document_id + '/json',
-                                     headers=headers)
+        download_json = WesignMethodsApi.document_collections_id_json_get(self, document_id)
         assert download_json.status_code == StatusCode.OK
         response = download_json.json()
         base64 = response['files'][0]['data']
@@ -1029,8 +1011,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                     }
                 ]
             }
-            headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-            r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(req), headers=headers)
+            r = WesignMethodsApi.document_collections_post_dict(self, req)
             assert r.status_code == 200
             response = r.json()
             json_response = response['documentCollectionId']
@@ -1041,13 +1022,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 a[0], a[1], a[2], a[3], a[4]
             ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        delete = requests.put(self.settings['Base_Url'] + 'documentcollections/deletebatch', data=json.dumps(del_req),
-                              headers=headers)
+        delete = WesignMethodsApi.document_collections_delete_batch_put_dict(self, del_req)
         assert delete.status_code == StatusCode.OK
 
     def test_document_collection_send_document_with_meta_data_and_sign_success(self):
-        r = self.__api_create_template_request("CreateTemplateWordBase64WithMetaDataSuccess")
+        r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplateWordBase64WithMetaDataSuccess")
         assert r.status_code == StatusCode.OK
         response = r.json()
         template = response['templateId']
@@ -1144,12 +1123,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 }
             ],
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(d), headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
 
     def test_document_collection_send_document_two_recipients_e2e_sign_success(self):
-        r = self.__api_create_template_request("CreateTemplate3PagesPdfBase64Success")
+        # r = self.__api_create_template_request("CreateTemplate3PagesPdfBase64Success")
+        r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplate3PagesPdfBase64Success")
         assert r.status_code == StatusCode.OK
         response = r.json()
         template = response['templateId']
@@ -1555,10 +1534,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 ]
             }
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        update_template = requests.put(self.settings['Base_Url'] + 'templates/' + template, data=json.dumps(d),
-                                       headers=headers)
-        assert update_template.status_code == 200
+        # headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        # update_template = requests.put(self.settings['Base_Url'] + 'templates/' + template, data=json.dumps(d),
+        #                                headers=headers)
+        update_template = WesignMethodsApi.templates_id_put_dict(self, d, template)
+        assert update_template.status_code == StatusCode.OK
         document = uuid.uuid4().hex
         self.document_name = document
         document_collection = {
@@ -1745,9 +1725,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 }
             ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(document_collection),
-                          headers=headers)
+        # headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        # r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(document_collection),
+        #                   headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, document_collection)
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
@@ -1952,7 +1933,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.success
     def test_send_sms_with_success_results(self):
-        r = self.__api_document_collection_request('sms')
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'sms')
         assert r.status_code == StatusCode.OK
 
     def test_sending_to_25_recipients_and_sign_by_group_and_validate_document_status(self):
@@ -2345,8 +2326,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             "62226367-0456-4a82-6a5a-08daddc7e4e7"
           ]
         }
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(payload),headers=headers)
+        r = WesignMethodsApi.document_collections_post_dict(self, payload)
         res = r.json()
         for x in res['signerLinks']:
             sleep(2)
@@ -2427,20 +2407,20 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def test_download_batch_document_collection(self):
         parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
                       "sendingFailed": "false", "canceled": "false"}
-        r = self.__api_document_collections_get(parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
         list_of_ids = []
         for x in document_collection:
             list_of_ids.append(x["documentCollectionId"])
-        n = self.__api_download_document_collection_batch(list_of_ids)
+        n = WesignMethodsApi.document_collections_download_batch_post_ids(self, list_of_ids)
         assert n.status_code == StatusCode.OK
 
     def test_download_batch_with_incorrect_document_id(self):
         parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
                       "sendingFailed": "false", "canceled": "false"}
-        r = self.__api_document_collections_get(parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2449,24 +2429,25 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             list_of_ids.append(x["documentCollectionId"])
         # change the id of the first document
         list_of_ids[0] = '888888e-888e-8888-8620-08dad731f3a6'
-        n = self.__api_download_document_collection_batch(list_of_ids)
+        n = WesignMethodsApi.document_collections_download_batch_post_ids(self, list_of_ids)
         assert n.status_code == StatusCode.BAD_REQUEST
 
     def test_download_batch_with_unsigned_document(self):
-        r = self.__api_document_collections_unsigned()
+        parameters = {"signed": "false"}
+        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
         list_of_ids = []
         for x in document_collection:
             list_of_ids.append(x["documentCollectionId"])
-        n = self.__api_download_document_collection_batch(list_of_ids)
+        n = WesignMethodsApi.document_collections_download_batch_post_ids(self, list_of_ids)
         assert n.status_code == StatusCode.BAD_REQUEST
 
     def test_download_batch_with_30_documents(self):
         parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
                       "sendingFailed": "false", "canceled": "false", "limit": "30"}
-        r = self.__api_document_collections_get(parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2474,25 +2455,22 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         for x in document_collection:
             list_of_ids.append(x["documentCollectionId"])
         list_len = len(list_of_ids)
-        n = self.__api_download_document_collection_batch(list_of_ids)
+        n = WesignMethodsApi.document_collections_download_batch_post_ids(self, list_of_ids)
         if list_len <= 20:
             assert n.status_code == StatusCode.OK
         else:
             assert n.status_code == StatusCode.BAD_REQUEST
 
     def test_tablet_sign(self):
-        create_template = self.__api_create_template_request('CreateTemplatePdfBase64Success')
+        create_template = WesignMethodsApi.templates_post_json_file(self, 'CreateTemplatePdfBase64Success')
         template_response = json.loads(create_template.content)
         template_id = template_response["templateId"]
         template_name = template_response["templateName"]
-        sig_data = '{"name": "' + template_name +\
-                   '", "fields": {"signatureFields": [{"signingType": 1, "name": "GG8D", "width": 0.2, "height": 0.5, "page": 1}]}}}'
-        sig_field = self.__api_templates_put(template_id, sig_data)
+        sig_data = {"name": template_name, "fields": {"signatureFields": [{"signingType": 1, "name": "GG8D", "width": 0.2, "height": 0.5, "page": 1}]}}
+        sig_field = WesignMethodsApi.templates_id_put_dict(self, sig_data, template_id)
         assert sig_field.status_code == StatusCode.OK
-        template_data = '{"documentMode": 1, "documentName": "' + template_name + '", "templates": ["' + template_id + \
-                        '"], "Signers": [{"sendingMethod": 3, "contactName": "1", "signerFields": [{"templateId": "' +\
-                        template_id + '", "fieldName": "GG8D"}]}]}'
-        assigned_and_send = self.__api_document_collections_post(template_data)
+        template_data = {"documentMode": 1, "documentName": template_name, "templates": [template_id], "Signers": [{"sendingMethod": 3, "contactName": "1", "signerFields": [{"templateId": template_id, "fieldName": "GG8D"}]}]}
+        assigned_and_send = WesignMethodsApi.document_collections_post_dict(self, template_data)
         assert assigned_and_send.status_code == StatusCode.OK
         tablet_response = json.loads(assigned_and_send.content)
         document_link = tablet_response["signerLinks"][0]["link"]
@@ -2504,7 +2482,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.__sign_on_document()
         sleep(2)
         parameters = {"key": template_name}
-        check_doc = self.__api_document_collections_get(parameters)
+        check_doc = WesignMethodsApi.document_collections_get_parameters(self, parameters)
         assert check_doc.status_code == StatusCode.OK
         r = json.loads(check_doc.content)
         is_signed = r["documentCollections"][0]["documentStatus"]
@@ -2512,11 +2490,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
+    #     parameters = {"sent": "true", "viewed": "true", "signed": "true", "declined": "true", "sendingFailed": "true",
+    #              "canceled": "true", "limit": "200"}
+    #     r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
     #     assert r.status_code == StatusCode.OK
     #     response = r.json()
     #     json_response = response
     #     for id in json_response['documentCollections']:
-    #         self.__api_delete_document_request(id['documentCollectionId'])
+    #         # self.__api_delete_document_request(id['documentCollectionId'])
+    #         WesignMethodsApi.document_collections_id_delete(self, id['documentCollectionId'])
     #
     # def delete_all_documents(self):
     #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
@@ -2539,58 +2521,58 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     if __name__ == "__main__":
         unittest.main()
 
-    def __api_document_collection_request(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json),headers=headers)
-        return r
-
-    def __api_delete_document_request(self, document_collection_id):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.delete(self.settings['Base_Url'] + 'documentcollections/' + document_collection_id,
-                            headers=headers)
-        return r
-
-    def __api_cancel_document_request(self, document_collection_id):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'documentcollections/' + document_collection_id + '/cancel',
-                         headers=headers)
-        return r
-
-    def __api_resend_document_request(self, document_collection_id, signer_id):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get(self.settings[
-                             'Base_Url'] + 'documentcollections/' + document_collection_id + '/signers/' + signer_id + '/method/2?shouldSend=true',
-                         headers=headers)
-        return r
-
-    def __api_replace_signer_request(self, document_collection_id, signer_id, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings[
-                             'Base_Url'] + 'documentcollections/' + signer_id + '/signer/' + document_collection_id + '/replace',
-                         data=json.dumps(requests_json), headers=headers)
-        return r
-
-    def __api_share_document_request(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections/' + 'share', data=json.dumps(requests_json),
-                          headers=headers)
-        return r
-
-    def __api_get_all_document_collection(self):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get(
-            'https://devtest.comda.co.il/userapi/v3/documentcollections?sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&limit=200',
-            headers=headers)
-        return r
+    # def __api_document_collection_request(self, request_file):
+    #     file = open(self.settings[request_file], 'r')
+    #     json_input = file.read()
+    #     requests_json = json.loads(json_input)
+    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json),headers=headers)
+    #     return r
+    #
+    # def __api_delete_document_request(self, document_collection_id):
+    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.delete(self.settings['Base_Url'] + 'documentcollections/' + document_collection_id,
+    #                         headers=headers)
+    #     return r
+    #
+    # def __api_cancel_document_request(self, document_collection_id):
+    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.put(self.settings['Base_Url'] + 'documentcollections/' + document_collection_id + '/cancel',
+    #                      headers=headers)
+    #     return r
+    #
+    # def __api_resend_document_request(self, document_collection_id, signer_id):
+    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.get(self.settings[
+    #                          'Base_Url'] + 'documentcollections/' + document_collection_id + '/signers/' + signer_id + '/method/2?shouldSend=true',
+    #                      headers=headers)
+    #     return r
+    #
+    # def __api_replace_signer_request(self, document_collection_id, signer_id, request_file):
+    #     file = open(self.settings[request_file], 'r')
+    #     json_input = file.read()
+    #     requests_json = json.loads(json_input)
+    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.put(self.settings[
+    #                          'Base_Url'] + 'documentcollections/' + signer_id + '/signer/' + document_collection_id + '/replace',
+    #                      data=json.dumps(requests_json), headers=headers)
+    #     return r
+    #
+    # def __api_share_document_request(self, request_file):
+    #     file = open(self.settings[request_file], 'r')
+    #     json_input = file.read()
+    #     requests_json = json.loads(json_input)
+    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.post(self.settings['Base_Url'] + 'documentcollections/' + 'share', data=json.dumps(requests_json),
+    #                       headers=headers)
+    #     return r
+    #
+    # def __api_get_all_document_collection(self):
+    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.get(
+    #         'https://devtest.comda.co.il/userapi/v3/documentcollections?sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&limit=200',
+    #         headers=headers)
+    #     return r
 
     def __sign_on_document(self):
         driver = self.driver
@@ -2640,57 +2622,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(8)
         self.driver.find_element(By.XPATH, "//div[@id='passwordNext']").click()
 
-    def __api_create_template_request(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'templates', data=json.dumps(requests_json), headers=headers)
-        return r
-
-    def __api_update_template_request_hidden_field(self, request_file, template_id):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'templates/' + template_id, data=json.dumps(requests_json),
-                         headers=headers)
-        return r
-
-    def __api_document_collection_request_twilio(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token_twillio}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json),
-                          headers=headers)
-        return r
-
-    def __delete_template_created(self, template_guid):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.delete(self.settings['Base_Url'] + 'templates/' + template_guid, headers=headers)
-        assert r.status_code == 200
-
-    def __api_document_collection_download_document(self, id):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get(self.settings['Base_Url'] + 'documentcollections/' + id, headers=headers)
-        return r
-
-    def __api_create_template_field_request(self, field_file, templateId):
-        file = open(self.settings[field_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings["Base_Url"] + f'templates/{templateId}', data=json.dumps(requests_json),
-                         headers=headers)
-        return r
-
-    def __api_extract_signers_from_base64(self, signers_base64):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documents/distribution/signers', data=json.dumps(signers_base64),
-                          headers=headers)
-        return r
-
     def _change_values_in_file(self, file_name, tempID, documentName):
         with open(self.settings[file_name], 'r+') as f:
             data = json.load(f)
@@ -2699,16 +2630,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             data["templates"][0] = tempID
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=3)
-            f.truncate()  # remove remaining part
-
-    def __api_create_documentCollection_request(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'documentcollections', data=json.dumps(requests_json),
-                          headers=headers)
-        return r
+            f.truncate()  # remove remaining par
 
     def __enter_gmail_mail(self, gmail_user_name, gmail_password):
         # self.driver = webdriver.Chrome(self.settings["chrome_driver"])
@@ -2729,15 +2651,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def __assert_number_of_live_fields(self, number_of_fields):
         total_fields = self.driver.find_elements(By.CLASS_NAME, "is-mandatory")
         assert len(total_fields) == int(number_of_fields)
-
-    def __api_update_template_request(self, request_file, template):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.put(self.settings['Base_Url'] + 'templates/' + template, data=json.dumps(requests_json),
-                         headers=headers)
-        return r
 
     def __validate_no_emails_gmail(self, gmail_user_name, gmail_password):
         driver = self.driver
@@ -2859,36 +2772,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         signin_button = self.driver.find_element(By.XPATH, '//*[@id="lgnDiv"]/div[9]/div')
         signin_button.click()
 
-    def __api_download_document_collection_batch(self, list_of_ids):
-        ids_str = ""
-        for x in range(len(list_of_ids)-1):
-            ids_str = ids_str + '"' + list_of_ids[x] + '",'
-        ids_str = ids_str + '"' + list_of_ids[len(list_of_ids)-1] + '"'
-        data = '{"ids": [' + ids_str + ']}'
-        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        new_request = requests.post(self.settings['Base_Url'] + 'documentcollections/downloadbatch/', data=data, headers=header)
-        return new_request
 
-    def __api_document_collections_unsigned(self):
-        parameters = {"signed": "false"}
-        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        new_request = requests.get(self.settings['Base_Url'] + 'documentcollections/', params=parameters, headers=header)
-        return new_request
-
-    def __api_document_collections_get(self, parameters):
-        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        new_request = requests.get(self.settings['Base_Url'] + 'documentcollections/', params=parameters,
-                                   headers=header)
-        return new_request
-
-    def __api_templates_put(self, template_id, data):
-        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        request = requests.put(self.settings['Base_Url'] + 'templates/' + template_id, data=data, headers=header)
-        return request
-
-    def __api_document_collections_post(self, data):
-        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        request = requests.post(self.settings['Base_Url'] + 'documentcollections/', data=data, headers=header)
-        return request
 
 

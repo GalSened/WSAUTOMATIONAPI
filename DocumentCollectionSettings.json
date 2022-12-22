@@ -1,6 +1,6 @@
 {
   "chrome_driver" : "\\\\fs01\\Users\\NirK\\chromedriver.exe",
-  "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
+  "Base_Url" : "https://devtest.comda.co.il/userapi/v3",
   "wesign_url" : "https://devtest.comda.co.il",
   "company_user" : "devtest10@comda.co.il",
   "company_user_password" : "Comsign1!",
@@ -72,6 +72,8 @@
   "CreateTemplate3PagesPdfBase64Success" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplate3PagesPdfBase64Success.json",
   "DocumentCollectionSend25RecipientsByGroup" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionSend25RecipientsByGroup.json",
   "sms" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\sms_success.json",
+  "DocumentCollectionUpdateTemplate" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionUpdateTemplate.json",
+  "DocumentCollectionSendDocument_two_recipients" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionSendDocument_two_recipients.json",
   "dev_email" : "devtest9@comda.co.il",
   "dev_name": "devtest1",
   "comda_mail_password" : "Comsign1!"
