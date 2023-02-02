@@ -287,7 +287,7 @@ class WesignContactsApi(unittest.TestCase):
     #             self.__api_delete_contact_request(id['id'])
 
     def tearDown(self):
-        sleep(1)
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

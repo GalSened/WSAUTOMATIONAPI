@@ -94,7 +94,7 @@ class WesignApiGroupTests(unittest.TestCase):
         assert json_response[0] == ResultCode.INVALID_GROUP_ID
 
     def tearDown(self):
-        sleep(1)
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

@@ -45,7 +45,7 @@ class WesignContactsApi(unittest.TestCase):
         assert len(json_response) > 0
 
     def tearDown(self):
-        sleep(1)
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

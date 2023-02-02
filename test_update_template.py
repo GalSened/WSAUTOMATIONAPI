@@ -159,7 +159,7 @@ class WesignApiUpdateTemplateTests(unittest.TestCase):
         WesignMethodsApi.templates_id_delete(self, template)
 
     def tearDown(self):
-        sleep(1)
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

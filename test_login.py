@@ -62,7 +62,7 @@ class WesignApiLoginTests(unittest.TestCase):
         assert json_response[1] == ResultCode.PLEASE_SPECIFY_A_VALID_EMAIL
 
     def tearDown(self):
-        sleep(1)
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

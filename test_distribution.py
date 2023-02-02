@@ -449,11 +449,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     def tearDown(self):
         try:
-            sleep(1)
             self.driver.close()
             self.driver.quit()
         except:
             pass
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

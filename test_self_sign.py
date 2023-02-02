@@ -75,7 +75,7 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
             self.driver.quit()
         except:
             pass
-        sleep(1)
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()
