@@ -282,6 +282,11 @@ class WesignMethodsApi:
         r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(data), headers=headers)
         return r
 
+    def document_collections_post_dict_using_signer1(self, data: dict):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.signer1}
+        r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(data), headers=headers)
+        return r
+
     def document_collections_delete_batch_put_dict(self, del_req: dict):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.put(self.settings['Base_Url'] + '/documentcollections/deletebatch', data=json.dumps(del_req),

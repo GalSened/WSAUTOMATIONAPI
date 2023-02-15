@@ -8,6 +8,7 @@
   "LoginRequestInvalidEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestInvalidEmail.json",
   "LoginRequestEmptyEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestEmptyEmail.json",
   "LoginRequestEmptyEmailEmptyPassword" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestEmptyEmailEmptyPassword.json",
+  "LoginRequestSigner1Success" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSigner1Success.json",
   "deleted_status" : "7",
   "db_name" : "WeSign",
   "db_user" : "sa",

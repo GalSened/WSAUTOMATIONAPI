@@ -33,6 +33,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
+        self.signer1 = Shared.login_signer1_account(self)
+
 
     @pytest.mark.run(order=26)
     def test_document_collection_document_sending_success(self):
@@ -2488,6 +2490,117 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         is_signed = r["documentCollections"][0]["documentStatus"]
         assert is_signed == 4, "document isn't signed"
 
+    def test_send_sms_and_validate_signer1_signed_and_status(self):
+        self.__setup()
+        document = uuid.uuid4().hex
+        self.document_name = document
+        payload = {
+        "readOnlyFields": [],
+          "senderAppendices": [],
+          "shouldSignUsingSigner1AfterDocumentSigningFlow": True,
+          "signers": [
+            {
+              "otpMode": 0,
+              "authenticationMode": 0,
+              "contactName": "ניר",
+              "contactMeans": "0504821887",
+              "sendingMethod": 1,
+              "phoneExtension": "+972",
+              "signerFields": [
+                {
+                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "fieldName": "Signature_W4mgA"
+
+                },
+                {
+                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "fieldName": "Text_kIYZg",
+                  "fieldValue": ""
+                },
+                {
+                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "fieldName": "Phone_fsnbU",
+                  "fieldValue": ""
+                },
+                {
+                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "fieldName": "Number_dwEco",
+                  "fieldValue": ""
+                },
+                {
+                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "fieldName": "Date_WHnyO",
+                  "fieldValue": ""
+                },
+                {
+                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "fieldName": "Email_dTxM3",
+                  "fieldValue": ""
+                }
+              ]
+            }
+          ],
+          "documentName": document,
+          "documentMode": 1,
+          "templates": [
+            "637758b2-3999-4630-09ed-08db0f51077f"
+          ]
+        }
+        r = WesignMethodsApi.document_collections_post_dict_using_signer1(self, payload)
+        res = r.json()
+        for x in res['signerLinks']:
+            sleep(2)
+            self.driver.get(x['link'])
+            driver = self.driver
+            sleep(1)
+            WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@name='feather']")))
+            self.__add_values_to_all_fields()
+            self.driver.find_element(By.XPATH, "//*[@name='feather']").click()
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_all_elements_located((By.XPATH, "//div[@class='signature-pad__canvas']")))
+            canvas = self.driver.find_element(By.XPATH, "//div[@class='signature-pad__canvas']")
+            drawing = ActionChains(self.driver) \
+                .click_and_hold(canvas) \
+                .move_by_offset(-200, 10) \
+                .move_by_offset(-10, -50) \
+                .move_by_offset(-25, -10) \
+                .move_by_offset(100, -100) \
+                .move_by_offset(10, 60) \
+                .move_by_offset(10, 100) \
+                .move_by_offset(-10, -120) \
+                .release()
+            drawing.perform()
+            for i in range(25):
+                action = webdriver.common.action_chains.ActionChains(driver)
+                action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
+                action.click()
+                action.perform()
+            self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
+            sleep(1)
+            self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
+            sleep(1)
+            WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+            signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
+            assert len(signing_complete_msg) == 1
+            sleep(3)
+            self.driver.get(self.settings['wesign_url'])
+            self.__login_wesign_signer1()
+            sleep(1)
+            driver = self.driver
+            WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "button--sent-ent")))
+            my_documents_section = self.driver.find_element(By.CLASS_NAME, "button--sent-ent")
+            my_documents_section.click()
+            driver = self.driver
+            sleep(3)
+            search_bar = WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.XPATH, "//input[@type='search']")))
+            search_bar.send_keys(self.document_name)
+            sleep(2)
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.XPATH, "//table/tbody/tr[2]/td[6]")))
+            signed_status = self.driver.find_element(By.XPATH, "//table/tbody/tr[2]/td[6]")
+            assert signed_status.text == 'Server signed', "Signed status is incorrect"
+
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
     #     parameters = {"sent": "true", "viewed": "true", "signed": "true", "declined": "true", "sendingFailed": "true",
@@ -2741,6 +2854,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         element.click()
         sleep(2)
 
+    def __login_wesign_signer1(self):
+        driver = self.driver
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.NAME, "email")))
+        element = self.driver.find_element(By.NAME, "email")
+        element.send_keys("wesignautomation2022@gmail.com")
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.NAME, "password")))
+        element = self.driver.find_element(By.NAME, "password")
+        element.send_keys(self.settings["company_user_password"])
+        element = self.driver.find_element(By.ID, "loginInput")
+        element.click()
+        sleep(2)
+
+
     def __enter_comda_mail_and_sign(self, document_name):
         self.driver.get('https://email.comda.co.il/owa/')
         sleep(3)
@@ -2772,6 +2898,25 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         signin_button = self.driver.find_element(By.XPATH, '//*[@id="lgnDiv"]/div[9]/div')
         signin_button.click()
 
-
+    def __add_values_to_all_fields(self):
+        driver = self.driver
+        date_field = self.driver.find_element(By.XPATH,"//*[@type='date']")
+        sleep(2)
+        date_field.click()
+        sleep(1)
+        date_field.send_keys(Keys.SPACE)
+        sleep(1)
+        date_field.send_keys(Keys.ENTER)
+        sleep(2)
+        self.driver.find_element(By.XPATH,"//*[@type='email']").send_keys('Test@comda.co.il')
+        sleep(2)
+        self.driver.find_element(By.XPATH,"(//*[@type='text'])[1]").send_keys('234567')
+        sleep(2)
+        self.driver.find_element(By.XPATH,"//*[@type='tel']").send_keys('050000000')
+        sleep(2)
+        self.driver.find_element(By.XPATH,"//*[@type='number']").send_keys('5678')
+        sleep(2)
+        self.driver.find_element(By.XPATH,"(//*[@type='text'])[2]").send_keys('TestFromComda')
+        sleep(2)
 
 

@@ -17,6 +17,7 @@
   "DocumentCode" : "123456",
   "PDF_file_base64" : "\\\\fs01\\Users\\NicoleS\\WSE\\API_distribution\\PDF_File_base64.json",
   "LoginRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccess.json",
+  "LoginRequestSigner1Success" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSigner1Success.json",
   "DocumentCollectionDocumentSendingSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingSuccess.json",
   "DocumentCollectionDocumentSendingWithTextFieldSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithTextFieldSuccess.json",
   "DocumentCollectionDocumentSendingWithInvalidSignFieldName" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithInvalidSignFieldName.json",
