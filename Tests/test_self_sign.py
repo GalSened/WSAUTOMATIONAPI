@@ -5,14 +5,18 @@ from time import sleep
 import pytest
 import json
 from shared import Shared
-from status_codes import StatusCode
-from all_api_methods import WesignMethodsApi
+from Enums.status_codes import StatusCode
+from Common.all_api_methods import WesignMethodsApi
 
 @pytest.mark.flaky(max_runs=3)
 class WesignApiSelfSignTestTests(unittest.TestCase):
     def setUp(self):
-        p = Path(__file__).with_name('SelfSignSettings.json')
-        with open(p) as f:
+        # p = Path(__file__).with_name('SelfSignSettings.json')
+        # with open(p) as f:
+        #     self.settings = json.load(f)
+        p = Path(__file__).resolve().parent.parent
+        file_path = p / "Settings\\SelfSignSettings.json"
+        with open(file_path) as f:
             self.settings = json.load(f)
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
@@ -27,7 +31,7 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
 
     def test_self_sign_xlsx_document_upload_success(self):
-        r = self.__api_self_sign_create_document('SelfSignUploadXlsxDocument')
+        r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadXlsxDocument')
         assert r.status_code == StatusCode.OK
 
     def test_self_sign_png_document_upload_success(self):
@@ -67,25 +71,15 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
 
     def test_self_sign_download_smart_card(self):
-        url = "https://devtest.comda.co.il/userapi/v3/selfsign/download/smartcard"
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get(url, headers=headers)
+        r = WesignMethodsApi.self_sign_download_smartcard_get(self)
         assert r.status_code == StatusCode.OK
-
-    def self_sign_create_document(self, request_file):
-        file = open(self.settings[request_file], 'r')
-        json_input = file.read()
-        requests_json = json.loads(json_input)
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
-        return r
 
     def tearDown(self):
         try:
             self.driver.quit()
         except:
             pass
-        sleep(1)
+        sleep(3)
 
     if __name__ == "__main__":
         unittest.main()

@@ -1,13 +1,17 @@
 from pathlib import Path
 import json
 import requests
-from all_api_methods import WesignMethodsApi
+
 
 class Shared:
 
         def login_request(self):
-            p = Path(__file__).with_name('settings.json')
-            with open(p) as f:
+            # p = Path(__file__).with_name('settings.json')
+            # with open(p) as f:
+            #     settings = json.load(f)
+            p = Path(__file__).resolve().parent.parent
+            file_path = p / "Settings\\settings.json"
+            with open(file_path) as f:
                 settings = json.load(f)
             file = open(settings['LoginRequestSuccess'], 'r')
             json_input = file.read()
@@ -18,8 +22,12 @@ class Shared:
             return login['token']
 
         def login_request_twillo(self):
-            p = Path(__file__).with_name('settings.json')
-            with open(p) as f:
+            # p = Path(__file__).with_name('settings.json')
+            # with open(p) as f:
+            #     settings = json.load(f)
+            p = Path(__file__).resolve().parent.parent
+            file_path = p / "Settings\\settings.json"
+            with open(file_path) as f:
                 settings = json.load(f)
             file = open(settings['LoginRequestSuccessTwilio'], 'r')
             json_input = file.read()
@@ -30,8 +38,12 @@ class Shared:
             return login['token']
 
         def login_request_gmail(self):
-            p = Path(__file__).with_name('settings.json')
-            with open(p) as f:
+            # p = Path(__file__).with_name('settings.json')
+            # with open(p) as f:
+            #     settings = json.load(f)
+            p = Path(__file__).resolve().parent.parent
+            file_path = p / "Settings\\settings.json"
+            with open(file_path) as f:
                 settings = json.load(f)
             file = open(settings['LoginRequestSuccessGmail'], 'r')
             json_input = file.read()
@@ -42,8 +54,12 @@ class Shared:
             return login['token']
 
         def login_signer1_account(self):
-            p = Path(__file__).with_name('settings.json')
-            with open(p) as f:
+            # p = Path(__file__).with_name('settings.json')
+            # with open(p) as f:
+            #     settings = json.load(f)
+            p = Path(__file__).resolve().parent.parent
+            file_path = p / "Settings\\settings.json"
+            with open(file_path) as f:
                 settings = json.load(f)
             file = open(settings['LoginRequestSigner1Success'], 'r')
             json_input = file.read()

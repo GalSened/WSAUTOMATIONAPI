@@ -6,13 +6,17 @@ import pytest
 import requests
 import json
 from shared import Shared
-from status_codes import StatusCode, ResultCode
+from Enums.status_codes import StatusCode, ResultCode
 
 @pytest.mark.flaky(max_runs=3)
 class WesignContactsApi(unittest.TestCase):
     def setUp(self):
-        p = Path(__file__).with_name('ContactsSettings.json')
-        with open(p) as f:
+        # p = Path(__file__).with_name('ContactsSettings.json')
+        # with open(p) as f:
+        #     self.settings = json.load(f)
+        p = Path(__file__).resolve().parent.parent
+        file_path = p / "Settings\\ContactsSettings.json"
+        with open(file_path) as f:
             self.settings = json.load(f)
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)

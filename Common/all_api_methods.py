@@ -105,6 +105,11 @@ class WesignMethodsApi:
         r = requests.put(self.settings["Base_Url"] + f'/templates/{template_id}', data=json.dumps(requests_json), headers=headers)
         return r
 
+    def templates_id_put_dict(self, data: dict, template_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings["Base_Url"] + f'/templates/{template_id}', data=json.dumps(data), headers=headers)
+        return r
+
     def templates_id_post_json_file(self, request_file: str, template_id: str):
         file = open(self.settings[request_file], 'r')
         json_input = file.read()
@@ -122,21 +127,6 @@ class WesignMethodsApi:
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.put(self.settings['Base_Url'] + '/templates/deletebatch', data=json.dumps(del_req), headers=headers)
         return r
-
-    # change name - __api_create_template_request
-    # def templates_post_json_file(self, request_file):
-    #     file = open(self.settings_create_template[request_file], 'r')
-    #     json_input = file.read()
-    #     requests_json = json.loads(json_input)
-    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-    #     r = requests.post(self.settings_create_template['Base_Url'] + 'templates', data=json.dumps(requests_json), headers=headers)
-    #     return r
-
-    # change name - __delete_template_created
-    # def templates_id_delete(self, template_guid):
-    #     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-    #     r = requests.delete(self.settings_create_template['Base_Url'] + 'templates/' + template_guid, headers=headers)
-    #     assert r.status_code == 200
 
     # Admins
 
@@ -231,10 +221,105 @@ class WesignMethodsApi:
         r = requests.get(self.settings['Base_Url'] + 'selfsign/download/smartcard', headers=headers)
         return r
 
-    def _self_sign_post_json_file(self, request_file: str):
+    # Document collections
+
+    def document_collections_post_json_file(self, request_file: str):
         file = open(self.settings[request_file], 'r')
         json_input = file.read()
         requests_json = json.loads(json_input)
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.post(self.settings['Base_Url'] + 'selfsign', data=json.dumps(requests_json), headers=headers)
+        r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def document_collections_post_json_file_using_twillio(self, request_file: str):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token_twillio}
+        r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def document_collections_id_delete(self, document_collection_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.delete(self.settings['Base_Url'] + '/documentcollections/' + document_collection_id,
+                            headers=headers)
+        return r
+
+    def document_collections_id_cancel_put(self, document_collection_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + '/documentcollections/' + document_collection_id + '/cancel',
+                         headers=headers)
+        return r
+
+    def document_collections_id_signers_signerId_method_sendingMethod_get(self, document_collection_id: str, signer_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings[
+                             'Base_Url'] + '/documentcollections/' + document_collection_id + '/signers/' + signer_id + '/method/2?shouldSend=true',
+                         headers=headers)
+        return r
+
+    def document_collections_id_signer_signerId_replace_put(self, document_collection_id: str, signer_id: str, request_file: str):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings[
+                             'Base_Url'] + '/documentcollections/' + signer_id + '/signer/' + document_collection_id + '/replace',
+                         data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def document_collections_share_post_json_file(self, request_file: str):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + '/documentcollections/' + 'share', data=json.dumps(requests_json),
+                          headers=headers)
+        return r
+
+    def document_collections_post_dict(self, data: dict):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(data), headers=headers)
+        return r
+
+    def document_collections_post_dict_using_signer1(self, data: dict):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.signer1}
+        r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(data), headers=headers)
+        return r
+
+    def document_collections_delete_batch_put_dict(self, del_req: dict):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + '/documentcollections/deletebatch', data=json.dumps(del_req),
+                              headers=headers)
+        return r
+
+    def document_collections_id_get(self, document_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + '/documentcollections/' + document_id, headers=headers)
+        return r
+
+    def document_collections_id_json_get(self, document_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + '/documentcollections/' + document_id + '/json', headers=headers)
+        return r
+
+    def document_collections_download_batch_post_ids(self, list_of_ids: list):
+        ids_str = ""
+        for x in range(len(list_of_ids)-1):
+            ids_str = ids_str + '"' + list_of_ids[x] + '",'
+        ids_str = ids_str + '"' + list_of_ids[len(list_of_ids)-1] + '"'
+        data = '{"ids": [' + ids_str + ']}'
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.post(self.settings['Base_Url'] + '/documentcollections/downloadbatch/', data=data, headers=header)
+        return new_request
+
+    def document_collections_get_parameters(self, parameters: dict):
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.get(self.settings['Base_Url'] + '/documentcollections/', params=parameters,
+                                   headers=header)
+        return new_request
+
+    def document_collections_id_get_fields_xml(self, document_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + '/documentcollections/' + document_id, headers=headers)
         return r

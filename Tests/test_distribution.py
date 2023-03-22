@@ -4,7 +4,6 @@ import warnings
 from pathlib import Path
 from time import sleep
 import pytest
-import requests
 import json
 import names
 import openpyxl
@@ -13,20 +12,25 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from shared import Shared
-from status_codes import StatusCode, ResultCode
+from Enums.status_codes import StatusCode
 from telnetlib import EC
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from all_api_methods import WesignMethodsApi
+from Common.all_api_methods import WesignMethodsApi
 
 
 @pytest.mark.flaky(max_runs=3)
 class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def setUp(self):
-        p = Path(__file__).with_name('DistributeCollection.json')
-        with open(p) as f:
+        # p = Path(__file__).with_name('DistributeCollection.json')
+        # with open(p) as f:
+        #     self.settings = json.load(f)
+
+        p = Path(__file__).resolve().parent.parent
+        file_path = p / "Settings\\DistributeCollection.json"
+        with open(file_path) as f:
             self.settings = json.load(f)
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)

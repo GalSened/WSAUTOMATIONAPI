@@ -5,9 +5,10 @@ class StatusCode:
     UNAUTHORIZED = 401
 
 class ResultCode:
-    INVALID_CREDENTIAL = 2, "Invalid credential"
+    INVALID_CREDENTIAL = "Invalid credential"
     PLEASE_SPECIFY_A_VALID_EMAIL = 'Please specify a valid Email'
-    PLEASE_SPECIFY_AN_EMAIL = 'Please specify an Email'
+    PLEASE_SPECIFY_AN_EMAIL = 'Please specify an Email or Username'
+    MINIMUN_LENGTH_OF_EMAIL_OR_USERNAME = "Minimun length of email/username is 6 characters"
     FIELD_NAME_NOT_EXIST = 'Field name not exist'
     PLEASE_SPECIFY_FIELD_NAME_IN_READ_ONLY_FIELDS = 'Field name not exist'
     READ_ONLY_FIELDS_SHOULD_CONTAIN_VALUE = "Read only fields should contain value"

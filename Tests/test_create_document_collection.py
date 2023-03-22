@@ -6,29 +6,30 @@ import warnings
 from pathlib import Path
 from time import sleep
 import pytest
-import requests
 import json
+import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from shared import Shared
-from status_codes import StatusCode, ResultCode
+from Enums.status_codes import StatusCode, ResultCode
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
-import re
 import PyPDF2 as pypdf
-import base64
-from  all_api_methods import WesignMethodsApi
+from Common.all_api_methods import WesignMethodsApi
 
 @pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
-        p = Path(__file__).with_name('DocumentCollectionSettings.json')
-        with open(p) as f:
+        # p = Path(__file__).with_name('DocumentCollectionSettings.json')
+        # with open(p) as f:
+        #     self.settings = json.load(f)
+        p = Path(__file__).resolve().parent.parent
+        file_path = p / "Settings\\DocumentCollectionSettings.json"
+        with open(file_path) as f:
             self.settings = json.load(f)
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
@@ -2508,32 +2509,32 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "phoneExtension": "+972",
               "signerFields": [
                 {
-                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "templateId": "49d25a80-590f-4cb9-95d9-08db2ad069f9",
                   "fieldName": "Signature_W4mgA"
 
                 },
                 {
-                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "templateId": "49d25a80-590f-4cb9-95d9-08db2ad069f9",
                   "fieldName": "Text_kIYZg",
                   "fieldValue": ""
                 },
                 {
-                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "templateId": "49d25a80-590f-4cb9-95d9-08db2ad069f9",
                   "fieldName": "Phone_fsnbU",
                   "fieldValue": ""
                 },
                 {
-                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "templateId": "49d25a80-590f-4cb9-95d9-08db2ad069f9",
                   "fieldName": "Number_dwEco",
                   "fieldValue": ""
                 },
                 {
-                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "templateId": "49d25a80-590f-4cb9-95d9-08db2ad069f9",
                   "fieldName": "Date_WHnyO",
                   "fieldValue": ""
                 },
                 {
-                  "templateId": "637758b2-3999-4630-09ed-08db0f51077f",
+                  "templateId": "49d25a80-590f-4cb9-95d9-08db2ad069f9",
                   "fieldName": "Email_dTxM3",
                   "fieldValue": ""
                 }
@@ -2543,7 +2544,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
           "documentName": document,
           "documentMode": 1,
           "templates": [
-            "637758b2-3999-4630-09ed-08db0f51077f"
+            "49d25a80-590f-4cb9-95d9-08db2ad069f9"
           ]
         }
         r = WesignMethodsApi.document_collections_post_dict_using_signer1(self, payload)
@@ -2910,13 +2911,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(2)
         self.driver.find_element(By.XPATH,"//*[@type='email']").send_keys('Test@comda.co.il')
         sleep(2)
-        self.driver.find_element(By.XPATH,"(//*[@type='text'])[1]").send_keys('234567')
+        self.driver.find_element(By.XPATH,"(//*[@type='text'])[2]").send_keys('234567')
         sleep(2)
         self.driver.find_element(By.XPATH,"//*[@type='tel']").send_keys('050000000')
         sleep(2)
         self.driver.find_element(By.XPATH,"//*[@type='number']").send_keys('5678')
         sleep(2)
-        self.driver.find_element(By.XPATH,"(//*[@type='text'])[2]").send_keys('TestFromComda')
+        self.driver.find_element(By.XPATH,"(//*[@type='text'])[1]").send_keys('TestFromComda')
         sleep(2)
 
 
