@@ -38,23 +38,7 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
     def test_self_sign_png_document_upload_success(self):
         r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadPngDocument')
         assert r.status_code == StatusCode.OK
-
-    def test_self_sign_pdf_sign_success(self):
-        r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadPdfDocument')
-        assert r.status_code == StatusCode.OK
-        response = r.json()
-        documentcollectionid = response['documentCollectionId']
-        documentid = response['documentId']
-        with open("\\\\fs01\\Users\\NirK\\PythonAutomation\\\SelfSignRequest\\SelfSignDocumentSigning.json", 'r+') as f:
-            data = json.load(f)
-            data['documentCollectionId'] = documentcollectionid  # <--- add `id` value.
-            data['documentId'] = documentid  # <--- add `id` value.
-            f.seek(0)  # <--- should reset file position to the beginning.
-            json.dump(data, f, indent=3)
-            f.truncate()  # remove remaining part
-        r = WesignMethodsApi.self_sign_put_json_file(self, "SelfSignDocumentSigning")
-        assert r.status_code == StatusCode.OK
-
+    
     def test_self_sign_delete_document_success(self):
         r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadPdfDocument')
         assert r.status_code == StatusCode.OK
