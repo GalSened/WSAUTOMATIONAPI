@@ -4,9 +4,10 @@ from pathlib import Path
 from time import sleep
 import pytest
 import json
-from shared import Shared
-from Enums.status_codes import StatusCode
+from Enums.status_codes import StatusCode, ResultCode
 from Common.all_api_methods import WesignMethodsApi
+from shared import Shared
+
 
 @pytest.mark.flaky(max_runs=3)
 class WesignApiSelfSignTestTests(unittest.TestCase):

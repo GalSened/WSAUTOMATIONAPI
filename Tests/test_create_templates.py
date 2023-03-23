@@ -4,11 +4,12 @@ from pathlib import Path
 from time import sleep
 import pytest
 import json
-from shared import Shared
 from Enums.status_codes import StatusCode, ResultCode
 import logging
 import uuid
 from Common.all_api_methods import WesignMethodsApi
+from shared import Shared
+
 
 @pytest.mark.flaky(max_runs=3)
 class WesignApiCreateTemplateTests(unittest.TestCase):

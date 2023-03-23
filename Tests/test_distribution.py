@@ -11,14 +11,14 @@ import base64
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
-from shared import Shared
-from Enums.status_codes import StatusCode
+from Enums.status_codes import StatusCode, ResultCode
 from telnetlib import EC
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Common.all_api_methods import WesignMethodsApi
+from shared import Shared
 
 
 @pytest.mark.flaky(max_runs=3)

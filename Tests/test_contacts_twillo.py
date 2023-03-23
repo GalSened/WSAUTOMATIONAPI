@@ -5,8 +5,9 @@ from time import sleep
 import pytest
 import requests
 import json
-from shared import Shared
 from Enums.status_codes import StatusCode, ResultCode
+from shared import Shared
+
 
 @pytest.mark.flaky(max_runs=3)
 class WesignContactsApi(unittest.TestCase):

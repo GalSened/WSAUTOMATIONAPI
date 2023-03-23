@@ -3,10 +3,11 @@ import warnings
 from pathlib import Path
 from time import sleep
 import json
-from Enums.status_codes import StatusCode
-from Enums.status_codes import ResultCode
+from Enums.status_codes import StatusCode, ResultCode
 import pytest
 from Common.all_api_methods import WesignMethodsApi
+from shared import Shared
+
 
 @pytest.mark.flaky(max_runs=3)
 class WesignApiLoginTests(unittest.TestCase):
@@ -33,9 +34,7 @@ class WesignApiLoginTests(unittest.TestCase):
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['error']
-        status_response = r.json()['status']
-        assert status_response == ResultCode.INVALID_CREDENTIAL[0]
-        assert json_response[0] == ResultCode.INVALID_CREDENTIAL[1]
+        assert json_response[0] == ResultCode.INVALID_CREDENTIAL
 
     def test_login_invalid_email(self):
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginRequestInvalidEmail')

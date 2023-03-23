@@ -3,10 +3,11 @@ import warnings
 from pathlib import Path
 from time import sleep
 import json
-from shared import Shared
 from Enums.status_codes import StatusCode, ResultCode
 import pytest
 from Common.all_api_methods import WesignMethodsApi
+from shared import Shared
+
 
 @pytest.mark.flaky(max_runs=3)
 class WesignApiUpdateTemplateTests(unittest.TestCase):

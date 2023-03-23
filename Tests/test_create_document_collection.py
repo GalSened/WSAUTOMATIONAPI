@@ -7,12 +7,10 @@ from pathlib import Path
 from time import sleep
 import pytest
 import json
-import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
-from shared import Shared
 from Enums.status_codes import StatusCode, ResultCode
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,6 +18,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import PyPDF2 as pypdf
 from Common.all_api_methods import WesignMethodsApi
+from shared import Shared
+
+
 
 @pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
