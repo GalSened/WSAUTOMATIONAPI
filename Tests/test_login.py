@@ -29,6 +29,12 @@ class WesignApiLoginTests(unittest.TestCase):
         login = json.loads(r.content)
         return login['token']
 
+    def test_login_username_success(self):
+        r = WesignMethodsApi.users_login_post_json_file(self, 'LoginUserNameRequestSuccess')
+        assert r.status_code == StatusCode.OK
+        login = json.loads(r.content)
+        return login['token']
+
     def test_login_invalid_password(self):
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginRequestInvalidPassword')
         assert r.status_code == StatusCode.BAD_REQUEST
