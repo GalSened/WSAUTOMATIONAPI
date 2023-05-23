@@ -42,3 +42,4 @@ class ResultCode:
     NAME_SHOULD_CONTAIN_ONLY_CHARACTERS = 'Name should contain only characters'
     SMS_PROVIDER_ERROR = "Your SMS provider not support sending SMS globally"
     INVALID_FORMAT = 'Cannot parse *.xlsx file to contacts'
+    SAME_FIELD_NAME = 'There is field that assign to more than one signer'

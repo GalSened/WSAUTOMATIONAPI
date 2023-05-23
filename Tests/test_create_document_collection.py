@@ -7,10 +7,14 @@ from pathlib import Path
 from time import sleep
 import pytest
 import json
+
+import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
+
+import Enums.status_codes
 from Enums.status_codes import StatusCode, ResultCode
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -2602,6 +2606,52 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 EC.presence_of_element_located((By.XPATH, "//table/tbody/tr[2]/td[6]")))
             signed_status = self.driver.find_element(By.XPATH, "//table/tbody/tr[2]/td[6]")
             assert signed_status.text == 'Server signed', "Signed status is incorrect"
+
+    def test_send_document_with_same_signature_field_name(self):
+        request = {
+              "signers": [
+                {
+                  "otpMode": 0,
+                  "authenticationMode": 0,
+                  "contactName": "nirk",
+                  "contactMeans": "nirk@comsign.co.il",
+                  "sendingMethod": 2,
+                  "phoneExtension": "+972",
+                  "signerFields": [
+                    {
+                      "templateId": "4e8f5005-7c8b-4f4b-2569-08db02cf2bee",
+                      "fieldName": "Signature_89a1k"
+                    }
+                  ]
+                },
+                {
+                  "otpMode": 0,
+                  "authenticationMode": 0,
+                  "contactName": "devtest1 devtest1",
+                  "contactMeans": "devtest1@comda.co.il",
+                  "sendingMethod": 2,
+                  "phoneExtension": "+972",
+                  "signerFields": [
+                    {
+                      "templateId": "4e8f5005-7c8b-4f4b-2569-08db02cf2bee",
+                      "fieldName": "Signature_89a1k"
+                    }
+                  ]
+                }
+              ],
+              "documentName": "Dummy3Pages",
+              "documentMode": 1,
+              "templates": [
+                "4e8f5005-7c8b-4f4b-2569-08db02cf2bee"
+              ]
+            }
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(request),headers=headers)
+        res = r.json()
+        error = res['errors']['Signers'][0]
+        assert str(error) == Enums.status_codes.ResultCode.SAME_FIELD_NAME
+
+
 
     # def test_delete_all_documents(self):
     #     r = self.__api_get_all_document_collection()
