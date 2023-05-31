@@ -2651,6 +2651,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         error = res['errors']['Signers'][0]
         assert str(error) == Enums.status_codes.ResultCode.SAME_FIELD_NAME
 
+    # def test_download_document_collection_and_save_as_pdf(self):
+    #     headers = {'content-type': 'application/pdf', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.get(self.settings['Base_Url'] + '/documentcollections/0f80163e-ca54-4873-5bac-08db5c2fc008',headers=headers)
+    #     file = open("myfile.pdf", "wb")
+    #     file.write(r.content)
+    #     file.close()
+
 
 
     # def test_delete_all_documents(self):
