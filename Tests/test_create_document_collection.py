@@ -732,7 +732,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self._change_values_in_file("DocumentCollectionDuplicatedFields", template, document_name)
         send_distribution = WesignMethodsApi.document_collections_post_json_file(self, "DocumentCollectionDuplicatedFields")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(1)
+        sleep(15)
         self.driver.refresh()
         sleep(2)
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
