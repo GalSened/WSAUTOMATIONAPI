@@ -81,10 +81,10 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_comda_mail_box("devtest10@comda.co.il", self.settings['comda_mail_password'])
         sleep(8)
         WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '{} has been completed by all participants')]".format(self.document_name))))
-        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has viewed {}')]".format(self.settings['dev_email'], self.document_name)), "confirmation email that signer viewed the document wasn't received"
-        assert self.driver.find_element(By.XPATH, "//*[contains(text(), '({}) has signed {}')]".format(self.settings['dev_email'], self.document_name)), "confirmation email that signer signed the document wasn't received"
+        assert self.driver.find_element(By.XPATH, f"//*[contains(text(), '({self.settings['dev_email']}) has viewed {self.document_name}')]")
+        assert self.driver.find_element(By.XPATH, f"//*[contains(text(), '({self.settings['dev_email']}) has signed {self.document_name}')]")
 
-    #Bug number = WES-1021
+        #Bug number = WES-1021
     def test_api_sending_distribution_document_with_duplicated_signer_email_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK

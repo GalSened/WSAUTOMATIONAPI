@@ -589,7 +589,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             ],
             "signers": [
                 {
-                    "contactId": "d5554e18-25bf-4572-dee3-08dac0859eef",
+                    "contactId": "999a7796-8687-4291-1471-08db6807b765",
                     "sendingMethod": 2,
                     "signerFields": [
                         {
@@ -627,7 +627,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             ],
             "signers": [
                 {
-                    "contactId": "d5554e18-25bf-4572-dee3-08dac0859eef",
+                    "contactId": "999a7796-8687-4291-1471-08db6807b765",
                     "sendingMethod": 2,
                     "signerFields": [
                         {
@@ -782,7 +782,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             ],
             "signers": [
                 {
-                    "contactId": "d5554e18-25bf-4572-dee3-08dac0859eef",
+                    "contactId": "999a7796-8687-4291-1471-08db6807b765",
                     "sendingMethod": 2,
                     "signerFields": [
                         {
@@ -828,7 +828,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             ],
             "signers": [
                 {
-                    "contactId": "d5554e18-25bf-4572-dee3-08dac0859eef",
+                    "contactId": "999a7796-8687-4291-1471-08db6807b765",
                     "sendingMethod": 2,
                     "signerFields": [
                         {
@@ -874,7 +874,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             ],
             "signers": [
                 {
-                    "contactId": "d5554e18-25bf-4572-dee3-08dac0859eef",
+                    "contactId": "999a7796-8687-4291-1471-08db6807b765",
                     "sendingMethod": 2,
                     "signerFields": [
                         {
@@ -938,7 +938,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             ],
             "signers": [
                 {
-                    "contactId": "d5554e18-25bf-4572-dee3-08dac0859eef",
+                    "contactId": "999a7796-8687-4291-1471-08db6807b765",
                     "sendingMethod": 2,
                     "signerFields": [
                         {
@@ -1008,7 +1008,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 ],
                 "signers": [
                     {
-                        "contactId": "d5554e18-25bf-4572-dee3-08dac0859eef",
+                        "contactId": "999a7796-8687-4291-1471-08db6807b765",
                         "sendingMethod": 2,
                         "signerFields": [
                             {
