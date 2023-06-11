@@ -26,7 +26,7 @@ from shared import Shared
 
 
 
-@pytest.mark.flaky(max_runs=6)
+@pytest.mark.flaky(max_runs=3)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
         # p = Path(__file__).with_name('DocumentCollectionSettings.json')
@@ -2336,6 +2336,42 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         }
         r = WesignMethodsApi.document_collections_post_dict(self, payload)
         res = r.json()
+        self.driver.get(self.settings['wesign_url'])
+        self.__login_wesign()
+        sleep(1)
+        driver = self.driver
+        WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "button--sent-ent")))
+        my_documents_section = self.driver.find_element(By.CLASS_NAME, "button--sent-ent")
+        my_documents_section.click()
+        driver = self.driver
+        sleep(3)
+        search_bar = WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.XPATH, "//input[@type='search']")))
+        search_bar.send_keys(self.document_name)
+        sleep(3)
+        tds = self.driver.find_elements(By.XPATH, "//tr/td[3]")
+        row_index = 2
+        for name in tds:
+            if name.text == self.document_name:
+                row = self.driver.find_element(By.XPATH, f"//table/tbody/tr[{row_index}]")
+                sleep(4)
+                row.click()
+                sleep(3)
+                row.click()
+                sleep(5)
+                row.click()
+                sleep(3)
+                row.click()
+                sleep(5)
+                row.click()
+                sleep(5)
+                row.click()
+        index = 2
+        sent_document_status = self.driver.find_elements(By.XPATH, "//td/table/tbody/tr/td[3]")
+        for sent_status in sent_document_status:
+            recipient_email = self.driver.find_element(By.XPATH,f"//table/tbody/tr[3]/td/table/tbody/tr[{index}]/td[2]")
+            assert sent_status.text != "", f"Sent status not displayed to {recipient_email.text}"
+            index += 1
         for x in res['signerLinks']:
             sleep(2)
             self.driver.get(x['link'])
@@ -2371,7 +2407,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             assert len(signing_complete_msg) == 1
         sleep(2)
         self.driver.get(self.settings['wesign_url'])
-        self.__login_wesign()
         sleep(1)
         driver = self.driver
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "button--sent-ent")))
@@ -2391,12 +2426,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 sleep(4)
                 row.click()
                 sleep(3)
-        sent_document_status = self.driver.find_elements(By.XPATH, "//td/table/tbody/tr/td[3]")
-        index = 2
-        for sent_status in sent_document_status:
-            recipient_email = self.driver.find_element(By.XPATH,f"//table/tbody/tr[3]/td/table/tbody/tr[{index}]/td[2]")
-            assert sent_status.text != "", f"Sent status not displayed to {recipient_email.text}"
-            index += 1
         viewed_document_status = self.driver.find_elements(By.XPATH, "//td/table/tbody/tr/td[4]")
         index = 2
         for viewed_status in viewed_document_status:
