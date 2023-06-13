@@ -41,11 +41,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__setup()
         sleep(2)
         emails = [self.settings['dev_email']]
-        self.__enter_name_and_email_to_xlsx_file(self.settings["empty_xlsx_file"], self.settings["empty_file_with_no_fields_Copy"], emails)
+        self.__enter_name_and_email_to_xlsx_file(self.settings["empty_xlsx_file"],
+                                                 self.settings["empty_file_with_no_fields_Copy"], emails)
         data = open(self.settings["empty_file_with_no_fields_Copy"], "rb").read()
         encode_signers_to_base64 = base64.b64encode(data)
         signers_base64 = encode_signers_to_base64.decode('utf-8')
-        signers = WesignMethodsApi.distribution_signers_post_xlsx_file(self, {"base64File": "data:application/vnd.ms-excel;base64," + signers_base64 + ""})
+        signers = WesignMethodsApi.distribution_signers_post_xlsx_file(self, {
+            "base64File": "data:application/vnd.ms-excel;base64," + signers_base64 + ""})
         signers_json = signers.json()
         assert signers.status_code == StatusCode.OK
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
@@ -72,7 +74,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
         sleep(2)
-        self.driver.find_element(By.XPATH,"//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
+        self.driver.find_element(By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
         sleep(3)
@@ -80,11 +82,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(4)
         self.__change_comda_mail_box("devtest10@comda.co.il", self.settings['comda_mail_password'])
         sleep(8)
-        WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '{} has been completed by all participants')]".format(self.document_name))))
-        assert self.driver.find_element(By.XPATH, f"//*[contains(text(), '({self.settings['dev_email']}) has viewed {self.document_name}')]")
-        assert self.driver.find_element(By.XPATH, f"//*[contains(text(), '({self.settings['dev_email']}) has signed {self.document_name}')]")
+        WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH,
+                                                                             "//*[contains(text(), '{} has been completed by all participants')]".format(
+                                                                                 self.document_name))))
+        assert self.driver.find_element(By.XPATH,
+                                        f"//*[contains(text(), '({self.settings['dev_email']}) has viewed {self.document_name}')]")
+        assert self.driver.find_element(By.XPATH,
+                                        f"//*[contains(text(), '({self.settings['dev_email']}) has signed {self.document_name}')]")
 
-        #Bug number = WES-1021
+        # Bug number = WES-1021
+
     def test_api_sending_distribution_document_with_duplicated_signer_email_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -109,13 +116,15 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_file_with_users_and_field")
         assert send_distribution.status_code == StatusCode.OK
 
-    def test_sending_distribution_email_with_valid_email_value_and_all_fields_in_template_and_no_fields_in_xlsx_success(self):
+    def test_sending_distribution_email_with_valid_email_value_and_all_fields_in_template_and_no_fields_in_xlsx_success(
+            self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
         template = template_json['templateId']
         WesignMethodsApi.templates_id_put_json_file(self, "fields_for_template_not_in_xlsx_file", template)
-        signers = WesignMethodsApi.distribution_signers_post_json_file(self, "signers_base64_for_templates_with_fields_no_fields_in_xlsx_file")
+        signers = WesignMethodsApi.distribution_signers_post_json_file(self,
+                                                                       "signers_base64_for_templates_with_fields_no_fields_in_xlsx_file")
         signers_json = signers.json()
         self._change_values_in_file("fields_only_in_template", template, signers_json['signers'])
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "fields_only_in_template")
@@ -151,11 +160,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WesignMethodsApi.templates_id_put_json_file(self, "template_with_invalid_fields", template)
         signers = WesignMethodsApi.distribution_signers_post_json_file(self, "signers_for_template_with_invalid_values")
         signers_json = signers.json()
-        self._change_values_in_file("distribute_file_for_template_with_invalid_values", template, signers_json['signers'])
-        send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_file_for_template_with_invalid_values")
+        self._change_values_in_file("distribute_file_for_template_with_invalid_values", template,
+                                    signers_json['signers'])
+        send_distribution = WesignMethodsApi.distribution_post_json_file(self,
+                                                                         "distribute_file_for_template_with_invalid_values")
         assert send_distribution.status_code == StatusCode.BAD_REQUEST
 
-    #Bug number = WES-1046/WES-1042
+    # Bug number = WES-1046/WES-1042
     def test_api_sending_distribution_with_xlsx_file_with_fields_but_no_fields_in_template(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -164,7 +175,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         signers = WesignMethodsApi.distribution_signers_post_json_file(self, "signers_for_template_with_fields")
         signers_json = signers.json()
         self._change_values_in_file("distribute_file_with_users_and_fields_in_xlsx", template, signers_json['signers'])
-        send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_file_with_users_and_fields_in_xlsx")
+        send_distribution = WesignMethodsApi.distribution_post_json_file(self,
+                                                                         "distribute_file_with_users_and_fields_in_xlsx")
         assert send_distribution.status_code == StatusCode.BAD_REQUEST
 
     def test_api_distribution_seven_recipients_success(self):
@@ -196,35 +208,45 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         signers = WesignMethodsApi.distribution_signers_post_json_file(self, "signer_data_without_means")
         assert signers.status_code == StatusCode.BAD_REQUEST
 
-    #Bug number = WES-1106
+    # Bug number = WES-1106
     def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
         self.__setup()
         sleep(3)
         emails = [self.settings['dev_email'], self.settings['second_dev_email']]
-        self.__enter_name_and_email_to_xlsx_file(self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit"], self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"], emails)
+        self.__enter_name_and_email_to_xlsx_file(
+            self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit"],
+            self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"],
+            emails)
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
         template = template_json['templateId']
         sleep(1)
-        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "Distribute_duplicated_fields_for_template", template)
+        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self,
+                                                                          "Distribute_duplicated_fields_for_template",
+                                                                          template)
         assert fields_for_template.status_code == StatusCode.OK
         sleep(1)
-        data = open(self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"], "rb").read()
+        data = open(
+            self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit - Copy"],
+            "rb").read()
         sleep(1)
         encode_signers_to_base64 = base64.b64encode(data)
         sleep(1)
         signers_base64 = encode_signers_to_base64.decode('utf-8')
         sleep(2)
-        signers = WesignMethodsApi.distribution_signers_post_xlsx_file(self, {"base64File": "data:application/vnd.ms-excel;base64," + signers_base64 + ""})
+        signers = WesignMethodsApi.distribution_signers_post_xlsx_file(self, {
+            "base64File": "data:application/vnd.ms-excel;base64," + signers_base64 + ""})
         sleep(2)
         signers_json = signers.json()
         sleep(2)
         assert signers.status_code == StatusCode.OK
         sleep(2)
-        self._change_values_in_file("DistributeSigners_duplicated_fields_in_xlsx_with_same_name", template, signers_json['signers'])
+        self._change_values_in_file("DistributeSigners_duplicated_fields_in_xlsx_with_same_name", template,
+                                    signers_json['signers'])
         sleep(2)
-        send_distribution = WesignMethodsApi.distribution_post_json_file(self, "DistributeSigners_duplicated_fields_in_xlsx_with_same_name")
+        send_distribution = WesignMethodsApi.distribution_post_json_file(self,
+                                                                         "DistributeSigners_duplicated_fields_in_xlsx_with_same_name")
         assert send_distribution.status_code == StatusCode.OK
         sleep(2)
         self.__enter_comda_mail(self.settings['second_dev_email'], self.settings['comda_mail_password'])
@@ -241,10 +263,10 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']")))
         finish_button = "//button[@class='ct-button--titlebar-primary ng-star-inserted']"
-        self.driver.find_element(By.XPATH,finish_button).click()
+        self.driver.find_element(By.XPATH, finish_button).click()
         sleep(1)
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
         assert len(signing_complete_msg) == 1
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[0])
@@ -266,7 +288,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, finish_button).click()
         sleep(1)
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
-        signing_complete_msg = self.driver.find_elements(By.XPATH,"//main/h2")
+        signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
         assert len(signing_complete_msg) == 1
 
     def test_distribution_OTP_xlsx_file_success(self):
@@ -287,7 +309,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(1)
-        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'OTP' )] ")))
+        WebDriverWait(self.driver, 20).until(
+            EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'OTP' )] ")))
         OTP = self.driver.find_element(By.XPATH, "//*[contains(text(), 'OTP' )] ")
         assert OTP != 0, " no OTP requirement "
 
@@ -300,7 +323,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert template.status_code == StatusCode.OK
         template_json = template.json()
         template = template_json['templateId']
-        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "values_for_template",template)
+        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "values_for_template", template)
         assert fields_for_template.status_code == StatusCode.OK
         name = names.get_full_name()
         document_name = uuid.uuid4().hex
@@ -312,21 +335,20 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        get_value_from_text_field = self.driver.find_element(By.XPATH,"//*[@type='text']")
-        assert get_value_from_text_field.get_attribute('value') == "old erech" , "value wasnt added to field"
+        get_value_from_text_field = self.driver.find_element(By.XPATH, "//*[@type='text']")
+        assert get_value_from_text_field.get_attribute('value') == "old erech", "value wasnt added to field"
         fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "changed_values_for_template", template)
         assert fields_for_template.status_code == StatusCode.OK
         self.driver.switch_to.window(self.driver.window_handles[0])
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'SIGN NOW')]")))
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
-        get_new_value_from_text_field = self.driver.find_element(By.XPATH,"//*[@type='text']")
-        assert get_new_value_from_text_field.get_attribute('value') == "old erech" , "value changed"
+        get_new_value_from_text_field = self.driver.find_element(By.XPATH, "//*[@type='text']")
+        assert get_new_value_from_text_field.get_attribute('value') == "old erech", "value changed"
 
-
-    #Bug number = WES-1041
+    # Bug number = WES-1041
     def test_distribution_xlsx_file_with_empty_rows_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -335,13 +357,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         data = open(self.settings["distribution_list_empty_rows"], "rb").read()
         encode_signers_to_base64 = base64.b64encode(data)
         signers_base64 = encode_signers_to_base64.decode('utf-8')
-        signers = WesignMethodsApi.distribution_signers_post_xlsx_file(self, {"base64File": "data:application/vnd.ms-excel;base64," + signers_base64 +"" })
+        signers = WesignMethodsApi.distribution_signers_post_xlsx_file(self, {
+            "base64File": "data:application/vnd.ms-excel;base64," + signers_base64 + ""})
         signers_json = signers.json()
         assert signers.status_code == StatusCode.OK
         self._change_values_in_file("distribute_xlsx_with_empty_rows", template, signers_json['signers'])
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_xlsx_with_empty_rows")
         assert send_distribution.status_code == StatusCode.OK
-
 
     # # Bug number = WES-1019
     def test_distribution_add_date_field_with_value_validate_date_displayed_to_signer_success(self):
@@ -364,11 +386,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        get_value_from_date_field = self.driver.find_element(By.XPATH,"//*[@type='date']")
+        get_value_from_date_field = self.driver.find_element(By.XPATH, "//*[@type='date']")
         assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
 
     # Bug number = WES-1050
-    def test_distribution_add_date_field_and_number_with_value_validate_date_and_number_displayed_to_signer_success(self):
+    def test_distribution_add_date_field_and_number_with_value_validate_date_and_number_displayed_to_signer_success(
+            self):
         self.token = Shared.login_request(self)
         self.__setup()
         self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
@@ -376,7 +399,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert template.status_code == StatusCode.OK
         template_json = template.json()
         template = template_json['templateId']
-        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "fields_for_template_date_and_number", template)
+        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "fields_for_template_date_and_number",
+                                                                          template)
         assert fields_for_template.status_code == StatusCode.OK
         name = names.get_full_name()
         document_name = uuid.uuid4().hex
@@ -388,7 +412,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        get_value_from_date_field = self.driver.find_element(By.XPATH,"//*[@type='date']")
+        get_value_from_date_field = self.driver.find_element(By.XPATH, "//*[@type='date']")
         get_value_from_number_field = self.driver.find_element(By.ID, "Number")
         assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
         assert get_value_from_number_field.get_attribute('value') == "1234", "Check number field"
@@ -402,15 +426,17 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert template.status_code == StatusCode.OK
         template_json = template.json()
         template = template_json['templateId']
-        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "field_for_template_number_field", template)
+        fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "field_for_template_number_field",
+                                                                          template)
         assert fields_for_template.status_code == StatusCode.OK
-        signers = WesignMethodsApi.distribution_signers_post_json_file(self, "signer_base64_for_distribution_with_fields_from_xlsx_and_template")
+        signers = WesignMethodsApi.distribution_signers_post_json_file(self,
+                                                                       "signer_base64_for_distribution_with_fields_from_xlsx_and_template")
         assert signers.status_code == StatusCode.OK
         signers_json = signers.json()
         file_name = uuid.uuid4().hex
         with open(self.settings["distribute_file_with_number_field"], 'r+') as f:
             data = json.load(f)
-            data["name"] = file_name # <--- add `id` value.
+            data["name"] = file_name  # <--- add `id` value.
             data["templateId"] = template
             data["signers"] = signers_json['signers']
             f.seek(0)  # <--- should reset file position to the beginning.
@@ -424,7 +450,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
         get_value_from_number_field = self.driver.find_element(By.ID, "Number")
-        assert get_value_from_number_field.get_attribute('value') == "1234", "took value from template and not from xlsx file"
+        assert get_value_from_number_field.get_attribute(
+            'value') == "1234", "took value from template and not from xlsx file"
 
     # bug number  =  WES-1110
     # bug number  =  WES-1110
@@ -448,8 +475,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
-        get_value_from_text_field = self.driver.find_element(By.XPATH,"//*[@type='text']")
-        assert get_value_from_text_field.get_attribute('value') == "new erech" , "value changed"
+        get_value_from_text_field = self.driver.find_element(By.XPATH, "//*[@type='text']")
+        assert get_value_from_text_field.get_attribute('value') == "new erech", "value changed"
 
     def tearDown(self):
         try:
@@ -515,9 +542,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         xfile = openpyxl.load_workbook(original_file)
         for row in range(len(emails)):
             sheet = xfile.get_sheet_by_name('Sheet1')
-            sheet['A{}'.format(row+2)] = names.get_first_name()
-            sheet['B{}'.format(row+2)] = names.get_last_name()
-            sheet['C{}'.format(row+2)] = '{}'.format(emails[row])
+            sheet['A{}'.format(row + 2)] = names.get_first_name()
+            sheet['B{}'.format(row + 2)] = names.get_last_name()
+            sheet['C{}'.format(row + 2)] = '{}'.format(emails[row])
             sleep(3)
         xfile.save(copied_file)
 
@@ -525,14 +552,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         # self.driver = webdriver.Chrome(self.settings["chrome_driver"])
         self.driver.get('https://mail.google.com/')
         WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID, "identifierId")))
-        self.driver.find_element(By.XPATH,"//input[@type='email']").send_keys(gmail_user_name)
-        self.driver.find_element(By.ID,"identifierNext").click()
-        password = WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//input[@type='password']")))
+        self.driver.find_element(By.XPATH, "//input[@type='email']").send_keys(gmail_user_name)
+        self.driver.find_element(By.ID, "identifierNext").click()
+        password = WebDriverWait(self.driver, 20).until(
+            EC.element_to_be_clickable((By.XPATH, "//input[@type='password']")))
         password.send_keys(gmail_password)
-        self.driver.find_element(By.XPATH,"//div[@id='passwordNext']").click()
+        self.driver.find_element(By.XPATH, "//div[@id='passwordNext']").click()
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "qj ")))
-
-
 
         # try:
         #     self.driver.find_element_by_xpath("//span[contains(text(),'devtest')]").is_displayed()
@@ -550,11 +576,13 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             sleep(3)
             refresh_button = self.driver.find_element(By.XPATH, "//*[contains(text(),'Refresh')]")
             refresh_button.click()
-            WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
-            click_on_email_title = WebDriverWait(driver, 80).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
+            click_on_email_title = WebDriverWait(driver, 80).until(
+                EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
             click_on_email_title.click()
             WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iFrameResizer0")))
-            self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
+            self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
         except:
             sleep(3)
             refresh_button = self.driver.find_element(By.XPATH, "//*[contains(text(),'Refresh')]")
@@ -567,7 +595,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iFrameResizer0")))
             self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
 
-    def _change_values_in_file(self, file_name, tempID,signer):
+    def _change_values_in_file(self, file_name, tempID, signer):
         with open(self.settings[file_name], 'r+') as f:
             data = json.load(f)
             data["name"] = uuid.uuid4().hex  # <--- add `id` value.
@@ -588,37 +616,40 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             json.dump(data, f, indent=4)
             f.truncate()  # remove remaining part
 
-    def __assert_values_in_fields(self, text_fields_value, number_fields_value, email_fields_value, phone_number_value, date_fields_value):
-        get_value_from_text_field = self.driver.find_elements(By.XPATH,"//*[@type='text']")
+    def __assert_values_in_fields(self, text_fields_value, number_fields_value, email_fields_value, phone_number_value,
+                                  date_fields_value):
+        get_value_from_text_field = self.driver.find_elements(By.XPATH, "//*[@type='text']")
         for value in get_value_from_text_field:
             assert value.get_attribute('value') == text_fields_value
             break
-        get_value_from_number_field = self.driver.find_elements(By.XPATH,"//*[@placeholder='123456']")
+        get_value_from_number_field = self.driver.find_elements(By.XPATH, "//*[@placeholder='123456']")
         for value in get_value_from_number_field:
             assert value.get_attribute('value') == number_fields_value, "Check number field"
             break
-        get_value_from_email_field = self.driver.find_elements(By.XPATH,"//*[@type='email']")
+        get_value_from_email_field = self.driver.find_elements(By.XPATH, "//*[@type='email']")
         for value in get_value_from_email_field:
             assert value.get_attribute('value') == email_fields_value, "Check email field"
             break
-        get_value_from_tel_field = self.driver.find_elements(By.XPATH,"//*[@type='tel']")
+        get_value_from_tel_field = self.driver.find_elements(By.XPATH, "//*[@type='tel']")
         for value in get_value_from_tel_field:
             assert value.get_attribute('value') == phone_number_value, "Check phone field"
             break
-        get_value_from_date_field = self.driver.find_elements(By.XPATH,"//*[@type='date']")
+        get_value_from_date_field = self.driver.find_elements(By.XPATH, "//*[@type='date']")
         for value in get_value_from_date_field:
             assert value.get_attribute('value') == date_fields_value, "Check date field"
             break
 
     def __assert_number_of_fields(self, number_of_fields):
-        total_fields = self.driver.find_elements(By.CLASS_NAME,"ct-input--primary")
+        total_fields = self.driver.find_elements(By.CLASS_NAME, "ct-input--primary")
         assert len(total_fields) == int(number_of_fields)
 
     def __enter_temp_faker_mail_and_sign(self):
-        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'wesign')]")))
-        click_on_email_title = self.driver.find_element(By.XPATH,"//*[contains(text(),'sent you the document')]")
+        WebDriverWait(self.driver, 20).until(
+            EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'wesign')]")))
+        click_on_email_title = self.driver.find_element(By.XPATH, "//*[contains(text(),'sent you the document')]")
         click_on_email_title.click()
-        click_on_email_title = WebDriverWait(self.driver, 80).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+        click_on_email_title = WebDriverWait(self.driver, 80).until(
+            EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         click_on_email_title.click()
 
     def __enter_cryptogmail_and_sign(self):
@@ -632,7 +663,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         actions.perform()
         sleep(5)
         try:
-            click_on_email_title = self.driver.find_element(By.CLASS_NAME,"message--container-bold")
+            click_on_email_title = self.driver.find_element(By.CLASS_NAME, "message--container-bold")
             click_on_email_title.click()
         except:
             click_on_email_title = self.driver.find_element(By.CLASS_NAME, "message--container-bold")
@@ -640,7 +671,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(3)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
 
     def __enter_yahoo_mail_and_sign(self, document_name):
         driver = self.driver
@@ -649,13 +680,15 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver.refresh()
         sleep(4)
         WebDriverWait(driver, 120).until(
-            EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'sent you the document {document_name}')])[1]")))
-        self.driver.find_element(By.XPATH,f"(//*[contains(text(),'sent you the document {document_name}')])[1]").click()
+            EC.presence_of_element_located(
+                (By.XPATH, f"(//*[contains(text(),'sent you the document {document_name}')])[1]")))
+        self.driver.find_element(By.XPATH,
+                                 f"(//*[contains(text(),'sent you the document {document_name}')])[1]").click()
         sleep(3)
         WebDriverWait(driver, 40).until(
             EC.presence_of_element_located(
                 (By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
 
     def __validate_no_emails_yahoo(self, yahoo_user_name, yahoo_password):
         driver = self.driver
@@ -665,19 +698,19 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable(
                 (By.NAME, "username")))
-        self.driver.find_element(By.NAME,"username").send_keys(yahoo_user_name)
+        self.driver.find_element(By.NAME, "username").send_keys(yahoo_user_name)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable(
                 (By.ID, "login-signin")))
-        self.driver.find_element(By.ID,"login-signin").click()
+        self.driver.find_element(By.ID, "login-signin").click()
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable(
                 (By.NAME, "password")))
-        self.driver.find_element(By.NAME,"password").send_keys(yahoo_password)
+        self.driver.find_element(By.NAME, "password").send_keys(yahoo_password)
         WebDriverWait(driver, 30).until(
             EC.element_to_be_clickable(
                 (By.ID, "login-signin")))
-        self.driver.find_element(By.ID,"login-signin").click()
+        self.driver.find_element(By.ID, "login-signin").click()
         sleep(2)
         # try:
         #     self.driver.find_element_by_xpath("//*[@data-test-id='list-result-empty']").is_displayed()
@@ -691,7 +724,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def __setup(self):
         service = ChromeDriverManager().install()
         options = webdriver.ChromeOptions()
-        options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
+        options.add_argument(
+            '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
         options.add_argument("start-maximized")
         options.add_argument("window-size=1920,1080")
         options.add_argument("--disable-notifications")
@@ -713,17 +747,17 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             EC.presence_of_element_located((By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]")))
         # self.driver.find_element_by_xpath("(//span[contains(text(),'devtest')])[2]").click()
         sleep(3)
-        self.driver.find_element(By.XPATH,f"(//span[contains(text(),'document {document_name}')])[2]").click()
+        self.driver.find_element(By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]").click()
         sleep(2)
         WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
         sleep(3)
-        self.driver.find_element(By.XPATH,"//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
         sleep(4)
 
     def __enter_comda_mail_and_sign(self, document_name):
         self.driver.get('https://email.comda.co.il/owa/')
-        sleep(3)
+        sleep(10)
         self.driver.refresh()
         driver = self.driver
         sleep(3)

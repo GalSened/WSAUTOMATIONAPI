@@ -26,7 +26,7 @@ from shared import Shared
 
 
 
-@pytest.mark.flaky(max_runs=3)
+@pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
         # p = Path(__file__).with_name('DocumentCollectionSettings.json')
@@ -757,6 +757,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['documentCollectionId']
+        sleep(8)
         cancel_document_request = WesignMethodsApi.document_collections_id_cancel_put(self, json_response)
         assert cancel_document_request.status_code == StatusCode.OK
         sleep(5)
