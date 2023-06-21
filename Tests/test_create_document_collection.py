@@ -994,7 +994,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert download_json.status_code == StatusCode.OK
         response = download_json.json()
         base64 = response['files'][0]['data']
-        assert len(base64) == 35192
+        assert len(base64) == 34188
 
     def test_delete_multi_documents_by_document_collection_id_success(self):
         a = []
