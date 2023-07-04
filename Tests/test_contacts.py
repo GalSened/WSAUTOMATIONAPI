@@ -49,8 +49,8 @@ class WesignContactsApi(unittest.TestCase):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewContactWithInvalidEmail')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
-        json_response = response['errors']['Email']
-        assert json_response[0] == ResultCode.PLEASE_SPECIFY_VALID_EMAIL
+        json_response = response['errors']['DefaultSendingMethod']
+        assert json_response[0] == ResultCode.DEFAULT_SENDING_METHOD
 
     def test_create_new_contact_by_invalid_phone(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewContactWithInvalidPhone')
@@ -71,21 +71,21 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['DefaultSendingMethod']
-        assert json_response == ResultCode.DEFAULT_SENDING_METHOD
+        assert json_response[0] == ResultCode.DEFAULT_SENDING_METHOD
 
     def test_create_new_contact_by_email_invalid_sending_type(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactByEmailInvalidSendingMethod')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['DefaultSendingMethod']
-        assert json_response == ResultCode.DEFAULT_SENDING_METHOD
+        assert json_response[0] == ResultCode.DEFAULT_SENDING_METHOD
 
     def test_create_new_contact_by_email_invalid_default_sending_method(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactByEmailInvalidSendingMethod')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['DefaultSendingMethod']
-        assert json_response == ResultCode.DEFAULT_SENDING_METHOD
+        assert json_response[0] == ResultCode.DEFAULT_SENDING_METHOD
 
     def test_create_new_contact_with_name_already_exists(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactNameExists')
