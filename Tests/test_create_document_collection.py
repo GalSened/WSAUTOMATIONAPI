@@ -2688,6 +2688,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     #     file.write(r.content)
     #     file.close()
 
+    # def test_download_document_collection_and_save_as_zip(self):
+    #     headers = {'content-type': 'application/octet-stream ', 'Authorization': 'Bearer ' + self.token}
+    #     r = requests.get(self.settings['Base_Url'] + '/documentcollections/c75e4a1f-9da5-47bc-f415-08db7c5fc08f',headers=headers)
+    #     file = open("myfile.zip", "wb")
+    #     file.write(r.content)
+    #     file.close()
 
 
     # def test_delete_all_documents(self):

@@ -65,7 +65,7 @@ class WesignApiUsersTests(unittest.TestCase):
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewUserWhitInvalidEmailRequest')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
-        json_response = response['errors']['error']
+        json_response = response['errors']['Email']
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_A_VALID_EMAIL
 
     def test_create_new_user_with_invalid_group_id(self):
