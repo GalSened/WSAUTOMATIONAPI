@@ -154,6 +154,50 @@ class WesignApiUsersTests(unittest.TestCase):
         assert json_response[0] == ResultCode.INVALID_GROUP_ID
         WesignMethodsApi.admins_users_id_delete(self, json_response_id)
 
+    def test_change_password_user_invalid_credentials(self):
+        payload = {
+                "oldPassword": "Test12345!",
+                "newPassword": "Com12345!"
+            }
+        r = WesignMethodsApi.users_login_change_json_file(self, payload)
+        response = r.json()
+        assert r.status_code == StatusCode.BAD_REQUEST
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.INVALID_CREDENTIAL
+
+    def test_change_password_user_invalid_legality(self):
+        payload = {
+                "oldPassword": "Comsign1!",
+                "newPassword": "Aa1234567"
+            }
+        r = WesignMethodsApi.users_login_change_json_file(self, payload)
+        response = r.json()
+        assert r.status_code == StatusCode.BAD_REQUEST
+        json_response = response['errors']['NewPassword']
+        assert json_response[0] == ResultCode.INVALID_PASSWORD
+
+    def test_change_password_user_valid_success(self):
+        payload = {
+                "oldPassword": "Comsign1!",
+                "newPassword": "Comsign2!"
+            }
+        r = WesignMethodsApi.users_login_change_json_file(self, payload)
+        assert r.status_code == StatusCode.OK
+
+        login_payload = {
+                  "email": "devtest10@comda.co.il",
+                  "password": "Comsign2!"
+                }
+
+        login = WesignMethodsApi.users_login_post_payload(self, login_payload)
+        assert login.status_code == StatusCode.OK
+
+        revert_payload = {
+            "oldPassword": "Comsign2!",
+            "newPassword": "Comsign1!"
+        }
+        r = WesignMethodsApi.users_login_change_json_file(self, revert_payload)
+        assert r.status_code == StatusCode.OK
 
     def tearDown(self):
         sleep(3)

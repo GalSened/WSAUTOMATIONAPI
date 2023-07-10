@@ -193,6 +193,16 @@ class WesignMethodsApi:
         r = requests.post(self.settings['Base_Url'] + 'users/login', data=json.dumps(requests_json), headers=headers)
         return r
 
+    def users_login_post_payload(self, data: dict):
+        headers = {'content-type': 'application/json'}
+        r = requests.post(self.settings['Base_Url'] + 'users/login', data=json.dumps(data), headers=headers)
+        return r
+
+    def users_login_change_json_file(self, data: dict):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'users/change', data=json.dumps(data), headers=headers)
+        return r
+
     # Self sign
 
     def self_sign_post_json_file(self, request_file: str):

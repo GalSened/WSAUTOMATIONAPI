@@ -44,3 +44,4 @@ class ResultCode:
     SMS_PROVIDER_ERROR = "Your SMS provider not support sending SMS globally"
     INVALID_FORMAT = 'Cannot parse *.xlsx file to contacts'
     SAME_FIELD_NAME = 'There is field that assign to more than one signer'
+    INVALID_PASSWORD = 'Password should contain at least one digit, one special character and at least 8 characters long'
