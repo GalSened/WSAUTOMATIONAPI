@@ -1831,6 +1831,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(4)
         self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
         sleep(4)
+        try:
+            sleep(1)
+            WebDriverWait(self.driver, 15).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+            yes_button = "//button[contains(text(),'Yes')]"
+            self.driver.find_element(By.XPATH, yes_button).click()
+        except:
+            sleep(1)
+            WebDriverWait(self.driver, 15).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+            yes_button = "//button[contains(text(),'No')]"
+            self.driver.find_element(By.XPATH, yes_button).click()
+        sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
         sleep(5)
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
@@ -1917,9 +1930,22 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             action.perform()
         use_signature_all_fields = self.driver.find_element(By.XPATH, "(//span[@class='ct-checkbox__checkmark'])[1]")
         use_signature_all_fields.click()
-        sleep(4)
+        sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
         sleep(4)
+        try:
+            sleep(1)
+            WebDriverWait(self.driver, 15).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+            yes_button = "//button[contains(text(),'Yes')]"
+            self.driver.find_element(By.XPATH, yes_button).click()
+        except:
+            sleep(1)
+            WebDriverWait(self.driver, 15).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+            yes_button = "//button[contains(text(),'No')]"
+            self.driver.find_element(By.XPATH, yes_button).click()
+        sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
         sleep(2)
         WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
@@ -2399,8 +2425,22 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
                 action.click()
                 action.perform()
+            sleep(3)
             self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
             sleep(1)
+            try:
+                sleep(1)
+                WebDriverWait(self.driver, 15).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+                yes_button = "//button[contains(text(),'Yes')]"
+                self.driver.find_element(By.XPATH, yes_button).click()
+            except:
+                sleep(1)
+                WebDriverWait(self.driver, 15).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+                yes_button = "//button[contains(text(),'No')]"
+                self.driver.find_element(By.XPATH, yes_button).click()
+            sleep(3)
             self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
             sleep(1)
             WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
@@ -2611,8 +2651,22 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
                 action.click()
                 action.perform()
+            sleep(2)
             self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
             sleep(1)
+            try:
+                sleep(1)
+                WebDriverWait(self.driver, 15).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+                yes_button = "//button[contains(text(),'Yes')]"
+                self.driver.find_element(By.XPATH, yes_button).click()
+            except:
+                sleep(1)
+                WebDriverWait(self.driver, 15).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+                yes_button = "//button[contains(text(),'No')]"
+                self.driver.find_element(By.XPATH, yes_button).click()
+            sleep(3)
             self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
             sleep(1)
             WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
