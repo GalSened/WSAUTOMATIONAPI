@@ -2807,6 +2807,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(4)
         self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
         sleep(4)
+        try:
+            sleep(1)
+            WebDriverWait(self.driver, 15).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+            yes_button = "//button[contains(text(),'Yes')]"
+            self.driver.find_element(By.XPATH, yes_button).click()
+        except:
+            sleep(1)
+            WebDriverWait(self.driver, 15).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+            yes_button = "//button[contains(text(),'No')]"
+            self.driver.find_element(By.XPATH, yes_button).click()
+        sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
         sleep(5)
 
