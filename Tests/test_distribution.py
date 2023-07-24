@@ -722,7 +722,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         #     sleep(self.settings['element_wait'])
 
     def __setup(self):
-        service = ChromeDriverManager().install()
+        service = ChromeDriverManager(version="114.0.5735.90").install()
         options = webdriver.ChromeOptions()
         options.add_argument(
             '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
