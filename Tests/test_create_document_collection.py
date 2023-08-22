@@ -2989,7 +2989,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(4)
 
     def __setup(self):
-        service = ChromeDriverManager(version="114.0.5735.90").install()
+        service = self.settings['chrome_driver']
         options = webdriver.ChromeOptions()
         options.add_argument(
             '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')

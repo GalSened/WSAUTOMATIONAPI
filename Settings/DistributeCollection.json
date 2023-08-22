@@ -1,5 +1,5 @@
 {
-  "chrome_driver": "\\\\fs01\\Users\\NirK\\chromedriver.exe",
+  "chrome_driver" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\wesign-automation\\data\\chromedriver-win64\\chromedriver.exe",
   "first_recipient_name": "wesign4611@gmail.com",
   "first_recipient": "wesign4611",
   "sixth_recipient_name" : "wesigntesting4611",

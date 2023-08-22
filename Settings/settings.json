@@ -1,5 +1,4 @@
 {
-  "chrome_driver" : "\\\\fs01\\Users\\NirK\\chromedriver.exe",
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
   "LoginRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccess.json",
   "LoginUserNameRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginUsernameRequestSuccess.json",
@@ -21,5 +20,6 @@
   "max_wait_time": 4,
   "short_wait_time": 4,
   "min_wait_time": 4,
-  "element_wait" : 9
+  "element_wait" : 9,
+  "chrome_driver" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\wesign-automation\\data\\chromedriver-win64\\chromedriver.exe"
 }

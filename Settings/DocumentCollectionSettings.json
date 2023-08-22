@@ -1,5 +1,5 @@
 {
-  "chrome_driver" : "\\\\fs01\\Users\\NirK\\chromedriver.exe",
+  "chrome_driver" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\wesign-automation\\data\\chromedriver-win64\\chromedriver.exe",
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3",
   "wesign_url" : "https://devtest.comda.co.il",
   "company_user" : "devtest10@comda.co.il",
