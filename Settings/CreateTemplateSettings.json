@@ -10,7 +10,8 @@
   "CreateTemplateDuplicateTemplate" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateDuplicateTemplate.json",
   "CreateTemplateWordBase64WithMetaDataSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateWordBase64WithMetaDataSuccess.json",
   "CreateTemplatePdfBase64UniqueNameSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplatePdfBase64UniqueNameSuccess.json",
-
+  "CreateTemplateMergeSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateMergeSuccess.json",
+  "CreateTemplateMergeTemplatesAndFilesSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateTemplateRequest\\CreateTemplateMergeTemplatesAndFilesSuccess.json",
   "templateId" : "4f6af355-a798-4b71-be62-08d9fab629bc",
   "InvalidTemplateId" : "df7d5422-3106-473c-782c-08d99e95b101",
   "UpdateTemplateWithSignatureFieldSuccess": "\\\\fs01\\Users\\NirK\\PythonAutomation\\UpdateTemplateRequest\\UpdateTemplateWithSignatureFieldSuccess.json",

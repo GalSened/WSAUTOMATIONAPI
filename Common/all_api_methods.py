@@ -128,6 +128,19 @@ class WesignMethodsApi:
         r = requests.put(self.settings['Base_Url'] + '/templates/deletebatch', data=json.dumps(del_req), headers=headers)
         return r
 
+    def templates_merge_post(self, merge: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + '/templates/merge', data=json.dumps(merge), headers=headers)
+        return r
+
+    def templates_merge_post_json_file(self, request_file: str):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + '/templates/merge', data=json.dumps(requests_json), headers=headers)
+        return r
+
     # Admins
 
     def admins_groups_post_json_file(self, request_file: str):

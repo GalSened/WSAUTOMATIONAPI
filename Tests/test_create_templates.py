@@ -159,6 +159,92 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         r = WesignMethodsApi.templates_delete_batch_put(self, del_req)
         assert r.status_code == StatusCode.OK
 
+    def test_2_merge_templates_success(self):
+        merge = {
+            "templates": [
+                "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
+                 "97ffa5b7-b561-423b-7acf-08dba3ce1e25"
+            ],
+            "name": "Merge_templates",
+            "isOneTimeUseTemplate": False
+        }
+        r = WesignMethodsApi.templates_merge_post(self, merge)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        template = response['templateId']
+        WesignMethodsApi.templates_id_delete(self, template)
+        assert r.status_code == StatusCode.OK
+
+    def test_3_merge_templates_success(self):
+        merge = {
+            "templates": [
+                "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
+                 "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
+                "74e681d1-4cea-4f02-fe03-08db9d6801a6"
+            ],
+            "name": "Merge_templates",
+            "isOneTimeUseTemplate": False
+        }
+        r = WesignMethodsApi.templates_merge_post(self, merge)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        template = response['templateId']
+        WesignMethodsApi.templates_id_delete(self, template)
+        assert r.status_code == StatusCode.OK
+
+    def test_4_merge_templates_success(self):
+        merge = {
+            "templates": [
+                "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
+                 "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
+                "74e681d1-4cea-4f02-fe03-08db9d6801a6",
+                "d67c417f-83c8-48cb-9d30-08db966ebb19"
+            ],
+            "name": "Merge_templates",
+            "isOneTimeUseTemplate": False
+        }
+        r = WesignMethodsApi.templates_merge_post(self, merge)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        template = response['templateId']
+        WesignMethodsApi.templates_id_delete(self, template)
+        assert r.status_code == StatusCode.OK
+
+    def test_5_merge_templates_success(self):
+        merge = {
+            "templates": [
+                "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
+                 "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
+                "74e681d1-4cea-4f02-fe03-08db9d6801a6",
+                "d67c417f-83c8-48cb-9d30-08db966ebb19",
+                "be63edf9-2834-4959-558f-08db9cac3bb4"
+            ],
+            "name": "Merge_templates",
+            "isOneTimeUseTemplate": False
+        }
+        r = WesignMethodsApi.templates_merge_post(self, merge)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        template = response['templateId']
+        WesignMethodsApi.templates_id_delete(self, template)
+        assert r.status_code == StatusCode.OK
+
+    def test_merge_documents_success(self):
+        r = WesignMethodsApi.templates_merge_post_json_file(self, "CreateTemplateMergeSuccess")
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        template = response['templateId']
+        WesignMethodsApi.templates_id_delete(self, template)
+        assert r.status_code == StatusCode.OK
+
+    def test_merge_documents_and_templates_success(self):
+        r = WesignMethodsApi.templates_merge_post_json_file(self, "CreateTemplateMergeTemplatesAndFilesSuccess")
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        template = response['templateId']
+        WesignMethodsApi.templates_id_delete(self, template)
+        assert r.status_code == StatusCode.OK
+
     def tearDown(self):
         sleep(3)
 
