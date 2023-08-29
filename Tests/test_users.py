@@ -199,6 +199,11 @@ class WesignApiUsersTests(unittest.TestCase):
         r = WesignMethodsApi.users_login_change_json_file(self, revert_payload)
         assert r.status_code == StatusCode.OK
 
+    ##Bug number = WES-1402
+    def test_create_new_editor_user_with_username_as_email_format(self):
+        r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewEditorUserWithUsernameAsEmailForamtRequest')
+        assert r.status_code == StatusCode.BAD_REQUEST
+
     def tearDown(self):
         sleep(3)
 

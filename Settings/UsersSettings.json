@@ -13,5 +13,6 @@
   "UpdateUserToEditorRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\UpdateUserToEditorRequest.json",
   "UpdateUserEmptyNameRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\UpdateUserEmptyNameRequest.json",
   "UpdateUserEmptyEmailRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\UpdateUserEmptyEmailRequest.json",
-  "UpdateUserInvalidGroupIdRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\UpdateUserInvalidGroupIdRequest.json"
+  "UpdateUserInvalidGroupIdRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\UpdateUserInvalidGroupIdRequest.json",
+  "CreateNewEditorUserWithUsernameAsEmailForamtRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\CreateNewEditorUserWithUsernameAsEmailForamtRequest.json"
 }
