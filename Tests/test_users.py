@@ -203,6 +203,8 @@ class WesignApiUsersTests(unittest.TestCase):
     def test_create_new_editor_user_with_username_as_email_format(self):
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewEditorUserWithUsernameAsEmailForamtRequest')
         assert r.status_code == StatusCode.BAD_REQUEST
+        response = r.json()
+        assert response['errors']['Username'] == ResultCode.USER_NAME_INVALID_FORMAT
 
     def tearDown(self):
         sleep(3)
