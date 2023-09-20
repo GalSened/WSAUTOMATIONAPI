@@ -340,8 +340,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "changed_values_for_template", template)
         assert fields_for_template.status_code == StatusCode.OK
         self.driver.switch_to.window(self.driver.window_handles[0])
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Click here')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[2])
         sleep(2)
@@ -582,7 +582,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
                 EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
             click_on_email_title.click()
             WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iFrameResizer0")))
-            self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+            self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
         except:
             sleep(3)
             refresh_button = self.driver.find_element(By.XPATH, "//*[contains(text(),'Refresh')]")
@@ -593,7 +593,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
                 EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'devtest@comda.co.il')]")))
             click_on_email_title.click()
             WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iFrameResizer0")))
-            self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+            self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
 
     def _change_values_in_file(self, file_name, tempID, signer):
         with open(self.settings[file_name], 'r+') as f:
@@ -649,7 +649,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         click_on_email_title = self.driver.find_element(By.XPATH, "//*[contains(text(),'sent you the document')]")
         click_on_email_title.click()
         click_on_email_title = WebDriverWait(self.driver, 80).until(
-            EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+            EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Click here')]")))
         click_on_email_title.click()
 
     def __enter_cryptogmail_and_sign(self):
@@ -670,8 +670,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             click_on_email_title.click()
         sleep(3)
         WebDriverWait(driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+            EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Click here')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
 
     def __enter_yahoo_mail_and_sign(self, document_name):
         driver = self.driver
@@ -687,8 +687,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(3)
         WebDriverWait(driver, 40).until(
             EC.presence_of_element_located(
-                (By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+                (By.XPATH, "//a[contains(text(),'Click here')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
 
     def __validate_no_emails_yahoo(self, yahoo_user_name, yahoo_password):
         driver = self.driver
@@ -750,9 +750,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]").click()
         sleep(2)
         WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'Click here')]")))
         sleep(3)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
         sleep(4)
 
     def __enter_comda_mail_and_sign(self, document_name):
@@ -768,9 +768,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, f"(//span[contains(text(),'{document_name}')])[1]").click()
         sleep(2)
         WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'Click here')]")))
         sleep(3)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
 
     def __change_comda_mail_box(self, user, user_pass):
         driver = self.driver

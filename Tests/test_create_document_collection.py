@@ -739,8 +739,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             (By.XPATH, "(//*[contains(text(),'sent you the document {}')])[1]".format(document_name))))
         self.driver.find_element(By.XPATH,
                                  "(//*[contains(text(),'sent you the document {}')])[1]".format(document_name)).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Click here')]")))
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
@@ -2972,9 +2972,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]").click()
         sleep(2)
         WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'Click here')]")))
         sleep(3)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
         sleep(4)
 
     def __download_document(self):
@@ -3042,9 +3042,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, f"(//span[contains(text(),'{document_name}')])[1]").click()
         sleep(2)
         WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'SIGN NOW')]")))
+            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'Click here')]")))
         sleep(3)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'SIGN NOW')]").click()
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
 
     def __enter_comda_mail(self, user, user_pass):
         driver = self.driver
