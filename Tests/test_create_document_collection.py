@@ -7,7 +7,7 @@ from pathlib import Path
 from time import sleep
 import pytest
 import json
-
+from selenium.webdriver.chrome.service import Service
 import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
@@ -2989,7 +2989,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(4)
 
     def __setup(self):
-        service = self.settings['chrome_driver']
+        service = Service(self.settings['chrome_driver'])
         options = webdriver.ChromeOptions()
         options.add_argument(
             '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
@@ -3002,7 +3002,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         options.add_argument("high-dpi-support=0.75")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
-        self.driver = webdriver.Chrome(executable_path=service, options=options)
+        self.driver = webdriver.Chrome(service=service, options=options)
 
     def __login_wesign(self):
         driver = self.driver

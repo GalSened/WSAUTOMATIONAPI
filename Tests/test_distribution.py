@@ -19,6 +19,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Common.all_api_methods import WesignMethodsApi
 from shared import Shared
+from selenium.webdriver.chrome.service import Service
 
 
 @pytest.mark.flaky(max_runs=3)
@@ -722,7 +723,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         #     sleep(self.settings['element_wait'])
 
     def __setup(self):
-        service = self.settings['chrome_driver']
+        service = Service(self.settings['chrome_driver'])
         options = webdriver.ChromeOptions()
         options.add_argument(
             '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
@@ -735,7 +736,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         options.add_argument("high-dpi-support=0.75")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
-        self.driver = webdriver.Chrome(executable_path=service, options=options)
+        self.driver = webdriver.Chrome(service=service, options=options)
 
     def __enter_gmail_mail_and_sign(self, document_name):
         self.driver.get('https://mail.google.com/')
