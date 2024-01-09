@@ -77,5 +77,5 @@
   "DocumentCollectionSendDocument_two_recipients" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionSendDocument_two_recipients.json",
   "dev_email" : "devtest9@comda.co.il",
   "dev_name": "devtest1",
-  "comda_mail_password" : "Comsign2!"
+  "comda_mail_password" : "Comsign1!"
 }
