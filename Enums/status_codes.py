@@ -45,3 +45,5 @@ class ResultCode:
     INVALID_FORMAT = 'Cannot parse *.xlsx file to contacts'
     SAME_FIELD_NAME = 'There is field that assign to more than one signer'
     INVALID_PASSWORD = 'Password should contain at least one digit, one special character and at least 8 characters long'
+    SIGNER_SIGNED_OR_DECLINE = 'Cannot Create signing Link for signer that already signed or decline'
+    DOCUMENT_NOT_BELONG_TO_USER_OR_GROUP = 'Document not belong to the user group'

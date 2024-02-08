@@ -13,7 +13,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
-
+import pyodbc
 import Enums.status_codes
 from Enums.status_codes import StatusCode, ResultCode
 from selenium import webdriver
@@ -889,6 +889,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         }
         r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
+
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
@@ -2735,6 +2736,908 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         error = res['errors']['Signers'][0]
         assert str(error) == Enums.status_codes.ResultCode.SAME_FIELD_NAME
 
+    def test_sending_to_25_recipients_and_sign_by_order_and_validate_document_status(self):
+        self.__setup()
+        document = uuid.uuid4().hex
+        self.document_name = document
+        payload = {
+            "readOnlyFields": [],
+            "senderAppendices": [],
+            "shouldSignUsingSigner1AfterDocumentSigningFlow": False,
+            "signers": [
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "3efc3b51fa3743beb941291b35392a76",
+                    "contactMeans": "3efc3b51fa3743beb941291b35392a76@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_FzfI7",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "35a41cc83bea4f1497515bc14e688cd4",
+                    "contactMeans": "35a41cc83bea4f1497515bc14e688cd4@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_28lsE",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "f6cdbb062e2d446ab213861c6b4a6987",
+                    "contactMeans": "f6cdbb062e2d446ab213861c6b4a6987@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_xXMjz",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
+                    "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_zcF5u",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "ac833a2512db4023935b3f265921a808",
+                    "contactMeans": "ac833a2512db4023935b3f265921a808@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_9m7PE",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "0d6992ce432d49eb8ca6b9dbfc45a4be",
+                    "contactMeans": "0d6992ce432d49eb8ca6b9dbfc45a4be@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_4QzbT",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "0d5f7ec292b643f2935354227a5c6c08",
+                    "contactMeans": "0d5f7ec292b643f2935354227a5c6c08@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_udOeg",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "76500ff0a2184b3d8f7cc9dfd824a174",
+                    "contactMeans": "76500ff0a2184b3d8f7cc9dfd824a174@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_WjDQS",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "b3d5c9706807478a908e1cc4ba381c92",
+                    "contactMeans": "b3d5c9706807478a908e1cc4ba381c92@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_HPqM6",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "2f384bbaf22d4cf9a97169ff3621f222",
+                    "contactMeans": "2f384bbaf22d4cf9a97169ff3621f222@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_Pgh4X",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "182c8227e5ed4d7ba65b5f9c37213d71",
+                    "contactMeans": "182c8227e5ed4d7ba65b5f9c37213d71@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_CgwIJ",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "b509941d08da49ff87042fc7303d7df1",
+                    "contactMeans": "b509941d08da49ff87042fc7303d7df1@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_SEEFD",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "9ae850fc0806477ca7785d4fd681fd6e",
+                    "contactMeans": "9ae850fc0806477ca7785d4fd681fd6e@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_0Rw3v",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "826ca7140f14468da46865fbf4899bb4",
+                    "contactMeans": "826ca7140f14468da46865fbf4899bb4@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_k04Kz",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "776a3adcee654793bb8081a07b99c5b2",
+                    "contactMeans": "776a3adcee654793bb8081a07b99c5b2@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_3lYlH",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "9c2a166e1206461294ead0af24b734d7",
+                    "contactMeans": "9c2a166e1206461294ead0af24b734d7@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_ReQrM",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "b8a86919ab9548cfa39aa573a120ee58",
+                    "contactMeans": "b8a86919ab9548cfa39aa573a120ee58@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_oa4bJ",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "6a7335c17bfb4e688aeeaa4c3bf09e9c",
+                    "contactMeans": "6a7335c17bfb4e688aeeaa4c3bf09e9c@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_OMYuf",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "a762a65d61e945998205198085380f2e",
+                    "contactMeans": "a762a65d61e945998205198085380f2e@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_W7RCK",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "9af9872a4bc74818b3565bf313c0c53d",
+                    "contactMeans": "9af9872a4bc74818b3565bf313c0c53d@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_9Imis",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "94f05c0e140044bd9f84ca145df5cc2c",
+                    "contactMeans": "94f05c0e140044bd9f84ca145df5cc2c@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_NVeiY",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "3ad82e93161e40b1a9b035ddf89574f6",
+                    "contactMeans": "3ad82e93161e40b1a9b035ddf89574f6@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_Ni0lh",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "30e0f675b7664ba4a448a21e70dc7d92",
+                    "contactMeans": "30e0f675b7664ba4a448a21e70dc7d92@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_ovnUw",
+
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "7506b19783d542eda18f25458e7c1b1d",
+                    "contactMeans": "7506b19783d542eda18f25458e7c1b1d@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_gGRnZ",
+                        }
+                    ]
+                },
+                {
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "contactName": "5e2dc2f2bb7c46d784101087cb0332e9",
+                    "contactMeans": "5e2dc2f2bb7c46d784101087cb0332e9@comda.co.il",
+                    "sendingMethod": 2,
+                    "phoneExtension": "+972",
+                    "signerFields": [
+                        {
+                            "templateId": "62226367-0456-4a82-6a5a-08daddc7e4e7",
+                            "fieldName": "Signature_YTICB",
+
+                        }
+                    ]
+                }
+            ],
+            "documentName": self.document_name,
+            "documentMode": 1,
+            "templates": [
+                "62226367-0456-4a82-6a5a-08daddc7e4e7"
+            ]
+        }
+        r = WesignMethodsApi.document_collections_post_dict(self, payload)
+        res = r.json()
+        documentCollectionId = res['documentCollectionId']
+        index = 0
+        for a in range(25):
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            cursor = conn.cursor()
+            b = cursor.execute(f"SELECT * from [SignerTokensMapping] where [DocumentCollectionId] = '{documentCollectionId}'")
+            links = []
+            result = b.fetchall()
+
+            for x in result:
+                links.append(x[3])
+
+            sleep(5)
+            self.driver.get(f"https://devtest.comda.co.il/signer/signature/{links[index]}")
+            driver = self.driver
+            sleep(1)
+            WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@name='feather']")))
+            self.driver.find_element(By.XPATH, "//*[@name='feather']").click()
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_all_elements_located((By.XPATH, "//div[@class='signature-pad__canvas']")))
+            canvas = self.driver.find_element(By.XPATH, "//div[@class='signature-pad__canvas']")
+            drawing = ActionChains(self.driver) \
+                .click_and_hold(canvas) \
+                .move_by_offset(-200, 10) \
+                .move_by_offset(-10, -50) \
+                .move_by_offset(-25, -10) \
+                .move_by_offset(100, -100) \
+                .move_by_offset(10, 60) \
+                .move_by_offset(10, 100) \
+                .move_by_offset(-10, -120) \
+                .release()
+            drawing.perform()
+            for i in range(25):
+                action = webdriver.common.action_chains.ActionChains(driver)
+                action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
+                action.click()
+                action.perform()
+            sleep(3)
+            self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
+            sleep(1)
+            try:
+                sleep(1)
+                WebDriverWait(self.driver, 15).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+                yes_button = "//button[contains(text(),'Yes')]"
+                self.driver.find_element(By.XPATH, yes_button).click()
+            except:
+                sleep(1)
+                WebDriverWait(self.driver, 15).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
+                yes_button = "//button[contains(text(),'No')]"
+                self.driver.find_element(By.XPATH, yes_button).click()
+            sleep(3)
+            self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
+            sleep(1)
+            WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+            signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
+            assert len(signing_complete_msg) == 1
+            links.clear()
+            sleep(5)
+            index += 1
+
+    #Task WES-1446
+    def test_sending_10_recipients_by_order_validate_return_next_signer_link_by_order(self):
+        self.__setup()
+        self.driver.execute_script("window.open('');")
+        sleep(3)
+        self.driver.get(self.settings['wesign_url'])
+        self.__login_wesign()
+        WebDriverWait(self.driver, 30).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "button--sent-ent")))
+        my_documents_section = self.driver.find_element(By.CLASS_NAME, "button--sent-ent")
+        my_documents_section.click()
+        document = uuid.uuid4().hex
+        self.document_name = document
+        payload = {
+                "documentMode": 1,
+                "documentName": self.document_name,
+                "templates": [
+                "ea6f0e73-4532-4d57-caa6-08dc26dc0c42"
+                ],
+                "signers": [
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec_1@comda.co.il",
+                    "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "0d5f7ec292b643f2935354227a5c6c0880_2@comda.co.il",
+                    "contactName": "0d5f7ec292b643f2935354227a5c6c08",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "0d6992ce432d49eb8ca6b9dbfc45a4be_3@comda.co.il",
+                    "contactName": "0d6992ce432d49eb8ca6b9dbfc45a4be",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "182c8227e5ed4d7ba65b5f9c37213d71_4@comda.co.il",
+                    "contactName": "182c8227e5ed4d7ba65b5f9c37213d71",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "2f384bbaf22d4cf9a97169ff3621f222_5@comda.co.il",
+                    "contactName": "2f384bbaf22d4cf9a97169ff3621f222",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "30e0f675b7664ba4a448a21e70dc7d92_6@comda.co.il",
+                    "contactName": "30e0f675b7664ba4a448a21e70dc7d92",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "35a41cc83bea4f1497515bc14e688cd4_7@comda.co.il",
+                    "contactName": "35a41cc83bea4f1497515bc14e688cd4",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "5e2dc2f2bb7c46d784101087cb0332e9_8@comda.co.il",
+                    "contactName": "5e2dc2f2bb7c46d784101087cb0332e9",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "3ad82e93161e40b1a9b035ddf89574f6_9@comda.co.il",
+                    "contactName": "3ad82e93161e40b1a9b035ddf89574f6",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "3efc3b51fa3743beb941291b35392a76_10@comda.co.il",
+                    "contactName": "3efc3b51fa3743beb941291b35392a76",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "3efc3b51fa3743beb941291b35392a20_11@comda.co.il",
+                    "contactName": "3efc3b51fa3743beb941291b35392a76",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                }
+                ],
+            }
+        r = WesignMethodsApi.document_collections_post_dict(self, payload)
+        res = r.json()
+        documentCollectionId = res['documentCollectionId']
+        documentCollectionLink = res['signerLinks'][0]['link']
+        next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
+        link = next_link.json()
+        assert documentCollectionLink == link[0]['link']
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        self.driver.get(documentCollectionLink)
+        self.__sign_document_using_finish_button()
+        sleep(1)
+        WebDriverWait(self.driver, 50).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
+        assert len(signing_complete_msg) == 1
+        sleep(3)
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        sleep(2)
+        search_bar = WebDriverWait(self.driver, 20).until(
+            EC.presence_of_element_located((By.XPATH, "//input[@type='search']")))
+        search_bar.send_keys(self.document_name)
+        index = 2
+        row_index = 2
+        my_list = [12, 11, 10, 9, 8, 7, 6, 5, 4]
+        for x in range(9):
+            sleep(2)
+            self.driver.switch_to.window(self.driver.window_handles[0])
+            sleep(3)
+            row = self.driver.find_element(By.XPATH, f"//table/tbody/tr[2]")
+            sleep(4)
+            row.click()
+            sleep(3)
+            signed_document_status = self.driver.find_elements(By.XPATH, f"//td/table/tbody/tr[{row_index}]/td[5]")
+            for signed_status in signed_document_status:
+                recipient_email = self.driver.find_element(By.XPATH,
+                                                           f"//table/tbody/tr[3]/td/table/tbody/tr[{index}]/td[2]")
+                assert signed_status.text != "", f"signed status not displayed to {recipient_email.text}"
+                index += 1
+                row_index += 1
+                sleep(2)
+                break
+            for index in my_list:
+                sent_status = self.driver.find_element(By.XPATH, f"//table/tbody/tr[{index}]/td[3]")
+                recipient_email = self.driver.find_element(By.XPATH,
+                                                           f"//table/tbody/tr[3]/td/table/tbody/tr[{index}]/td[2]")
+                assert sent_status.text == "", f"Sent status displayed to {recipient_email.text}"
+                sleep(2)
+            row.click()
+            try:
+                my_list.pop()
+            except:
+                pass
+            sleep(1)
+            self.driver.switch_to.window(self.driver.window_handles[1])
+            sleep(1)
+            new_next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self,
+                                                                                                   documentCollectionId)
+            link = new_next_link.json()
+            assert documentCollectionLink != link[0]['link']
+            self.driver.get(link[0]['link'])
+            sleep(2)
+            self.__sign_document_using_finish_button()
+            sleep(1)
+            WebDriverWait(self.driver, 50).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+            signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
+            assert len(signing_complete_msg) == 1
+            link[0]['link'] = documentCollectionLink
+
+        new_next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self,documentCollectionId)
+        link = new_next_link.json()
+        assert documentCollectionLink != link[0]['link']
+        self.driver.get(link[0]['link'])
+        sleep(2)
+        self.__sign_document_using_finish_button()
+        sleep(1)
+        WebDriverWait(self.driver, 50).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
+        assert len(signing_complete_msg) == 1
+        sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        sleep(3)
+        row = self.driver.find_element(By.XPATH, f"//table/tbody/tr[2]")
+        sleep(4)
+        row.click()
+        sleep(3)
+        signed_document_status = self.driver.find_elements(By.XPATH, f"//td/table/tbody/tr[12]/td[5]")
+        for signed_status in signed_document_status:
+            recipient_email = self.driver.find_element(By.XPATH,
+                                                       f"//table/tbody/tr[3]/td/table/tbody/tr[{index}]/td[2]")
+            assert signed_status.text != "", f"signed status not displayed to {recipient_email.text}"
+
+    def test_return_next_link_in_case_first_signer_declined(self):
+        self.__setup()
+        document = uuid.uuid4().hex
+        self.document_name = document
+        payload = {
+            "documentMode": 1,
+            "documentName": self.document_name,
+            "templates": [
+                "ea6f0e73-4532-4d57-caa6-08dc26dc0c42"
+            ],
+            "signers": [
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec_1@comda.co.il",
+                    "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "3efc3b51fa3743beb941291b35392a20_11@comda.co.il",
+                    "contactName": "3efc3b51fa3743beb941291b35392a76",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                }
+            ],
+        }
+        r = WesignMethodsApi.document_collections_post_dict(self, payload)
+        res = r.json()
+        documentCollectionId = res['documentCollectionId']
+        documentCollectionLink = res['signerLinks'][0]['link']
+        next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
+        link = next_link.json()
+        assert documentCollectionLink == link[0]['link']
+        sleep(2)
+        self.driver.get(documentCollectionLink)
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.ID, "menuButton")))
+        menu_button = 'menuButton'
+        self.driver.find_element(By.ID, menu_button).click()
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.CLASS_NAME, "color--error")))
+        decline_document = 'color--error'
+        self.driver.find_element(By.CLASS_NAME, decline_document).click()
+        sleep(1)
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH,
+                                        "/html/body/app-root/app-main-signer/body/div/app-second-header/div/app-menu/app-decline/div/div/div/input")))
+        value_in_decline_window = "/html/body/app-root/app-main-signer/body/div/app-second-header/div/app-menu/app-decline/div/div/div/input"
+        self.driver.find_element(By.XPATH, value_in_decline_window).send_keys("Test")
+        sleep(1)
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, '(//*[@class="ct-button--primary"])[2]')))
+        submit_button_in_decline_window = '(//*[@class="ct-button--primary"])[2]'
+        sleep(3)
+        self.driver.find_element(By.XPATH, submit_button_in_decline_window).click()
+        sleep(3)
+        WebDriverWait(self.driver, 20).until(EC.url_to_be(('https://devtest.comda.co.il/signer/decline')))
+        next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
+        response = next_link.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.SIGNER_SIGNED_OR_DECLINE
+        return documentCollectionId
+
+    def test_return_next_link_in_case_document_complete(self):
+        self.__setup()
+        document = uuid.uuid4().hex
+        self.document_name = document
+        payload = {
+            "documentMode": 1,
+            "documentName": self.document_name,
+            "templates": [
+                "ea6f0e73-4532-4d57-caa6-08dc26dc0c42"
+            ],
+            "signers": [
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec_1@comda.co.il",
+                    "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "3efc3b51fa3743beb941291b35392a20_11@comda.co.il",
+                    "contactName": "3efc3b51fa3743beb941291b35392a76",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                }
+            ],
+        }
+        r = WesignMethodsApi.document_collections_post_dict(self, payload)
+        res = r.json()
+        documentCollectionId = res['documentCollectionId']
+        documentCollectionLink = res['signerLinks'][0]['link']
+        next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
+        link = next_link.json()
+        assert documentCollectionLink == link[0]['link']
+        self.driver.get(documentCollectionLink)
+        self.__sign_document_using_finish_button()
+        sleep(1)
+        WebDriverWait(self.driver, 50).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
+        assert len(signing_complete_msg) == 1
+        sleep(4)
+        second_next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
+        link = second_next_link.json()
+        assert documentCollectionLink != link[0]['link']
+        self.driver.get(link[0]['link'])
+        self.__sign_document_using_finish_button()
+        WebDriverWait(self.driver, 50).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
+        signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
+        assert len(signing_complete_msg) == 1
+        next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
+        response = next_link.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.SIGNER_SIGNED_OR_DECLINE
+        return documentCollectionId
+
+    def test_check_links_not_return_in_case_document_not_belong_to_user(self):
+        document = uuid.uuid4().hex
+        self.document_name = document
+        payload = {
+              "documentMode": 1,
+              "documentName": self.document_name,
+              "templates": [
+                "e9d44599-de2f-4f75-e0e5-08dc27a4efe7"
+              ],
+              "signers": [
+                {
+                  "sendingMethod": 2,
+                  "contactMeans": "devtest1@comda.co.il",
+                  "contactName": "devtest1",
+                },
+                {
+                  "sendingMethod": 2,
+                  "contactMeans": "devtest2@comda.co.il",
+                  "contactName": "devtest2",
+                }
+              ],
+              "shouldSignUsingSigner1AfterDocumentSigningFlow": True
+            }
+        r = WesignMethodsApi.document_collections_post_dict_using_signer1(self, payload)
+        res = r.json()
+        documentCollectionId = res['documentCollectionId']
+        next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
+        response = next_link.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.DOCUMENT_NOT_BELONG_TO_USER_OR_GROUP
+
+    def test_notification_from_callback_when_user_sign(self):
+        doc_id = self.test_return_next_link_in_case_document_complete()
+        sleep(4)
+        response = requests.get(self.settings['call_back_url'])
+        data = response.json()
+        document_collection_ids = [item['documentCollectionId'] for item in data]
+        assert doc_id in document_collection_ids
+        specific_document_collection_id = doc_id
+
+        for item in data:
+            if item['documentCollectionId'] == specific_document_collection_id:
+                if item['documentStatus'] == 4 or item['documentStatus'] == 3:
+                    assert item['notificationType'] == 1  ##Document Signed
+                else:
+                    raise AssertionError(f"Document {specific_document_collection_id} status is not 4: the status is : {item['documentStatus']} for signer name {item['signerName']}")
+
+    def test_notification_from_callback_when_user_document_declined(self):
+        doc_id = self.test_return_next_link_in_case_first_signer_declined()
+        response = requests.get(self.settings['call_back_url'])
+        data = response.json()
+        document_collection_ids = [item['documentCollectionId'] for item in data]
+        assert doc_id in document_collection_ids
+        specific_document_collection_id = doc_id
+
+        for item in data:
+            if item['documentCollectionId'] == specific_document_collection_id:
+                if item['documentStatus'] == 5:
+                    assert item['notificationType'] == 2 ##Rejected
+                    assert item['signerMessage'] == 'Test'
+                break
+
+    def test_notification_from_callback_when_document_deleted(self):
+        doc_id = self.test_return_next_link_in_case_document_complete()
+        sleep(4)
+        response = requests.get(self.settings['call_back_url'])
+        data = response.json()
+        document_collection_ids = [item['documentCollectionId'] for item in data]
+        assert doc_id in document_collection_ids
+        WesignMethodsApi.document_collections_id_delete(self,doc_id)
+        response = requests.get(self.settings['call_back_url'])
+        data = response.json()
+        filtered_data = [obj for obj in data if obj['notificationType'] == 3]
+        specific_document_collection_id = doc_id
+        assert any(obj['documentCollectionId'] == specific_document_collection_id for obj in filtered_data), f"Document collection ID '{specific_document_collection_id}' not found in notificationType: 3"
+
+    def test_get_template_id_extra_info_json_from_document_collection(self):
+        document = uuid.uuid4().hex
+        self.document_name = document
+        payload = {
+
+                "documentMode": 1,
+                "documentName": "TestExtraInfo",
+                "templates": [
+                    "a2a792b4-f6fa-4f14-8668-08dc287676c7",
+                    "84edfb22-0331-4b31-8666-08dc287676c7",
+                    "60fa4c6b-0773-4ab9-8669-08dc287676c7",
+                    "8f8ade41-089e-46a9-8667-08dc287676c7"
+                ],
+                "signers": [
+                    {
+                        "sendingMethod": 2,
+                        "contactMeans": "nirk@comsign.co.il",
+                        "contactName": "nirk",
+                    }
+                ],
+
+
+        }
+        r = WesignMethodsApi.document_collections_post_dict(self, payload)
+        res = r.json()
+        documentCollectionId = res['documentCollectionId']
+        templates = ["a2a792b4-f6fa-4f14-8668-08dc287676c7",
+                    "84edfb22-0331-4b31-8666-08dc287676c7",
+                    "60fa4c6b-0773-4ab9-8669-08dc287676c7",
+                    "8f8ade41-089e-46a9-8667-08dc287676c7"]
+        info = WesignMethodsApi.document_collections_id_get_extra_info_json(self,documentCollectionId)
+        json_obj = info.json()
+
+        ids_in_json = [item["templateId"] for item in json_obj["files"]]
+
+        for template_id in templates:
+            assert template_id in ids_in_json, f"Template with ID {template_id} not found in JSON data."
+
+    def test_export_distribution_documents(self):
+        r = WesignMethodsApi.document_collections_export_distribution(self)
+        assert r.status_code == StatusCode.OK
+
+
     # def test_download_document_collection_and_save_as_pdf(self):
     #     headers = {'content-type': 'application/pdf', 'Authorization': 'Bearer ' + self.token}
     #     r = requests.get(self.settings['Base_Url'] + '/documentcollections/0f80163e-ca54-4873-5bac-08db5c2fc008',headers=headers)
@@ -3080,5 +3983,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(2)
         self.driver.find_element(By.XPATH,"(//*[@type='text'])[1]").send_keys('TestFromComda')
         sleep(2)
+
+    def __sign_document_using_finish_button(self):
+        WebDriverWait(self.driver, 20).until(
+            EC.presence_of_element_located((By.XPATH, "//button[normalize-space()='Finish']")))
+        finish_button = "//button[normalize-space()='Finish']"
+        self.driver.find_element(By.XPATH, finish_button).click()
 
 

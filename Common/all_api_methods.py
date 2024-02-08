@@ -305,6 +305,7 @@ class WesignMethodsApi:
         r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(data), headers=headers)
         return r
 
+
     def document_collections_post_dict_using_signer1(self, data: dict):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.signer1}
         r = requests.post(self.settings['Base_Url'] + '/documentcollections', data=json.dumps(data), headers=headers)
@@ -345,4 +346,19 @@ class WesignMethodsApi:
     def document_collections_id_get_fields_xml(self, document_id: str):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.get(self.settings['Base_Url'] + '/documentcollections/' + document_id, headers=headers)
+        return r
+
+    def document_collections_id_get_document_collection_links(self, document_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/{document_id}/DocumentCollectionLinks', headers=headers)
+        return r
+
+    def document_collections_id_get_extra_info_json(self, document_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/{document_id}/ExtraInfo/json',headers=headers)
+        return r
+
+    def document_collections_export_distribution(self):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/exportDistribution',headers=headers)
         return r

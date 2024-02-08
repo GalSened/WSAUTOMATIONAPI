@@ -3,6 +3,7 @@
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3",
   "wesign_url" : "https://devtest.comda.co.il",
   "company_user" : "devtest10@comda.co.il",
+  "call_back_url" : "https://devtest.comda.co.il:1234/PostRoute",
   "company_user_password" : "Comsign1!",
   "max_wait_time": 4,
   "short_wait_time": 4,
@@ -77,5 +78,8 @@
   "DocumentCollectionSendDocument_two_recipients" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionSendDocument_two_recipients.json",
   "dev_email" : "devtest9@comda.co.il",
   "dev_name": "devtest1",
-  "comda_mail_password" : "Comsign1!"
+  "comda_mail_password" : "Comsign1!",
+   "db_name" : "WeSign",
+  "db_user" : "sa",
+  "db_password" : "Aa123456"
 }
