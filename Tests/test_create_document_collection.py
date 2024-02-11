@@ -3526,7 +3526,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
               "documentMode": 1,
               "documentName": self.document_name,
               "templates": [
-                "e9d44599-de2f-4f75-e0e5-08dc27a4efe7"
+                "152885d0-f724-473e-e0e4-08dc27a4efe7"
               ],
               "signers": [
                 {
