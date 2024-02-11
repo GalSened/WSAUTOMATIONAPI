@@ -1827,7 +1827,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
             action.click()
             action.perform()
-        use_signature_all_fields = self.driver.find_element(By.XPATH, "(//span[@class='ct-checkbox__checkmark'])[1]")
+        use_signature_all_fields = self.driver.find_element(By.XPATH, "(//span[@class='ct-checkbox__checkmark'])[2]")
         use_signature_all_fields.click()
         sleep(4)
         self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
@@ -1929,7 +1929,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             action.move_by_offset(5, 0)  # move 150 pixels to the right to access Help link
             action.click()
             action.perform()
-        use_signature_all_fields = self.driver.find_element(By.XPATH, "(//span[@class='ct-checkbox__checkmark'])[1]")
+        use_signature_all_fields = self.driver.find_element(By.XPATH, "(//span[@class='ct-checkbox__checkmark'])[2]")
         use_signature_all_fields.click()
         sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
