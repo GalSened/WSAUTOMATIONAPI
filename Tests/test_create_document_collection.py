@@ -11,7 +11,6 @@ from selenium.webdriver.chrome.service import Service
 import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 import pyodbc
 import Enums.status_codes
@@ -23,8 +22,6 @@ from selenium.webdriver.common.by import By
 import PyPDF2 as pypdf
 from Common.all_api_methods import WesignMethodsApi
 from shared import Shared
-
-
 
 @pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
@@ -3603,10 +3600,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 "documentMode": 1,
                 "documentName": "TestExtraInfo",
                 "templates": [
-                    "a2a792b4-f6fa-4f14-8668-08dc287676c7",
-                    "84edfb22-0331-4b31-8666-08dc287676c7",
-                    "60fa4c6b-0773-4ab9-8669-08dc287676c7",
-                    "8f8ade41-089e-46a9-8667-08dc287676c7"
+                    "0ac12edc-c2d9-4c83-e0b1-08dba9464fd6",
+                    "fb26b42c-bdf2-4985-ecf7-08dbb9bf94fe",
+                    "df464772-5b52-4d17-084e-08db9447b91a",
+                    "2f69b46c-7a32-4bdc-d759-08db88198799"
                 ],
                 "signers": [
                     {
@@ -3621,10 +3618,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         r = WesignMethodsApi.document_collections_post_dict(self, payload)
         res = r.json()
         documentCollectionId = res['documentCollectionId']
-        templates = ["a2a792b4-f6fa-4f14-8668-08dc287676c7",
-                    "84edfb22-0331-4b31-8666-08dc287676c7",
-                    "60fa4c6b-0773-4ab9-8669-08dc287676c7",
-                    "8f8ade41-089e-46a9-8667-08dc287676c7"]
+        templates = ["0ac12edc-c2d9-4c83-e0b1-08dba9464fd6",
+                    "fb26b42c-bdf2-4985-ecf7-08dbb9bf94fe",
+                    "df464772-5b52-4d17-084e-08db9447b91a",
+                    "2f69b46c-7a32-4bdc-d759-08db88198799"]
         info = WesignMethodsApi.document_collections_id_get_extra_info_json(self,documentCollectionId)
         json_obj = info.json()
 
