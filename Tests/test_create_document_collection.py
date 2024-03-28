@@ -439,10 +439,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(5)
         appendices_icon = self.driver.find_elements(By.CLASS_NAME, "feather-bookmark")
         assert len(appendices_icon) == 1
-        sleep(2)
-        appendices_icon = self.driver.find_element(By.CLASS_NAME, "feather-bookmark")
-        appendices_icon.click()
-        sleep(2)
+        sleep(5)
         appendices_pop_up = self.driver.find_elements(By.CLASS_NAME, "ct-animate-slide-down")
         assert len(appendices_pop_up) == 1
         sleep(1)
