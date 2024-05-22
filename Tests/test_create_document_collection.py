@@ -738,11 +738,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
+            (By.ID, "Text")))
         self.__assert_number_of_live_fields(2)
         get_value_from_text_field = self.driver.find_elements(By.ID, "Text")
         for value in get_value_from_text_field:
             assert value.get_attribute('value') == "string", " value wasn't added to the fields"
-        total_fields = self.driver.find_elements(By.CLASS_NAME, "is-mandatory")
+        total_fields = self.driver.find_elements(By.XPATH, "//app-text-field[1]/div/input")
         assert len(total_fields) == int(2), "field wasn't duplicated"
 
     # Bug number = WES-1123
@@ -3821,7 +3823,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(total_fields) == int(number_of_fields)
 
     def __assert_number_of_live_fields(self, number_of_fields):
-        total_fields = self.driver.find_elements(By.CLASS_NAME, "is-mandatory")
+        total_fields = self.driver.find_elements(By.XPATH, "//app-text-field[1]/div/input")
         assert len(total_fields) == int(number_of_fields)
 
     def __validate_no_emails_gmail(self, gmail_user_name, gmail_password):
