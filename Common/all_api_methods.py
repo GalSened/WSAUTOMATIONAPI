@@ -59,6 +59,36 @@ class WesignMethodsApi:
         r = requests.put(self.settings['Base_Url'] + 'contacts/deletebatch', data=json.dumps(list_of_ids), headers=headers)
         return r
 
+    def contacts_group_post(self, request_file):
+        file = open(self.settings[request_file], 'r')
+        json_input = file.read()
+        requests_json = json.loads(json_input)
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'contacts/Group', data=json.dumps(requests_json), headers=headers)
+        return r
+
+    def contacts_group_put(self, payload: dict, group_id : str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + 'contacts/Group/' + group_id, data=json.dumps(payload), headers=headers)
+        return r
+
+    def contacts_group_delete(self, group_id : str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.delete(self.settings['Base_Url'] + 'contacts/Group/' + group_id, headers=headers)
+        return r
+
+    def contacts_group_get(self, group_id : str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'contacts/Group/' + group_id, headers=headers)
+        return r
+
+    def contacts_all_group_get(self):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'contacts/Groups?offset=0&limit=20', headers=headers)
+        return r
+
+
+
     # Distribution
 
     def distribution_signers_post_json_file(self, signers_file: str):
@@ -361,4 +391,9 @@ class WesignMethodsApi:
     def document_collections_export_distribution(self):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.get(self.settings['Base_Url'] + f'/documentcollections/exportDistribution',headers=headers)
+        return r
+
+    def document_collections_id_get_data_fields_info_json(self, with_signatures: bool):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/cd57e9df-7081-4dd6-e091-08dc7d50bc8e/fields/json?includeSigantures={with_signatures}',headers=headers)
         return r

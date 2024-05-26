@@ -4,6 +4,7 @@ import unittest
 import uuid
 import warnings
 from pathlib import Path
+from pprint import pprint
 from time import sleep
 import openpyxl
 import pytest
@@ -277,6 +278,83 @@ class WesignContactsApi(unittest.TestCase):
         book.save(self.settings['openXlsxFileForUploadContacts'])
         for contact_id in contacts_list:
             WesignMethodsApi.contacts_id_delete(self, contact_id)
+
+    ##WES-1458
+    def test_create_new_contact_group(self):
+        contact_group = WesignMethodsApi.contacts_group_post(self, 'CreateNewContactGroup')
+        assert contact_group.status_code == StatusCode.OK
+        response = contact_group.json()
+        id = response['id']
+        delete_contact_group = WesignMethodsApi.contacts_group_delete(self, id)
+        assert delete_contact_group.status_code == StatusCode.OK
+        return response['id']
+
+    def test_create_new_contact_empty_name_group(self):
+        contact_group = WesignMethodsApi.contacts_group_post(self, 'CreateNewContactGroupEmptyName')
+        assert contact_group.status_code == StatusCode.BAD_REQUEST
+        response = contact_group.json()
+        json_response = response['errors']['error']
+        assert json_response[0] == ResultCode.INVALID_CONTACTS_GROUP_NAME
+
+    def test_edit_contact_group(self):
+        group = uuid.uuid4().hex
+        self.group_name = group
+        group_id = self.test_create_new_contact_group()
+        request = {
+              "name": self.group_name,
+              "contactsGroupMembers": [
+                {
+                  "contactId": "9e5268d6-1fdb-477c-afef-08db688925a9",
+                  "order": 1
+                }
+              ]
+            }
+        edit_contact_group = WesignMethodsApi.contacts_group_put(self, request, group_id)
+        assert edit_contact_group.status_code == StatusCode.OK
+
+    def test_delete_contact_group(self):
+        group = uuid.uuid4().hex
+        self.group_name = group
+        group_id = self.test_create_new_contact_group()
+        delete_contact_group = WesignMethodsApi.contacts_group_delete(self, group_id)
+        assert delete_contact_group.status_code == StatusCode.OK
+
+    def test_get_contact_group_by_id(self):
+        group = uuid.uuid4().hex
+        self.group_name = group
+        group_id = self.test_create_new_contact_group()
+        get_contact_group = WesignMethodsApi.contacts_group_get(self, group_id)
+        assert get_contact_group.status_code == StatusCode.OK
+        response = get_contact_group.json()
+        list_of_contacts_id = []
+        index = 0
+        for x in range(7):
+            contacts_ids = response['contactsGroupMembers'][index]['id']
+            list_of_contacts_id.append(contacts_ids)
+            index += 1
+
+        assert len(list_of_contacts_id) == 7
+        delete_contact_group = WesignMethodsApi.contacts_group_delete(self, group_id)
+        assert delete_contact_group.status_code == StatusCode.OK
+
+    def test_get_all_contact_group(self):
+        groups = WesignMethodsApi.contacts_all_group_get(self)
+        assert groups.status_code == StatusCode.OK
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # def test_get_all_contacts(self):
     #     #Delete all contacts

@@ -28,5 +28,7 @@
   "CreateNewContactWithGlobalPhoneWhenProviderIsGoldman" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderIsGoldman.json",
   "CreateNewContactWithLocalPhoneWhenProviderTwiilo": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithLocalPhoneWhenProviderTwiilo.json",
   "CreateNewContactWithGlobalPhoneWhenProviderTwiilo": "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\CreateNewContactWithGlobalPhoneWhenProviderTwiilo.json",
-  "openXlsxFileForUploadContacts" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\Contacts.xlsx"
+  "openXlsxFileForUploadContacts" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\ContactRequest\\Contacts.xlsx",
+  "CreateNewContactGroup" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\CreateNewContactGroup.json",
+  "CreateNewContactGroupEmptyName" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\CreateNewContactGroupEmptyName.json"
 }

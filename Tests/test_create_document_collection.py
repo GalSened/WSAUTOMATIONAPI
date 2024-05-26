@@ -4,6 +4,7 @@ import unittest
 import uuid
 import warnings
 from pathlib import Path
+from pprint import pprint
 from time import sleep
 import pytest
 import json
@@ -57,6 +58,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 " ------ Test Fail ------  test_document_collection_document_sending_success  ------ Test Fail ------")
             logging.error(exception, exc_info=True)
             raise
+        return response['documentCollectionId']
+
 
     @pytest.mark.run(order=25)
     def test_document_collection_document_sending_two_contacts_by_order_success(self):
@@ -3591,6 +3594,22 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         specific_document_collection_id = doc_id
         assert any(obj['documentCollectionId'] == specific_document_collection_id for obj in filtered_data), f"Document collection ID '{specific_document_collection_id}' not found in notificationType: 3"
 
+    ##WES-1455
+    def test_notification_from_callback_when_document_canceled(self):
+        doc_id = self.test_document_collection_document_sending_success()
+        sleep(1.5)
+        WesignMethodsApi.document_collections_id_cancel_put(self,doc_id)
+        response = requests.get(self.settings['call_back_url'])
+        data = response.json()
+        document_collection_ids = [item['documentCollectionId'] for item in data]
+        assert doc_id in document_collection_ids
+        WesignMethodsApi.document_collections_id_delete(self,doc_id)
+        response = requests.get(self.settings['call_back_url'])
+        data = response.json()
+        filtered_data = [obj for obj in data if obj['notificationType'] == 4]
+        specific_document_collection_id = doc_id
+        assert any(obj['documentCollectionId'] == specific_document_collection_id for obj in filtered_data), f"Document collection ID '{specific_document_collection_id}' not found in notificationType: 4"
+
     def test_get_template_id_extra_info_json_from_document_collection(self):
         document = uuid.uuid4().hex
         self.document_name = document
@@ -3633,6 +3652,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         r = WesignMethodsApi.document_collections_export_distribution(self)
         assert r.status_code == StatusCode.OK
 
+    def test_export_document_collection_data_fields_to_json_with_signatures(self):
+        get_fields_info_json = WesignMethodsApi.document_collections_id_get_data_fields_info_json(self, True)
+        response = get_fields_info_json.json()
+        assert len(response['signatureFields'][0]['image']) == 9674
+
+    ##WES-1512
+    def test_export_document_collection_data_fields_to_json_without_signatures(self):
+        get_fields_info_json = WesignMethodsApi.document_collections_id_get_data_fields_info_json(self, False)
+        data = get_fields_info_json.json()
+        fields = []
+        for field in data['textFields']:
+            assert field['value'] != ''
+            fields.append([field['value']])
 
     # def test_download_document_collection_and_save_as_pdf(self):
     #     headers = {'content-type': 'application/pdf', 'Authorization': 'Bearer ' + self.token}
