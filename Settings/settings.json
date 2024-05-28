@@ -1,6 +1,7 @@
 {
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
   "LoginRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccess.json",
+  "LoginRequestSuccessUsingOtp" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccessUsingOtp.json",
   "LoginUserNameRequestSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginUsernameRequestSuccess.json",
   "LoginRequestSuccessGmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccessGmail.json",
   "LoginRequestSuccessTwilio" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSuccessTwillo.json",
@@ -17,6 +18,7 @@
   "wesign_url" : "https://devtest.comda.co.il",
   "company_user" : "devtest10@comda.co.il",
   "company_user_password" : "Comsign1!",
+  "DevtestMailUsingOtp" : "devtest11@comda.co.il",
   "max_wait_time": 4,
   "short_wait_time": 4,
   "min_wait_time": 4,

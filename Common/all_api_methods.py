@@ -228,6 +228,11 @@ class WesignMethodsApi:
 
     # Users
 
+    def users_validate_otp_flow(self, payload):
+        headers = {'content-type': 'application/json'}
+        r = requests.post(self.settings['Base_Url'] + 'users/validateOtpflow', data=json.dumps(payload), headers=headers)
+        return r
+
     def users_login_post_json_file(self, request_file: str):
         file = open(self.settings[request_file], 'r')
         json_input = file.read()
