@@ -280,13 +280,16 @@ class WesignContactsApi(unittest.TestCase):
             WesignMethodsApi.contacts_id_delete(self, contact_id)
 
     ##WES-1458
-    def test_create_new_contact_group(self):
+    def test_create_new_contact_group(self, delete=True):
         contact_group = WesignMethodsApi.contacts_group_post(self, 'CreateNewContactGroup')
         assert contact_group.status_code == StatusCode.OK
         response = contact_group.json()
         id = response['id']
-        delete_contact_group = WesignMethodsApi.contacts_group_delete(self, id)
-        assert delete_contact_group.status_code == StatusCode.OK
+        if delete:
+            delete_contact_group = WesignMethodsApi.contacts_group_delete(self, id)
+            assert delete_contact_group.status_code == StatusCode.OK
+        else:
+            pass
         return response['id']
 
     def test_create_new_contact_empty_name_group(self):
@@ -299,7 +302,7 @@ class WesignContactsApi(unittest.TestCase):
     def test_edit_contact_group(self):
         group = uuid.uuid4().hex
         self.group_name = group
-        group_id = self.test_create_new_contact_group()
+        group_id = self.test_create_new_contact_group(False)
         request = {
               "name": self.group_name,
               "contactsGroupMembers": [
@@ -311,18 +314,19 @@ class WesignContactsApi(unittest.TestCase):
             }
         edit_contact_group = WesignMethodsApi.contacts_group_put(self, request, group_id)
         assert edit_contact_group.status_code == StatusCode.OK
+        WesignMethodsApi.contacts_group_delete(self,group_id)
 
     def test_delete_contact_group(self):
         group = uuid.uuid4().hex
         self.group_name = group
-        group_id = self.test_create_new_contact_group()
+        group_id = self.test_create_new_contact_group(False)
         delete_contact_group = WesignMethodsApi.contacts_group_delete(self, group_id)
         assert delete_contact_group.status_code == StatusCode.OK
 
     def test_get_contact_group_by_id(self):
         group = uuid.uuid4().hex
         self.group_name = group
-        group_id = self.test_create_new_contact_group()
+        group_id = self.test_create_new_contact_group(False)
         get_contact_group = WesignMethodsApi.contacts_group_get(self, group_id)
         assert get_contact_group.status_code == StatusCode.OK
         response = get_contact_group.json()
