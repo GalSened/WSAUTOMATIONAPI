@@ -99,13 +99,16 @@ class WesignApiLoginTests(unittest.TestCase):
         delete_mail = self.driver.find_element(By.XPATH,
                                                "//div[5]/div/div[1]/div/div[5]/div[1]/div/div[1]/div/div/div[3]/div/button/span[2]")
         delete_mail.click()
+        sleep(3)
         otp = otp_number[24:30]
         payload = {
                   "otpToken": login['refreshToken'],
                   "code": otp
                 }
         login_using_otp = WesignMethodsApi.users_validate_otp_flow(self, payload)
+        sleep(3)
         response = login_using_otp.json()
+        sleep(2)
         assert len(response['token']) == 388
         assert response['refreshToken'] != ''
         assert response['authToken'] != ''
