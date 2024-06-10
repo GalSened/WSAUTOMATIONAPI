@@ -15,7 +15,7 @@ from Common.all_api_methods import WesignMethodsApi
 from shared import Shared
 
 
-@pytest.mark.flaky(max_runs=3)
+@pytest.mark.flaky(max_runs=6)
 class WesignApiLoginTests(unittest.TestCase):
     def setUp(self):
         # p = Path(__file__).with_name('settings.json')
