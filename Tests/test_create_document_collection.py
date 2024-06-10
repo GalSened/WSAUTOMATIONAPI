@@ -764,7 +764,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
         self.token = Shared.login_request_gmail(self)
         self.__setup()
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -775,19 +774,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self._change_values_in_file("DocumentCollectionDuplicatedFields", template, document_name)
         send_distribution = WesignMethodsApi.document_collections_post_json_file(self, "DocumentCollectionDuplicatedFields")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(15)
-        self.driver.refresh()
         sleep(2)
-        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
-            (By.XPATH, "(//*[contains(text(),'sent you the document {}')])[1]".format(document_name))))
-        self.driver.find_element(By.XPATH,
-                                 "(//*[contains(text(),'sent you the document {}')])[1]".format(document_name)).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Click here')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
+        doc_id = self.__get_documentCollectionId_from_db(document_name)
+
+        self.__get_link_by_signers_number_without_signing(1, doc_id)
         sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
-        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
+        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located(
             (By.ID, "Text")))
         self.__assert_number_of_live_fields(2)
         get_value_from_text_field = self.driver.find_elements(By.ID, "Text")
@@ -1189,7 +1181,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         r = WesignMethodsApi.document_collections_post_dict(self, d)
         assert r.status_code == StatusCode.OK
 
-    @pytest.mark.part2
+    @pytest.mark.part1
     def test_document_collection_send_document_two_recipients_e2e_sign_success(self):
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplate3PagesPdfBase64Success")
         assert r.status_code == StatusCode.OK

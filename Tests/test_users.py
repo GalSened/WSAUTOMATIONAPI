@@ -1,4 +1,5 @@
 import unittest
+import uuid
 import warnings
 from pathlib import Path
 from time import sleep
@@ -43,6 +44,15 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part3
     def test_create_new_admin_user_success(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        random_hex = uuid.uuid4().hex
+        with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -92,6 +102,14 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part3
     def test_update_existing_user_name_success(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -102,6 +120,16 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part1
     def test_update_existing_user_email_success(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        random_hex = uuid.uuid4().hex
+        phone_number = ''.join(filter(str.isdigit, random_hex))[:10]
+        with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -112,6 +140,14 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part2
     def test_update_existing_user_to_basic_user_success(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -122,6 +158,14 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part3
     def test_update_existing_user_to_editor_user_success(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email
+            f.seek(0)
+            json.dump(data, f, indent=3)
+            f.truncate()
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -132,6 +176,15 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part1
     def test_update_existing_user_empty_name(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+
+        with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -144,6 +197,14 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part2
     def test_update_existing_user_empty_email(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -158,6 +219,14 @@ class WesignApiUsersTests(unittest.TestCase):
     ##Bug number = WES-981
     @pytest.mark.part3
     def test_update_existing_user_invalid_group_id(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewAdminUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()

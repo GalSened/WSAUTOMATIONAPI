@@ -30,6 +30,17 @@ class WesignContactsApi(unittest.TestCase):
 
     @pytest.mark.part1
     def test_create_new_contact_by_email_success(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        random_hex = uuid.uuid4().hex
+        phone_number = ''.join(filter(str.isdigit, random_hex))[:10]
+        with open(self.settings["CreateNewValidContactWithEmailAndPhone"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            data["phone"] = phone_number
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -186,6 +197,17 @@ class WesignContactsApi(unittest.TestCase):
 
     @pytest.mark.part1
     def test_update_contact_mail(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        random_hex = uuid.uuid4().hex
+        phone_number = ''.join(filter(str.isdigit, random_hex))[:10]
+        with open(self.settings["CreateNewValidContactWithEmailAndPhone"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            data["phone"] = phone_number
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -197,6 +219,17 @@ class WesignContactsApi(unittest.TestCase):
 
     @pytest.mark.part2
     def test_update_contact_phone(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        random_hex = uuid.uuid4().hex
+        phone_number = ''.join(filter(str.isdigit, random_hex))[:10]
+        with open(self.settings["CreateNewValidContactWithEmailAndPhone"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            data["phone"] = phone_number
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -208,6 +241,17 @@ class WesignContactsApi(unittest.TestCase):
 
     @pytest.mark.part3
     def test_update_contact_seal(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        random_hex = uuid.uuid4().hex
+        phone_number = ''.join(filter(str.isdigit, random_hex))[:10]
+        with open(self.settings["CreateNewValidContactWithEmailAndPhone"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            data["phone"] = phone_number
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -219,6 +263,17 @@ class WesignContactsApi(unittest.TestCase):
 
     @pytest.mark.part1
     def test_update_contact_invalid_email(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        random_hex = uuid.uuid4().hex
+        phone_number = ''.join(filter(str.isdigit, random_hex))[:10]
+        with open(self.settings["CreateNewValidContactWithEmailAndPhone"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            data["phone"] = phone_number
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
         response = r.json()
