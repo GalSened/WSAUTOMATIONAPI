@@ -3,6 +3,8 @@ import uuid
 import warnings
 from pathlib import Path
 from time import sleep
+
+import pyodbc
 import pytest
 import json
 import names
@@ -68,25 +70,21 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "DistributeSignersApi_Copy")
         assert send_distribution.status_code == StatusCode.OK
         sleep(2)
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
-        sleep(2)
-        self.__enter_comda_mail_and_sign(self.document_name)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
-        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "logo_image")))
-        sleep(2)
+        doc_id = self.__get_documentCollectionId_from_db(self.document_name)
+
+        self.__get_link_by_signers_number_without_signing(1, doc_id)
+        sleep(8)
+
+        WebDriverWait(self.driver, 50).until(EC.presence_of_element_located((By.ID, "logo_image")))
+        sleep(8)
         self.driver.find_element(By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
-        sleep(3)
-        self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(120)
-        self.__change_comda_mail_box("devtest10@comda.co.il", self.settings['comda_mail_password'])
+        sleep(60)
+        self.__enter_comda_mail(self.settings['second_dev_email'], self.settings['comda_mail_password'])
         sleep(8)
         WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH,
-                                                                             "//*[contains(text(), '{} has been completed by all participants')]".format(
-                                                                                 self.document_name))))
+                                                                             f"(//*[contains(text(), '{self.document_name} has been completed')])[1]")))
         assert self.driver.find_element(By.XPATH,
                                         f"//*[contains(text(), '({self.settings['dev_email']}) has viewed {self.document_name}')]")
         assert self.driver.find_element(By.XPATH,
@@ -225,7 +223,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     @pytest.mark.part1
     def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
         self.__setup()
-        sleep(3)
+        sleep(1)
         emails = [self.settings['dev_email'], self.settings['second_dev_email']]
         self.__enter_name_and_email_to_xlsx_file(
             self.settings["sending_distribution_duplicated_fields_with_same_name_and_value_in_xlsx_edit"],
@@ -262,12 +260,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self,
                                                                          "DistributeSigners_duplicated_fields_in_xlsx_with_same_name")
         assert send_distribution.status_code == StatusCode.OK
+        sleep(1)
+        doc_id = self.__get_documentCollectionId_from_db_distribute(self.document)
+        ##first signer
+        self.__get_link_by_signers_number_without_signing(1, doc_id[1])
         sleep(2)
-        self.__enter_comda_mail(self.settings['second_dev_email'], self.settings['comda_mail_password'])
-        sleep(2)
-        self.__enter_comda_mail_and_sign(self.document)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
         self.__assert_number_of_fields(10)
@@ -285,11 +282,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[0])
         sleep(2)
-        self.__change_comda_mail_box("devtest9@comda.co.il", self.settings['comda_mail_password'])
-        sleep(2)
-        self.__enter_comda_mail_and_sign(self.document)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[2])
+        doc_id = self.__get_documentCollectionId_from_db_distribute(self.document)
+        ##first signer
+        self.__get_link_by_signers_number_without_signing(1, doc_id[0])
         sleep(2)
         WebDriverWait(self.driver, 80).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ct-input--primary")))
@@ -334,7 +329,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def test_elements_values_in_distribution_doesnt_change_when_template_is_changed_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -347,20 +341,20 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_elements_values")
         assert send_distribution.status_code == StatusCode.OK
         sleep(2)
-        self.__enter_comda_mail_and_sign(document_name)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
+        doc_id = self.__get_documentCollectionId_from_db(document_name)
+
+        self.__get_link_by_signers_number_without_signing(1, doc_id)
         sleep(2)
         get_value_from_text_field = self.driver.find_element(By.XPATH, "//*[@type='text']")
         assert get_value_from_text_field.get_attribute('value') == "old erech", "value wasnt added to field"
         fields_for_template = WesignMethodsApi.templates_id_put_json_file(self, "changed_values_for_template", template)
         assert fields_for_template.status_code == StatusCode.OK
-        self.driver.switch_to.window(self.driver.window_handles[0])
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Click here')]")))
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[2])
-        sleep(2)
+        sleep(4)
+        doc_id = self.__get_documentCollectionId_from_db(document_name)
+
+        self.__get_link_by_signers_number_without_signing(1, doc_id)
+        sleep(1)
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@type='text']")))
         get_new_value_from_text_field = self.driver.find_element(By.XPATH, "//*[@type='text']")
         assert get_new_value_from_text_field.get_attribute('value') == "old erech", "value changed"
 
@@ -387,7 +381,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def test_distribution_add_date_field_with_value_validate_date_displayed_to_signer_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -400,10 +393,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribution_with_date_field")
         assert send_distribution.status_code == StatusCode.OK
         sleep(2)
-        self.__enter_comda_mail_and_sign(document_name)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
+        doc_id = self.__get_documentCollectionId_from_db(document_name)
+
+        self.__get_link_by_signers_number_without_signing(1, doc_id)
+        sleep(1)
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@type='date']")))
         get_value_from_date_field = self.driver.find_element(By.XPATH, "//*[@type='date']")
         assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
 
@@ -413,7 +407,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             self):
         self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -427,10 +420,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_date_and_number_fiels")
         assert send_distribution.status_code == StatusCode.OK
         sleep(1)
-        self.__enter_comda_mail_and_sign(document_name)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
+        doc_id = self.__get_documentCollectionId_from_db(document_name)
+
+        self.__get_link_by_signers_number_without_signing(1, doc_id)
+        sleep(1.5)
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@type='date']")))
         get_value_from_date_field = self.driver.find_element(By.XPATH, "//*[@type='date']")
         get_value_from_number_field = self.driver.find_element(By.ID, "Number")
         assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
@@ -441,7 +435,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def test_distribution_validate_values_displayed_to_signer_from_xlsx_and_not_from_template_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -465,9 +458,9 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_file_with_number_field")
         assert send_distribution.status_code == StatusCode.OK
         sleep(1)
-        self.__enter_comda_mail_and_sign(file_name)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
+        doc_id = self.__get_documentCollectionId_from_db(file_name)
+
+        self.__get_link_by_signers_number_without_signing(1, doc_id)
         sleep(2)
         get_value_from_number_field = self.driver.find_element(By.ID, "Number")
         assert get_value_from_number_field.get_attribute(
@@ -479,7 +472,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def test_distribution_doesnt_update_value_in_fields(self):
         self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
@@ -492,10 +484,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribution_bug1011")
         assert send_distribution.status_code == StatusCode.OK
         sleep(1)
-        self.__enter_comda_mail_and_sign(document_name)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
+        doc_id = self.__get_documentCollectionId_from_db(document_name)
+
+        self.__get_link_by_signers_number_without_signing(1, doc_id)
+        sleep(1.5)
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@type='text']")))
         get_value_from_text_field = self.driver.find_element(By.XPATH, "//*[@type='text']")
         assert get_value_from_text_field.get_attribute('value') == "new erech", "value changed"
 
@@ -825,3 +818,53 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(2)
         signin_button = self.driver.find_element(By.XPATH, '//*[@id="lgnDiv"]/div[9]/div')
         signin_button.click()
+
+    def __get_documentCollectionId_from_db(self, document_name):
+        sleep(2)
+        conn = pyodbc.connect(f'Driver=SQL Server;'
+                              "Server=DEVTEST\SQLEXPRESS;"
+                              f'Database={self.settings["db_name"]};'
+                              f'UID={self.settings["db_user"]};'
+                              F'PWD={self.settings["db_password"]};'
+                              'Trusted_Connection=no;')
+        cursor = conn.cursor()
+        b = cursor.execute(
+            f" select * from DocumentCollections where Name = '{document_name}'")
+        name = b.fetchone()
+        return name[0]
+
+    def __get_documentCollectionId_from_db_distribute(self, document_name):
+        sleep(2)
+        conn = pyodbc.connect(f'Driver=SQL Server;'
+                              "Server=DEVTEST\SQLEXPRESS;"
+                              f'Database={self.settings["db_name"]};'
+                              f'UID={self.settings["db_user"]};'
+                              F'PWD={self.settings["db_password"]};'
+                              'Trusted_Connection=no;')
+        cursor = conn.cursor()
+        b = cursor.execute(
+            f" select * from DocumentCollections where Name = '{document_name}'")
+        name = b.fetchall()
+        return name[0][0], name[1][0]
+
+    def __get_link_by_signers_number_without_signing(self, signers_number: int, document_collection_id: str):
+        index = 0
+        for a in range(signers_number):
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            cursor = conn.cursor()
+            b = cursor.execute(
+                f"SELECT * from [SignerTokensMapping] where [DocumentCollectionId] = '{document_collection_id}'")
+            links = []
+            result = b.fetchall()
+            for x in result:
+                links.append(x[3])
+            sleep(4)
+            self.driver.get(f"https://devtest.comda.co.il/signer/signature/{links[index]}")
+            sleep(1)
+            index += 1
+            links.clear()

@@ -1191,7 +1191,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.part2
     def test_document_collection_send_document_two_recipients_e2e_sign_success(self):
-        # r = self.__api_create_template_request("CreateTemplate3PagesPdfBase64Success")
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplate3PagesPdfBase64Success")
         assert r.status_code == StatusCode.OK
         response = r.json()
@@ -1885,19 +1884,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         use_signature_all_fields.click()
         sleep(4)
         self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
-        sleep(4)
-        # try:
-        #     sleep(1)
-        #     WebDriverWait(self.driver, 15).until(
-        #         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
-        #     yes_button = "//button[contains(text(),'Yes')]"
-        #     self.driver.find_element(By.XPATH, yes_button).click()
-        # except:
-        #     sleep(1)
-        #     WebDriverWait(self.driver, 15).until(
-        #         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
-        #     yes_button = "//button[contains(text(),'No')]"
-        #     self.driver.find_element(By.XPATH, yes_button).click()
         sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
         sleep(5)
@@ -1905,15 +1891,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
         assert len(signing_complete_msg) == 1
         sleep(1)
-        driver.execute_script("window.open('');")
-        sleep(3)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(4)
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
-        sleep(4)
-        self.__enter_comda_mail_and_sign(document)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[2])
+        doc_id = self.__get_documentCollectionId_from_db(self.document_name)
+
+        self.__get_link_by_signers_number_without_signing(2, doc_id)
         sleep(2)
         WebDriverWait(driver, 50).until(EC.presence_of_element_located((By.XPATH, "//input[@type='text']")))
         text = self.driver.find_elements(By.XPATH, "//input[@type='text']")
@@ -1987,19 +1967,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         use_signature_all_fields.click()
         sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
-        # sleep(4)
-        # try:
-        #     sleep(1)
-        #     WebDriverWait(self.driver, 15).until(
-        #         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
-        #     yes_button = "//button[contains(text(),'Yes')]"
-        #     self.driver.find_element(By.XPATH, yes_button).click()
-        # except:
-        #     sleep(1)
-        #     WebDriverWait(self.driver, 15).until(
-        #         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
-        #     yes_button = "//button[contains(text(),'No')]"
-        #     self.driver.find_element(By.XPATH, yes_button).click()
         sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
         sleep(2)
@@ -4095,4 +4062,38 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         finish_button = "//button[normalize-space()='Finish']"
         self.driver.find_element(By.XPATH, finish_button).click()
 
+    def __get_documentCollectionId_from_db(self, document_name):
+        sleep(2)
+        conn = pyodbc.connect(f'Driver=SQL Server;'
+                              "Server=DEVTEST\SQLEXPRESS;"
+                              f'Database={self.settings["db_name"]};'
+                              f'UID={self.settings["db_user"]};'
+                              F'PWD={self.settings["db_password"]};'
+                              'Trusted_Connection=no;')
+        cursor = conn.cursor()
+        b = cursor.execute(
+            f" select * from DocumentCollections where Name = '{document_name}'")
+        name = b.fetchone()
+        return name[0]
 
+    def __get_link_by_signers_number_without_signing(self, signers_number: int, document_collection_id: str):
+        index = 0
+        for a in range(signers_number):
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            cursor = conn.cursor()
+            b = cursor.execute(
+                f"SELECT * from [SignerTokensMapping] where [DocumentCollectionId] = '{document_collection_id}'")
+            links = []
+            result = b.fetchall()
+            for x in result:
+                links.append(x[3])
+            sleep(4)
+            self.driver.get(f"https://devtest.comda.co.il/signer/signature/{links[index]}")
+            sleep(1)
+            index += 1
+            links.clear()

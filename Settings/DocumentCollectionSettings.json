@@ -9,6 +9,7 @@
   "short_wait_time": 4,
   "min_wait_time": 4,
   "element_wait" : 9,
+
   "first_recipient_name" : "wesign4611@gmail.com",
   "gmail_login_password" : "Comsign1!",
   "nine_recipient_name": "wesignautomation1989",
@@ -79,7 +80,7 @@
   "dev_email" : "devtest9@comda.co.il",
   "dev_name": "devtest1",
   "comda_mail_password" : "Comsign1!",
-   "db_name" : "WeSign",
+  "db_name" : "WeSign",
   "db_user" : "sa",
   "db_password" : "Aa123456"
 }
