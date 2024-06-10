@@ -23,6 +23,7 @@ class WesignContactsApi(unittest.TestCase):
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request_twillo(self)
 
+    @pytest.mark.part1
     def test_create_new_contact_with_global_number_with_twilio_provider_success(self):
         r = self.__api_create_contact_request('CreateNewContactWithGlobalPhoneWhenProviderTwiilo')
         assert r.status_code == StatusCode.OK
@@ -32,6 +33,7 @@ class WesignContactsApi(unittest.TestCase):
         r = self.__api_delete_contact_request(json_response)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part2
     def test_create_new_contact_with_local_number_with_twilio_provider_success(self):
         r = self.__api_create_contact_request('CreateNewContactWithLocalPhoneWhenProviderTwiilo')
         assert r.status_code == StatusCode.OK
@@ -41,6 +43,7 @@ class WesignContactsApi(unittest.TestCase):
         r = self.__api_delete_contact_request(json_response)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_create_new_contact_with_local_number_with_twilio_provider_with_phone_extension_in_number(self):
         r = self.__api_create_contact_request('CreateNewContactWithGlobalPhoneWhenProviderTwiiloPhoneExtensionInvalid')
         assert r.status_code == StatusCode.BAD_REQUEST

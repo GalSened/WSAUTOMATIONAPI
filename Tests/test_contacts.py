@@ -28,6 +28,7 @@ class WesignContactsApi(unittest.TestCase):
         self.token = Shared.login_request(self)
         ##test
 
+    @pytest.mark.part1
     def test_create_new_contact_by_email_success(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
@@ -37,6 +38,7 @@ class WesignContactsApi(unittest.TestCase):
         r = WesignMethodsApi.contacts_id_delete(self, json_response)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part2
     def test_create_new_contact_by_phone_success(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactSendingBySms')
         assert r.status_code == StatusCode.OK
@@ -46,6 +48,7 @@ class WesignContactsApi(unittest.TestCase):
         r = WesignMethodsApi.contacts_id_delete(self, json_response)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_create_new_contact_by_invalid_email(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewContactWithInvalidEmail')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -53,6 +56,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['DefaultSendingMethod']
         assert json_response[0] == ResultCode.DEFAULT_SENDING_METHOD
 
+    @pytest.mark.part1
     def test_create_new_contact_by_invalid_phone(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewContactWithInvalidPhone')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -60,6 +64,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['Phone']
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_VALID_PHONE
 
+    @pytest.mark.part2
     def test_create_new_contact_by_empty_name(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewContactWithEmptyName')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -67,6 +72,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['Name']
         assert json_response == ResultCode.INVALID_NAME
 
+    @pytest.mark.part3
     def test_create_new_contact_by_phone_invalid_sending_type(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactByPhoneInvalidSendingMethod')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -74,6 +80,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['DefaultSendingMethod']
         assert json_response[0] == ResultCode.DEFAULT_SENDING_METHOD
 
+    @pytest.mark.part1
     def test_create_new_contact_by_email_invalid_sending_type(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactByEmailInvalidSendingMethod')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -81,6 +88,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['DefaultSendingMethod']
         assert json_response[0] == ResultCode.DEFAULT_SENDING_METHOD
 
+    @pytest.mark.part2
     def test_create_new_contact_by_email_invalid_default_sending_method(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactByEmailInvalidSendingMethod')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -88,6 +96,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['DefaultSendingMethod']
         assert json_response[0] == ResultCode.DEFAULT_SENDING_METHOD
 
+    @pytest.mark.part3
     def test_create_new_contact_with_name_already_exists(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactNameExists')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -95,6 +104,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS
 
+    @pytest.mark.part1
     def test_create_new_contact_with_email_already_exists(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactEmailExists')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -102,6 +112,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS
 
+    @pytest.mark.part2
     def test_create_new_contact_with_phone_already_exists(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactPhoneExists')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -109,6 +120,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS
 
+    @pytest.mark.part3
     def test_create_new_contact_from_bulk_xlsx_file_success(self):
         r = WesignMethodsApi.contacts_bulk_post_json_file(self, 'CreateNewContactFromBulkCsv')
         assert r.status_code == StatusCode.OK
@@ -118,6 +130,7 @@ class WesignContactsApi(unittest.TestCase):
         r = WesignMethodsApi.contacts_id_delete(self, json_response[0])
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_create_new_contacts_from_bulk_xlsx_sending_method_sms_success(self):
         r = WesignMethodsApi.contacts_bulk_post_json_file(self, 'CreateNewContactsFromBulkCsvSendingMehtodSms')
         assert r.status_code == StatusCode.OK
@@ -127,6 +140,7 @@ class WesignContactsApi(unittest.TestCase):
         for contacts in json_response:
             WesignMethodsApi.contacts_id_delete(self, contacts)
 
+    @pytest.mark.part2
     def test_create_new_contacts_from_bulk_xlsx_sending_method_email_success(self):
         r = WesignMethodsApi.contacts_bulk_post_json_file(self, 'CreateNewContactsFromBulkCsvSendingMehtodEmail')
         assert r.status_code == StatusCode.OK
@@ -136,6 +150,7 @@ class WesignContactsApi(unittest.TestCase):
         for contacts in json_response:
             WesignMethodsApi.contacts_id_delete(self, contacts)
 
+    @pytest.mark.part3
     def test_create_new_contacts_from_bulk_xlsx_sending_method_email_and_sms_success(self):
         r = WesignMethodsApi.contacts_bulk_post_json_file(self, 'CreateNewContactsFromBulkCsvSendingMehtodEmailAndSms')
         assert r.status_code == StatusCode.OK
@@ -145,6 +160,7 @@ class WesignContactsApi(unittest.TestCase):
         for contacts in json_response:
             WesignMethodsApi.contacts_id_delete(self, contacts)
 
+    @pytest.mark.part1
     def test_create_new_contact_from_bulk_xlsx_valid_name_and_email_invalid_phone(self):
         r = WesignMethodsApi.contacts_bulk_post_json_file(self, 'CreateNewContactsFromBulkCsvInvalidNameAndEmailInvalidPhone')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -152,6 +168,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.INVALID_PHONE
 
+    @pytest.mark.part2
     def test_create_new_contact_from_bulk_xlsx_empty_csv(self):
         r = WesignMethodsApi.contacts_bulk_post_json_file(self, 'CreateNewContactsFromBulkCsvEmpty')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -159,6 +176,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.INVALID_FORMAT
 
+    @pytest.mark.part3
     def test_create_new_contact_from_bulk_csv_empty_fullname_valid_phone(self):
         r = WesignMethodsApi.contacts_bulk_post_json_file(self, 'CreateNewContactsFromBulkCsvEmptyFullnameValidPhone')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -166,6 +184,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.NAME_IS_MISSING
 
+    @pytest.mark.part1
     def test_update_contact_mail(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
@@ -176,6 +195,7 @@ class WesignContactsApi(unittest.TestCase):
         WesignMethodsApi.contacts_id_delete(self, json_response)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part2
     def test_update_contact_phone(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
@@ -186,6 +206,7 @@ class WesignContactsApi(unittest.TestCase):
         WesignMethodsApi.contacts_id_delete(self, json_response)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_update_contact_seal(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
@@ -196,6 +217,7 @@ class WesignContactsApi(unittest.TestCase):
         WesignMethodsApi.contacts_id_delete(self, json_response)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_update_contact_invalid_email(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewValidContactWithEmailAndPhone')
         assert r.status_code == StatusCode.OK
@@ -224,6 +246,7 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.OK
 
     #Bug number = WES-1047
+    @pytest.mark.part2
     def test_create_new_contact_with_global_number_when_provider_is_goldman(self):
         r = WesignMethodsApi.contacts_post_json_file(self, 'CreateNewContactWithGlobalPhoneWhenProviderIsGoldman')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -231,6 +254,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response_error = response_error['errors']['error']
         assert json_response_error[0] == ResultCode.SMS_PROVIDER_ERROR
 
+    @pytest.mark.part3
     def test_delete_multi_contacts_by_id_success(self):
         a = []
         for x in range(4):
@@ -255,6 +279,7 @@ class WesignContactsApi(unittest.TestCase):
         delete = WesignMethodsApi.contacts_delete_batch_put(self, c)
         assert delete.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_upload_hebrew_contacts_from_xlsx_file_and_check_names(self):
         number_of_contacts = 10
         list_of_names = self.__api_get_list_of_random_hebrew_names(number_of_contacts)
@@ -280,6 +305,7 @@ class WesignContactsApi(unittest.TestCase):
             WesignMethodsApi.contacts_id_delete(self, contact_id)
 
     ##WES-1458
+    @pytest.mark.part2
     def test_create_new_contact_group(self, delete=True):
         contact_group = WesignMethodsApi.contacts_group_post(self, 'CreateNewContactGroup')
         assert contact_group.status_code == StatusCode.OK
@@ -292,6 +318,7 @@ class WesignContactsApi(unittest.TestCase):
             pass
         return response['id']
 
+    @pytest.mark.part3
     def test_create_new_contact_empty_name_group(self):
         contact_group = WesignMethodsApi.contacts_group_post(self, 'CreateNewContactGroupEmptyName')
         assert contact_group.status_code == StatusCode.BAD_REQUEST
@@ -299,6 +326,7 @@ class WesignContactsApi(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.INVALID_CONTACTS_GROUP_NAME
 
+    @pytest.mark.part1
     def test_edit_contact_group(self):
         group = uuid.uuid4().hex
         self.group_name = group
@@ -316,6 +344,7 @@ class WesignContactsApi(unittest.TestCase):
         assert edit_contact_group.status_code == StatusCode.OK
         WesignMethodsApi.contacts_group_delete(self,group_id)
 
+    @pytest.mark.part2
     def test_delete_contact_group(self):
         group = uuid.uuid4().hex
         self.group_name = group
@@ -323,6 +352,7 @@ class WesignContactsApi(unittest.TestCase):
         delete_contact_group = WesignMethodsApi.contacts_group_delete(self, group_id)
         assert delete_contact_group.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_get_contact_group_by_id(self):
         group = uuid.uuid4().hex
         self.group_name = group
@@ -341,24 +371,10 @@ class WesignContactsApi(unittest.TestCase):
         delete_contact_group = WesignMethodsApi.contacts_group_delete(self, group_id)
         assert delete_contact_group.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_get_all_contact_group(self):
         groups = WesignMethodsApi.contacts_all_group_get(self)
         assert groups.status_code == StatusCode.OK
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     # def test_get_all_contacts(self):
     #     #Delete all contacts

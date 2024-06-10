@@ -23,22 +23,27 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
 
+    @pytest.mark.part1
     def test_self_sign_pdf_document_upload_success(self):
         r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadPdfDocument')
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part2
     def test_self_sign_word_document_upload_success(self):
         r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadWordDocument')
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_self_sign_xlsx_document_upload_success(self):
         r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadXlsxDocument')
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_self_sign_png_document_upload_success(self):
         r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadPngDocument')
         assert r.status_code == StatusCode.OK
-    
+
+    @pytest.mark.part2
     def test_self_sign_delete_document_success(self):
         r = WesignMethodsApi.self_sign_post_json_file(self, 'SelfSignUploadPdfDocument')
         assert r.status_code == StatusCode.OK
@@ -55,6 +60,7 @@ class WesignApiSelfSignTestTests(unittest.TestCase):
         r = WesignMethodsApi.self_sign_id_delete(self, documentcollectionid)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_self_sign_download_smart_card(self):
         r = WesignMethodsApi.self_sign_download_smartcard_get(self)
         assert r.status_code == StatusCode.OK

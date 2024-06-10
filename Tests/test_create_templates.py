@@ -26,6 +26,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
 
+    @pytest.mark.part1
     def test_create_pdf_template_base64_success(self):
         try:
             logging.info(" ---Test Start---         test_create_pdf_template_base64_success         ---Test Start--- ")
@@ -46,6 +47,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
             logging.error(exception, exc_info=True)
             raise
 
+    @pytest.mark.part2
     def test_create_word_template_base64_success(self):
         try:
             r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplateWordBase64Success")
@@ -66,6 +68,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
             logging.error(exception, exc_info=True)
             raise
 
+    @pytest.mark.part3
     def test_create_xlsx_template_base64_success(self):
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplateXlsxBase64Success")
         assert r.status_code == StatusCode.OK
@@ -76,6 +79,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         assert len(templatename) > 0
         WesignMethodsApi.templates_id_delete(self, template)
 
+    @pytest.mark.part1
     def test_create_png_template_base64_success(self):
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplatePngBase64Success")
         assert r.status_code == StatusCode.OK
@@ -86,6 +90,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         assert len(templatename) > 0
         WesignMethodsApi.templates_id_delete(self, template)
 
+    @pytest.mark.part2
     def test_create_jpg_template_base64_success(self):
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplateJpgBase64Success")
         assert r.status_code == StatusCode.OK
@@ -96,6 +101,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         assert len(templatename) > 0
         WesignMethodsApi.templates_id_delete(self, template)
 
+    @pytest.mark.part3
     def test_create_word_template_base64_with_meta_data_success(self):
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplateWordBase64WithMetaDataSuccess")
         assert r.status_code == StatusCode.OK
@@ -106,6 +112,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         assert len(templatename) > 0
         WesignMethodsApi.templates_id_delete(self, template)
 
+    @pytest.mark.part1
     def test_create_template_pdf_base_64_empty_name(self):
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplatePdfBase64EmptyName")
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -113,6 +120,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         json_response = response['errors']['Name']
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_A_NAME
 
+    @pytest.mark.part2
     def test_create_template_without_file_type(self):
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplatefBase64WithoutFileType")
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -120,6 +128,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         json_response = response['errors']['Base64File']
         assert json_response[0] == ResultCode.BASE_64_FILE_UNSUPPORTED_TYPE
 
+    @pytest.mark.part3
     def test_create_template_duplicate_template_success(self):
         r = WesignMethodsApi.templates_id_post_json_file(self, "CreateTemplateDuplicateTemplate", 'fec7d1ad-18ff-46fa-83b8-08dac0825c40')
         assert r.status_code == StatusCode.OK
@@ -127,6 +136,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         json_response = response['newTemplateId']
         WesignMethodsApi.templates_id_delete(self, json_response)
 
+    @pytest.mark.part1
     def test_create_template_and_download_template_success(self):
         r = WesignMethodsApi.templates_post_json_file(self, "CreateTemplatePdfBase64Success")
         assert r.status_code == StatusCode.OK
@@ -140,6 +150,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         assert 'Test' in download_req.headers['x-file-name']
         WesignMethodsApi.templates_id_delete(self, template)
 
+    @pytest.mark.part2
     def test_delete_multi_documents_by_document_collection_id_success(self):
         a = []
         for x in range(5):
@@ -159,6 +170,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         r = WesignMethodsApi.templates_delete_batch_put(self, del_req)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_2_merge_templates_success(self):
         merge = {
             "templates": [
@@ -175,6 +187,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         WesignMethodsApi.templates_id_delete(self, template)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_3_merge_templates_success(self):
         merge = {
             "templates": [
@@ -192,6 +205,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         WesignMethodsApi.templates_id_delete(self, template)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part2
     def test_4_merge_templates_success(self):
         merge = {
             "templates": [
@@ -210,6 +224,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         WesignMethodsApi.templates_id_delete(self, template)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_5_merge_templates_success(self):
         merge = {
             "templates": [
@@ -229,6 +244,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         WesignMethodsApi.templates_id_delete(self, template)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_merge_documents_success(self):
         r = WesignMethodsApi.templates_merge_post_json_file(self, "CreateTemplateMergeSuccess")
         assert r.status_code == StatusCode.OK
@@ -237,6 +253,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
         WesignMethodsApi.templates_id_delete(self, template)
         assert r.status_code == StatusCode.OK
 
+    @pytest.mark.part2
     def test_merge_documents_and_templates_success(self):
         r = WesignMethodsApi.templates_merge_post_json_file(self, "CreateTemplateMergeTemplatesAndFilesSuccess")
         assert r.status_code == StatusCode.OK

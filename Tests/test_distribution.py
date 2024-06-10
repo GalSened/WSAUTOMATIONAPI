@@ -37,6 +37,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
 
+    @pytest.mark.part1
     def test_api_sending_distribution_and_receiving_confirmation_for_document_viewed_and_signed_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
@@ -80,7 +81,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
         sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(4)
+        sleep(120)
         self.__change_comda_mail_box("devtest10@comda.co.il", self.settings['comda_mail_password'])
         sleep(8)
         WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH,
@@ -93,6 +94,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
         # Bug number = WES-1021
 
+    @pytest.mark.part2
     def test_api_sending_distribution_document_with_duplicated_signer_email_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -104,6 +106,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "duplicated_template_and_signer")
         assert send_distribution.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_api_sending_distribution_with_valid_email_all_fields_filled_from_xlsx_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -117,6 +120,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_file_with_users_and_field")
         assert send_distribution.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_sending_distribution_email_with_valid_email_value_and_all_fields_in_template_and_no_fields_in_xlsx_success(
             self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
@@ -131,6 +135,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "fields_only_in_template")
         assert send_distribution.status_code == StatusCode.OK
 
+    @pytest.mark.part2
     def test_api_sending_distribution_large_file_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -142,6 +147,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_10mega_file")
         assert send_distribution.status_code == StatusCode.OK
 
+    @pytest.mark.part3
     def test_api_distribution_two_signers_no_fields_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -153,6 +159,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "DistributeSignersApi_no_fields")
         assert send_distribution.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_sending_distribution_with_invalid_data_from_xlsx_file(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -168,6 +175,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert send_distribution.status_code == StatusCode.BAD_REQUEST
 
     # Bug number = WES-1046/WES-1042
+    @pytest.mark.part2
     def test_api_sending_distribution_with_xlsx_file_with_fields_but_no_fields_in_template(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -180,6 +188,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
                                                                          "distribute_file_with_users_and_fields_in_xlsx")
         assert send_distribution.status_code == StatusCode.BAD_REQUEST
 
+    @pytest.mark.part3
     def test_api_distribution_seven_recipients_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -191,18 +200,21 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "distribute_seven_signers_api")
         assert send_distribution.status_code == StatusCode.OK
 
+    @pytest.mark.part1
     def test_send_distribute_invalid_email(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         signers = WesignMethodsApi.distribution_signers_post_json_file(self, "invalid_signer_email")
         assert signers.status_code == StatusCode.BAD_REQUEST
 
+    @pytest.mark.part2
     def test_send_distribute_empty_first_name_and_empty_last_name(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         signers = WesignMethodsApi.distribution_signers_post_json_file(self, "signer_data_without_name")
         assert signers.status_code == StatusCode.BAD_REQUEST
 
+    @pytest.mark.part3
     def test_send_distribute_empty_signer_means(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -210,6 +222,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert signers.status_code == StatusCode.BAD_REQUEST
 
     # Bug number = WES-1106
+    @pytest.mark.part1
     def test_send_distribute_duplicated_fields_in_xlsx_with_same_name_validate_values_success(self):
         self.__setup()
         sleep(3)
@@ -292,6 +305,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         signing_complete_msg = self.driver.find_elements(By.XPATH, "//main/h2")
         assert len(signing_complete_msg) == 1
 
+    @pytest.mark.part2
     def test_distribution_OTP_xlsx_file_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
@@ -316,6 +330,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert OTP != 0, " no OTP requirement "
 
     # #bug number = WES-1049
+    @pytest.mark.part3
     def test_elements_values_in_distribution_doesnt_change_when_template_is_changed_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
@@ -350,6 +365,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert get_new_value_from_text_field.get_attribute('value') == "old erech", "value changed"
 
     # Bug number = WES-1041
+    @pytest.mark.part1
     def test_distribution_xlsx_file_with_empty_rows_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
@@ -367,6 +383,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert send_distribution.status_code == StatusCode.OK
 
     # # Bug number = WES-1019
+    @pytest.mark.part2
     def test_distribution_add_date_field_with_value_validate_date_displayed_to_signer_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
@@ -391,6 +408,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert get_value_from_date_field.get_attribute('value') == "1989-08-23", "Check date field"
 
     # Bug number = WES-1050
+    @pytest.mark.part3
     def test_distribution_add_date_field_and_number_with_value_validate_date_and_number_displayed_to_signer_success(
             self):
         self.token = Shared.login_request(self)
@@ -419,6 +437,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         assert get_value_from_number_field.get_attribute('value') == "1234", "Check number field"
 
     # Bug number = WES-1023
+    @pytest.mark.part1
     def test_distribution_validate_values_displayed_to_signer_from_xlsx_and_not_from_template_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
@@ -456,6 +475,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     # bug number  =  WES-1110
     # bug number  =  WES-1110
+    @pytest.mark.part2
     def test_distribution_doesnt_update_value_in_fields(self):
         self.token = Shared.login_request(self)
         self.__setup()

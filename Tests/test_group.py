@@ -24,6 +24,7 @@ class WesignApiGroupTests(unittest.TestCase):
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
 
+    @pytest.mark.part1
     def test_create_new_group_success(self):
         r = WesignMethodsApi.admins_groups_post_json_file(self, 'CreateNewGroupRequest')
         assert r.status_code == StatusCode.OK
@@ -32,6 +33,7 @@ class WesignApiGroupTests(unittest.TestCase):
         assert len(json_response) > 0
         WesignMethodsApi.admins_groups_delete(self, f'{json_response}')
 
+    @pytest.mark.part2
     def test_create_same_group_name(self):
         r = WesignMethodsApi.admins_groups_post_json_file(self, 'CreateSameGroupNameRequest')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -39,6 +41,7 @@ class WesignApiGroupTests(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.GROUP_WITH_SAME_NAME
 
+    @pytest.mark.part3
     def test_create_empty_group_name(self):
         r = WesignMethodsApi.admins_groups_post_json_file(self, 'CreateEmptyGroupNameRequest')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -46,6 +49,7 @@ class WesignApiGroupTests(unittest.TestCase):
         json_response = response['errors']['Name']
         assert json_response[0] == ResultCode.EMPTY_NAME
 
+    @pytest.mark.part1
     def test_update_group_name_success(self):
         group = uuid.uuid4().hex
         self.group_name = group
@@ -65,6 +69,7 @@ class WesignApiGroupTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         WesignMethodsApi.admins_groups_delete(self, f'{json_response}')
 
+    @pytest.mark.part2
     def test_get_all_groups_success(self):
         r = WesignMethodsApi.admins_groups_get(self)
         assert r.status_code == StatusCode.OK
@@ -74,6 +79,7 @@ class WesignApiGroupTests(unittest.TestCase):
         assert json_response_group_id == self.settings['GroupID']
         assert json_response_group_name == 'api testing'
 
+    @pytest.mark.part3
     def test_delete_group_success(self):
         r = WesignMethodsApi.admins_groups_post_json_file(self, 'CreateNewGroupRequest')
         assert r.status_code == StatusCode.OK
@@ -82,6 +88,7 @@ class WesignApiGroupTests(unittest.TestCase):
         assert len(json_response) > 0
         WesignMethodsApi.admins_groups_delete(self, f'{json_response}')
 
+    @pytest.mark.part1
     def test_delete_group_with_users(self):
         r = WesignMethodsApi.admins_groups_delete(self, self.settings['GroupID'])
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -90,6 +97,7 @@ class WesignApiGroupTests(unittest.TestCase):
         assert json_response[0] == ResultCode.THERE_ARE_USERS_IN_GROUP
 
     ##Bug number = WES-977
+    @pytest.mark.part2
     def test_delete_group_with_invalid_id(self):
         r = WesignMethodsApi.admins_groups_delete(self, self.settings['InvalidGroupID'])
         assert r.status_code == StatusCode.BAD_REQUEST

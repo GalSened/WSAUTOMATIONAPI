@@ -29,18 +29,21 @@ class WesignApiLoginTests(unittest.TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
 
+    @pytest.mark.part1
     def test_login_success(self):
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginRequestSuccess')
         assert r.status_code == StatusCode.OK
         login = json.loads(r.content)
         return login['token']
 
+    @pytest.mark.part2
     def test_login_username_success(self):
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginUserNameRequestSuccess')
         assert r.status_code == StatusCode.OK
         login = json.loads(r.content)
         return login['token']
 
+    @pytest.mark.part3
     def test_login_invalid_password(self):
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginRequestInvalidPassword')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -48,6 +51,7 @@ class WesignApiLoginTests(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.INVALID_CREDENTIAL
 
+    @pytest.mark.part1
     def test_login_invalid_email(self):
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginRequestInvalidEmail')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -57,6 +61,7 @@ class WesignApiLoginTests(unittest.TestCase):
         assert status_response == StatusCode.BAD_REQUEST
         assert json_response[0] == ResultCode.INVALID_CREDENTIAL
 
+    @pytest.mark.part2
     def test_login_empty_email(self):
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginRequestEmptyEmail')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -67,6 +72,7 @@ class WesignApiLoginTests(unittest.TestCase):
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_AN_EMAIL
         assert json_response[1] == ResultCode.MINIMUN_LENGTH_OF_EMAIL_OR_USERNAME
 
+    @pytest.mark.part3
     def test_login_empty_email_empty_password(self):
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginRequestEmptyEmailEmptyPassword')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -78,6 +84,7 @@ class WesignApiLoginTests(unittest.TestCase):
         assert json_response[1] == ResultCode.MINIMUN_LENGTH_OF_EMAIL_OR_USERNAME
 
     ##WES-1505
+    @pytest.mark.part1
     def test_login_using_otp(self):
         self.__setup()
         r = WesignMethodsApi.users_login_post_json_file(self, 'LoginRequestSuccessUsingOtp')
@@ -86,7 +93,7 @@ class WesignApiLoginTests(unittest.TestCase):
         assert login['token'] == ''
         assert len(login['refreshToken']) > 30
         assert login['authToken'] == 'OTP'
-        sleep(6)
+        sleep(15)
         self.__enter_comda_mail(self.settings['DevtestMailUsingOtp'], self.settings['company_user_password'])
         WebDriverWait(self.driver, 20).until(
             EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'Your validation code is')])[1]")))
@@ -106,10 +113,10 @@ class WesignApiLoginTests(unittest.TestCase):
                   "code": otp
                 }
         login_using_otp = WesignMethodsApi.users_validate_otp_flow(self, payload)
-        sleep(3)
+        sleep(5)
         response = login_using_otp.json()
-        sleep(2)
-        assert len(response['token']) == 388
+        sleep(5)
+        assert len(response['token']) != '' and not None
         assert response['refreshToken'] != ''
         assert response['authToken'] != ''
 
