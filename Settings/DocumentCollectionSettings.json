@@ -4,6 +4,7 @@
   "wesign_url" : "https://devtest.comda.co.il",
   "company_user" : "devtest10@comda.co.il",
   "call_back_url" : "https://devtest.comda.co.il:1234/PostRoute",
+  "call_back_url_dev" : "https://wesigndev.comsigntrust.com:443/post/PostRoute",
   "company_user_password" : "Comsign1!",
   "max_wait_time": 4,
   "short_wait_time": 4,

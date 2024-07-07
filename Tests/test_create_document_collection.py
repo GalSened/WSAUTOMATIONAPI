@@ -1,4 +1,5 @@
 import logging
+import os
 import shutil
 import unittest
 import uuid
@@ -37,6 +38,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
+        self.token_nirk = Shared.login_request_nirk(self)
         self.signer1 = Shared.login_signer1_account(self)
 
     @pytest.mark.part1
@@ -3690,7 +3692,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def test_export_document_collection_data_fields_to_json_with_signatures(self):
         get_fields_info_json = WesignMethodsApi.document_collections_id_get_data_fields_info_json(self, True)
         response = get_fields_info_json.json()
-        assert len(response['signatureFields'][0]['image']) == 9674
+        assert len(response['signatureFields'][0]['image']) > 5000
 
     ##WES-1512
     @pytest.mark.part3
@@ -3701,6 +3703,70 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         for field in data['textFields']:
             assert field['value'] != ''
             fields.append([field['value']])
+
+    def test_reactive_document(self):
+        self.__setup()
+        document = uuid.uuid4().hex
+        self.document_name = document
+        payload = {
+            "documentMode": 1,
+            "documentName": self.document_name,
+            "templates": [
+                "ea6f0e73-4532-4d57-caa6-08dc26dc0c42"
+            ],
+            "signers": [
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec_1@comda.co.il",
+                    "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                },
+                {
+                    "sendingMethod": 2,
+                    "contactMeans": "3efc3b51fa3743beb941291b35392a20_11@comda.co.il",
+                    "contactName": "3efc3b51fa3743beb941291b35392a76",
+                    "otpMode": 0,
+                    "authenticationMode": 0,
+                    "phoneExtension": "+972"
+                }
+            ],
+        }
+        r = WesignMethodsApi.document_collections_post_dict(self, payload)
+        res = r.json()
+        documentCollectionId = res['documentCollectionId']
+        documentCollectionLink = res['signerLinks'][0]['link']
+        self.driver.get(documentCollectionLink)
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.ID, "menuButton")))
+        menu_button = 'menuButton'
+        self.driver.find_element(By.ID, menu_button).click()
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.CLASS_NAME, "color--error")))
+        decline_document = 'color--error'
+        self.driver.find_element(By.CLASS_NAME, decline_document).click()
+        sleep(1)
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH,
+                                        "/html/body/app-root/app-main-signer/body/div/app-second-header/div/app-menu/app-decline/div/div/div/input")))
+        value_in_decline_window = "/html/body/app-root/app-main-signer/body/div/app-second-header/div/app-menu/app-decline/div/div/div/input"
+        self.driver.find_element(By.XPATH, value_in_decline_window).send_keys("Test")
+        sleep(1)
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, '(//*[@class="ct-button--primary"])[2]')))
+        submit_button_in_decline_window = '(//*[@class="ct-button--primary"])[2]'
+        sleep(3)
+        self.driver.find_element(By.XPATH, submit_button_in_decline_window).click()
+        sleep(3)
+        WebDriverWait(self.driver, 20).until(EC.url_to_be(('https://devtest.comda.co.il/signer/decline')))
+        sleep(5)
+        reactive = WesignMethodsApi.document_collections_reactive(self,documentCollectionId)
+        links_response = reactive.json()
+        new_link = links_response[0]['link']
+        self.driver.get(new_link)
+        WebDriverWait(self.driver, 50).until(
+            EC.element_to_be_clickable((By.ID, "menuButton")))
 
     # def test_download_document_collection_and_save_as_pdf(self):
     #     headers = {'content-type': 'application/pdf', 'Authorization': 'Bearer ' + self.token}

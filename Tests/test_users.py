@@ -170,6 +170,12 @@ class WesignApiUsersTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['userId']
+        with open(self.settings["UpdateUserToEditorRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email
+            f.seek(0)
+            json.dump(data, f, indent=3)
+            f.truncate()
         r = WesignMethodsApi.admins_users_id_put_json_file(self, 'UpdateUserToEditorRequest', json_response)
         assert r.status_code == StatusCode.OK
         WesignMethodsApi.admins_users_id_delete(self, json_response)

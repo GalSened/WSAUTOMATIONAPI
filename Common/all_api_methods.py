@@ -181,6 +181,11 @@ class WesignMethodsApi:
         r = requests.post(self.settings['Base_Url'] + 'admins/groups', data=json.dumps(requests_json), headers=headers)
         return r
 
+    def admins_groups_post_payload(self, paylod: dict):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'admins/groups', data=json.dumps(paylod), headers=headers)
+        return r
+
     def admins_groups_delete(self, group_id: str):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.delete(self.settings['Base_Url'] + 'admins/groups/' + group_id, headers=headers)
@@ -400,5 +405,10 @@ class WesignMethodsApi:
 
     def document_collections_id_get_data_fields_info_json(self, with_signatures: bool):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/cd57e9df-7081-4dd6-e091-08dc7d50bc8e/fields/json?includeSigantures={with_signatures}',headers=headers)
+        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/e9fe162b-2b89-4d44-1958-08dc99c8eca1/fields/json?includeSigantures={with_signatures}',headers=headers)
+        return r
+
+    def document_collections_reactive(self, document_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/{document_id}/reactivate?shouldSend=true',headers=headers)
         return r

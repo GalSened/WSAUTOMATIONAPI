@@ -10,6 +10,8 @@
   "LoginRequestEmptyEmail" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestEmptyEmail.json",
   "LoginRequestEmptyEmailEmptyPassword" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestEmptyEmailEmptyPassword.json",
   "LoginRequestSigner1Success" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestSigner1Success.json",
+  "LoginRequestMultiGroups" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestMultiGroups.json",
+  "LoginRequestNirkSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\LoginRequest\\LoginRequestNirkSuccess.json",
   "deleted_status" : "7",
   "db_name" : "WeSign",
   "db_user" : "sa",
