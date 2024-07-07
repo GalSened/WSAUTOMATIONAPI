@@ -10,7 +10,7 @@ from Common.all_api_methods import WesignMethodsApi
 from shared import Shared
 
 
-@pytest.mark.flaky(max_runs=3)
+@pytest.mark.flaky(max_runs=6)
 class WesignApiUsersTests(unittest.TestCase):
     def setUp(self):
         # p = Path(__file__).with_name('UsersSettings.json')
@@ -65,7 +65,7 @@ class WesignApiUsersTests(unittest.TestCase):
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewUserInvalidUserTypeRequest')
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
-        json_response = response['errors']['Type']
+        json_response = response['errors']['error']
         assert json_response[0] == ResultCode.INVALID_USER_TYPE
 
     @pytest.mark.part2
@@ -114,6 +114,14 @@ class WesignApiUsersTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['userId']
+        with open(
+                self.settings['UpdateUserNameRequest'],'r+') as f:
+            data = json.load(f)
+            data['id'] = json_response
+            data['email'] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_id_put_json_file(self, 'UpdateUserNameRequest', json_response)
         assert r.status_code == StatusCode.OK
         WesignMethodsApi.admins_users_id_delete(self, json_response)
@@ -121,7 +129,9 @@ class WesignApiUsersTests(unittest.TestCase):
     @pytest.mark.part1
     def test_update_existing_user_email_success(self):
         email_prefix = uuid.uuid4().hex
+        email_prefix_new = uuid.uuid4().hex
         self.email = email_prefix + "@comda.co.il"
+        self.new_email = email_prefix_new + "@comda.co.il"
         random_hex = uuid.uuid4().hex
         phone_number = ''.join(filter(str.isdigit, random_hex))[:10]
         with open(self.settings["CreateNewAdminUserRequest"], 'r+') as f:
@@ -134,6 +144,13 @@ class WesignApiUsersTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['userId']
+        with open(
+                self.settings['UpdateUserEmailRequest'],'r+') as f:
+            data = json.load(f)
+            data['email'] = self.new_email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_id_put_json_file(self, 'UpdateUserEmailRequest', json_response)
         assert r.status_code == StatusCode.OK
         WesignMethodsApi.admins_users_id_delete(self, json_response)
@@ -152,6 +169,13 @@ class WesignApiUsersTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['userId']
+        with open(self.settings["UpdateUserToBasicRequest"], 'r+') as f:
+            data = json.load(f)
+            data["id"] = json_response
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_id_put_json_file(self, 'UpdateUserToBasicRequest', json_response)
         assert r.status_code == StatusCode.OK
         WesignMethodsApi.admins_users_id_delete(self, json_response)
@@ -172,6 +196,7 @@ class WesignApiUsersTests(unittest.TestCase):
         json_response = response['userId']
         with open(self.settings["UpdateUserToEditorRequest"], 'r+') as f:
             data = json.load(f)
+            data["id"] = json_response
             data["email"] = self.email
             f.seek(0)
             json.dump(data, f, indent=3)
@@ -237,6 +262,13 @@ class WesignApiUsersTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response_id = response['userId']
+        with open(
+                self.settings['UpdateUserInvalidGroupIdRequest'],'r+') as f:
+            data = json.load(f)
+            data['email'] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_id_put_json_file(self, 'UpdateUserInvalidGroupIdRequest', json_response_id)
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()

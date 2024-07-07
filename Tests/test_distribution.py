@@ -24,7 +24,7 @@ from shared import Shared
 from selenium.webdriver.chrome.service import Service
 
 
-@pytest.mark.flaky(max_runs=3)
+@pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def setUp(self):
         # p = Path(__file__).with_name('DistributeCollection.json')

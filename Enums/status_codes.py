@@ -29,7 +29,7 @@ class ResultCode:
     GROUP_WITH_SAME_NAME = 'Group with same name already exist in company'
     EMPTY_NAME = "'Name' must not be empty."
     THERE_ARE_USERS_IN_GROUP = 'There are users in group'
-    INVALID_USER_TYPE = 'Valid UserType: 1 (Basic) or 2 (Editor) or 3 (CompanyAdmin)'
+    INVALID_USER_TYPE = 'Invalid user type'
     INVALID_GROUP_ID = 'Invalid GroupId'
     PLEASE_SPECIFY_VALID_EMAIL = 'Please specify valid Email '
     PLEASE_SPECIFY_VALID_PHONE = 'Please specify valid Phone'

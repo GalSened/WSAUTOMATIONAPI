@@ -52,7 +52,9 @@ class WesignApiGroupTests(unittest.TestCase):
     @pytest.mark.part1
     def test_update_group_name_success(self):
         group = uuid.uuid4().hex
+        group_new = uuid.uuid4().hex
         self.group_name = group
+        self.group_new_name = group_new
         with open(
                 "\\\\fs01\\Users\\NirK\\PythonAutomation\\CreateGroup\\CreateNewGroupRequest.json",'r+') as f:
             data = json.load(f)
@@ -65,6 +67,13 @@ class WesignApiGroupTests(unittest.TestCase):
         response = r.json()
         json_response = response['groupId']
         assert len(json_response) > 0
+        with open(
+                self.settings['ChangeGroupNameRequest'],'r+') as f:
+            data = json.load(f)
+            data['name'] = self.group_new_name  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_groups_put_json_file(self, 'ChangeGroupNameRequest', json_response)
         assert r.status_code == StatusCode.OK
         WesignMethodsApi.admins_groups_delete(self, f'{json_response}')

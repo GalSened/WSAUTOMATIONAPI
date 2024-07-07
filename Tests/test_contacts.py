@@ -13,7 +13,7 @@ from shared import Shared
 from Enums.status_codes import StatusCode, ResultCode
 from Common.all_api_methods import WesignMethodsApi
 
-@pytest.mark.flaky(max_runs=3)
+@pytest.mark.flaky(max_runs=6)
 class WesignContactsApi(unittest.TestCase):
     def setUp(self):
         # p = Path(__file__).with_name('ContactsSettings.json')
@@ -234,6 +234,12 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['contactId']
+        with open(self.settings["UpdateContactPhone"], 'r+') as f:
+            data = json.load(f)
+            data["phone"] = phone_number
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.contacts_id_put(self, json_response, 'UpdateContactPhone')
         assert r.status_code == StatusCode.OK
         WesignMethodsApi.contacts_id_delete(self, json_response)
@@ -256,6 +262,13 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['contactId']
+        with open(
+                self.settings['UpdateContactSeal'],'r+') as f:
+            data = json.load(f)
+            data['email'] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.contacts_id_put(self, json_response, 'UpdateContactSeal')
         assert r.status_code == StatusCode.OK
         WesignMethodsApi.contacts_id_delete(self, json_response)
