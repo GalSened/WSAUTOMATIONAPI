@@ -319,12 +319,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     @pytest.mark.part1
     @pytest.mark.run(order=2)
     def test_document_collection_document_sending_with_should_send_parameter_as_true(self):
+        self.__setup()
+        email = self.__enter_temp_mail()
         email_prefix = uuid.uuid4().hex
         self.document_name = email_prefix
         with open(
                 "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSendParamaterTrue.json",
                 'r+') as f:
             data = json.load(f)
+            data['signers'][0]['contactMeans'] = email
             data['documentName'] = self.document_name  # <--- add `id` value.
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=3)
@@ -334,13 +337,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
-        self.__setup()
-        sleep(1)
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
-        sleep(8)
-        self.driver.refresh()
-        sleep(4)
-        email = self.driver.find_elements(By.XPATH, f"//span[contains(text(),'{self.document_name}')]")
+        sleep(25)
+        email = self.driver.find_elements(By.XPATH, f"//*[contains(text(),'{self.document_name}')]")
         assert len(email) > 0, "Email didn't sent"
         sleep(8)
         self.driver.quit()
@@ -348,12 +346,16 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     @pytest.mark.part2
     @pytest.mark.run(order=3)
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_false(self):
+        self.__setup()
+        self.driver.execute_script("window.open('');")
         email_prefix = uuid.uuid4().hex
         self.document_name = email_prefix
+        email = self.__enter_temp_mail()
         with open(
                 "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithshouldSendSignedParamaterFalse.json",
                 'r+') as f:
             data = json.load(f)
+            data['signers'][0]['contactMeans'] = email
             data['documentName'] = self.document_name  # <--- add `id` value.
             f.seek(0)  # <--- should reset file position to the beginning.
             json.dump(data, f, indent=3)
@@ -363,16 +365,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
-        self.__setup()
         sleep(1)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
         self.driver.get(json_response)
         sleep(14)
         self.__sign_on_document()
-        self.driver.execute_script("window.open('');")
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(4)
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
-        sleep(4)
+        sleep(5)
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        sleep(20)
         email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
         email_notification.click()
         sleep(8)
@@ -382,38 +383,40 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     @pytest.mark.part3
     @pytest.mark.run(order=5)
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
+        self.__setup()
+        self.driver.execute_script("window.open('');")
+        sleep(5)
+        email = self.__enter_temp_mail()
         email_prefix = uuid.uuid4().hex
         self.document_name = email_prefix
         with open(
                 "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue.json",
                 'r+') as f:
             data = json.load(f)
-            data['documentName'] = self.document_name  # <--- add `id` value.
-            f.seek(0)  # <--- should reset file position to the beginning.
+            data['signers'][0]['contactMeans'] = email
+            data['documentName'] = self.document_name
+            f.seek(0)
             json.dump(data, f, indent=3)
-            f.truncate()  # remove remaining part
+            f.truncate()
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithshouldSendSignedParamaterTrue')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
-        self.__setup()
-        sleep(1)
-        self.driver.get(json_response)
-        sleep(8)
-        self.__sign_on_document()
-        self.driver.execute_script("window.open('');")
+        sleep(4)
         self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(120)
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
-        sleep(4)
-        self.driver.refresh()
-        sleep(4)
+        sleep(2)
+        self.driver.get(json_response)
+        sleep(3)
+        self.__sign_on_document()
+        sleep(5)
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        sleep(20)
         email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
         email_notification.click()
-        sleep(10)
+        sleep(2.5)
         attached_document = self.driver.find_elements(By.XPATH,
-                                                      f"(//span[contains(text(),'{self.document_name}.pdf')])[1]")
+                                                      f"(//*[contains(text(),'{self.document_name}.pdf')])[1]")
         assert len(attached_document) > 0, "Pdf document attached"
 
     # @pytest.mark.run(order=1)
@@ -4155,3 +4158,20 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             sleep(1)
             index += 1
             links.clear()
+
+    def __enter_temp_mail(self):
+        driver = self.driver
+        self.driver.get('https://www.1secmail.com/')
+        sleep(3)
+        self.driver.refresh()
+        sleep(3)
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.ID, "login")))
+        name = self.driver.find_element(By.XPATH, "//input[@id='login']")
+        art_name = name.get_attribute('value')
+        sleep(3)
+        domain = self.driver.find_element(By.XPATH, "//select[@id='domain']")
+        art_domain = domain.get_attribute('value')
+        email = str(art_name) + '@' + str(art_domain)
+        return email
+

@@ -304,22 +304,20 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def test_distribution_OTP_xlsx_file_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
-        self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
+        email = self.__enter_temp_mail()
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
         assert template.status_code == StatusCode.OK
         template_json = template.json()
         template = template_json['templateId']
         document_name = uuid.uuid4().hex
         full_name = names.get_full_name()
-        self.__change_values_in_file("Distribution_OTP", template, document_name, full_name)
+        self.__change_values_in_file("Distribution_OTP", template, document_name, full_name, email)
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "Distribution_OTP")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(2)
-        self.__enter_comda_mail_and_sign(document_name)
-        sleep(2)
-        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(5)
+        self.__enter_temp_mail_and_sign(document_name)
         sleep(1)
-        WebDriverWait(self.driver, 20).until(
+        WebDriverWait(self.driver, 25).until(
             EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'OTP' )] ")))
         OTP = self.driver.find_element(By.XPATH, "//*[contains(text(), 'OTP' )] ")
         assert OTP != 0, " no OTP requirement "
@@ -620,9 +618,10 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             f.truncate()  # remove remaining part
             self.document = data["name"]
 
-    def __change_values_in_file(self, file_name, tempID, name, full_name):
+    def __change_values_in_file(self, file_name, tempID, name, full_name, contact_email):
         with open(self.settings[file_name], 'r+') as f:
             data = json.load(f)
+            data["signers"][0]["signerMeans"] = contact_email
             data["name"] = name  # <--- add `id` value.
             data["templateId"] = tempID
             data["signers"][0]["fullName"] = full_name
@@ -868,3 +867,33 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             sleep(1)
             index += 1
             links.clear()
+
+    def __enter_temp_mail(self):
+        driver = self.driver
+        self.driver.get('https://www.1secmail.com/')
+        sleep(3)
+        self.driver.refresh()
+        sleep(3)
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.ID, "login")))
+        name = self.driver.find_element(By.XPATH, "//input[@id='login']")
+        art_name = name.get_attribute('value')
+        sleep(3)
+        domain = self.driver.find_element(By.XPATH, "//select[@id='domain']")
+        art_domain = domain.get_attribute('value')
+        email = str(art_name) + '@' + str(art_domain)
+        return email
+
+    def __enter_temp_mail_and_sign(self, document_name):
+        driver = self.driver
+        sleep(3)
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")))
+        # self.driver.find_element(By.XPATH,"(//span[contains(text(),'devtest')])[2]").click()
+        sleep(3)
+        self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]").click()
+        sleep(2)
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'Click here')]")))
+        sleep(3)
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
