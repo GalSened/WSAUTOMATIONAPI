@@ -13,14 +13,14 @@ class Shared:
                 settings = json.load(f)
             file = open(settings['LoginRequestSuccess'], 'r')
             json_input = file.read()
-            sleep(0.6)
+            sleep(1)
             requests_json = json.loads(json_input)
             headers = {'content-type': 'application/json'}
-            sleep(0.6)
+            sleep(1)
             r = requests.post(settings['Base_Url'] + 'users/login', data=json.dumps(requests_json), headers=headers)
-            sleep(0.6)
+            sleep(1)
             login = json.loads(r.content)
-            sleep(0.6)
+            sleep(1)
             return login['token']
 
         def login_request_nirk(self):
@@ -30,14 +30,14 @@ class Shared:
                 settings = json.load(f)
             file = open(settings['LoginRequestNirkSuccess'], 'r')
             json_input = file.read()
-            sleep(0.6)
+            sleep(1)
             requests_json = json.loads(json_input)
             headers = {'content-type': 'application/json'}
-            sleep(0.6)
+            sleep(1)
             r = requests.post(settings['Base_Url'] + 'users/login', data=json.dumps(requests_json), headers=headers)
-            sleep(0.6)
+            sleep(1)
             login = json.loads(r.content)
-            sleep(0.6)
+            sleep(1)
             return login['token']
 
         def login_request_twillo(self):

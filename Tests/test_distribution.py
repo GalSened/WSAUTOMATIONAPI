@@ -311,10 +311,10 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         template = template_json['templateId']
         document_name = uuid.uuid4().hex
         full_name = names.get_full_name()
-        self.__change_values_in_file("Distribution_OTP", template, document_name, full_name, email)
+        self.__change_values_in_file_for_otp("Distribution_OTP", template, document_name, full_name, email)
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "Distribution_OTP")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(5)
+        sleep(30)
         self.__enter_temp_mail_and_sign(document_name)
         sleep(1)
         WebDriverWait(self.driver, 25).until(
@@ -618,10 +618,20 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             f.truncate()  # remove remaining part
             self.document = data["name"]
 
-    def __change_values_in_file(self, file_name, tempID, name, full_name, contact_email):
+    def __change_values_in_file_for_otp(self, file_name, tempID, name, full_name, contact_email):
         with open(self.settings[file_name], 'r+') as f:
             data = json.load(f)
             data["signers"][0]["signerMeans"] = contact_email
+            data["name"] = name  # <--- add `id` value.
+            data["templateId"] = tempID
+            data["signers"][0]["fullName"] = full_name
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=4)
+            f.truncate()  # remove remaining part
+
+    def __change_values_in_file(self, file_name, tempID, name, full_name):
+        with open(self.settings[file_name], 'r+') as f:
+            data = json.load(f)
             data["name"] = name  # <--- add `id` value.
             data["templateId"] = tempID
             data["signers"][0]["fullName"] = full_name

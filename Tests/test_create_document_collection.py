@@ -337,10 +337,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
-        sleep(25)
+        sleep(30)
         email = self.driver.find_elements(By.XPATH, f"//*[contains(text(),'{self.document_name}')]")
         assert len(email) > 0, "Email didn't sent"
-        sleep(8)
+        sleep(2)
         self.driver.quit()
 
     @pytest.mark.part2
@@ -373,7 +373,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.__sign_on_document()
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(20)
+        sleep(30)
         email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
         email_notification.click()
         sleep(8)
@@ -411,7 +411,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.__sign_on_document()
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(20)
+        sleep(30)
         email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
         email_notification.click()
         sleep(2.5)
