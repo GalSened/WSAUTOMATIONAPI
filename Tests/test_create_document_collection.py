@@ -4000,6 +4000,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         options.add_argument("--disable-notifications")
         options.add_argument("--disable-extenstions")
         options.add_argument("disable-infobars")
+        options.add_argument('--ignore-certificate-errors')
         options.add_argument("force-device-scale-factor=0.75")
         options.add_argument("high-dpi-support=0.75")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
