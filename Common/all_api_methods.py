@@ -19,10 +19,10 @@ class WesignMethodsApi:
         r = requests.delete(self.settings['Base_Url'] + 'contacts/' + contact_id, headers=headers)
         return r
 
-    def contacts_get(self, parameters: dict):
+    def contacts_get(self):
         # to get all contacts send parameters = {}
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get(self.settings['Base_Url'] + 'contacts/', params=parameters, headers=headers)
+        r = requests.get(self.settings['Base_Url'] + 'contacts?offset=0&limit=20&popular=false&recent=false&includeTabletMode=true', headers=headers)
         return r
 
     def contacts_id_put(self, contact_id: int, request_file: str):
@@ -171,6 +171,11 @@ class WesignMethodsApi:
         r = requests.post(self.settings['Base_Url'] + '/templates/merge', data=json.dumps(requests_json), headers=headers)
         return r
 
+    def templates_get_all_templates(self):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.get(self.settings['Base_Url'] + 'templates?offset=0&limit=20&popular=false&recent=false',headers=headers)
+        return r
+
     # Admins
 
     def admins_groups_post_json_file(self, request_file: str):
@@ -231,6 +236,12 @@ class WesignMethodsApi:
                          headers=headers)
         return r
 
+    def admins_users_id_put_file(self, payload: dict, user_id: str):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.put(self.settings['Base_Url'] + 'admins/users/' + user_id, data=json.dumps(payload),
+                         headers=headers)
+        return r
+
     # Users
 
     def users_validate_otp_flow(self, payload):
@@ -255,6 +266,12 @@ class WesignMethodsApi:
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         r = requests.post(self.settings['Base_Url'] + 'users/change', data=json.dumps(data), headers=headers)
         return r
+
+    def users_switch_group_payload(self, group_id):
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        r = requests.post(self.settings['Base_Url'] + 'users/SwitchGroup/'+group_id, headers=headers)
+        return r
+
 
     # Self sign
 
@@ -377,11 +394,21 @@ class WesignMethodsApi:
         new_request = requests.post(self.settings['Base_Url'] + '/documentcollections/downloadbatch/', data=data, headers=header)
         return new_request
 
-    def document_collections_get_parameters(self, parameters: dict):
+    def document_collections_get_parameters(self):
         header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        new_request = requests.get(self.settings['Base_Url'] + '/documentcollections/', params=parameters,
-                                   headers=header)
+        new_request = requests.get(self.settings['Base_Url'] + '/documentcollections?sent=false&viewed=false&signed=true&declined=false&sendingFailed=false&canceled=false&userId=null&key=&offset=0&limit=10&searchParameter=0',headers=header)
         return new_request
+
+    def document_collections_get_parameters_tablet(self, template_key: str):
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.get(self.settings['Base_Url'] + f'/documentcollections?key={template_key}&sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&offset=0&limit=20',headers=header)
+        return new_request
+
+    def document_collections_unsigned_get_parameters(self):
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.get(self.settings['Base_Url'] + '/documentcollections?sent=true&viewed=true&signed=false&declined=false&sendingFailed=false&canceled=false&userId=null&key=&offset=0&limit=10&searchParameter=0',headers=header)
+        return new_request
+
 
     def document_collections_id_get_fields_xml(self, document_id: str):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}

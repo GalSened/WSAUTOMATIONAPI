@@ -177,7 +177,7 @@ class WesignContactsApi(unittest.TestCase):
         assert r.status_code == StatusCode.BAD_REQUEST
         response = r.json()
         json_response = response['errors']['error']
-        assert json_response[0] == ResultCode.INVALID_PHONE
+        assert json_response[0] == ResultCode.INVALID_XLSX
 
     @pytest.mark.part2
     def test_create_new_contact_from_bulk_xlsx_empty_csv(self):

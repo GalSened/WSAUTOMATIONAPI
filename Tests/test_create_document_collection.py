@@ -42,7 +42,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.signer1 = Shared.login_signer1_account(self)
 
     @pytest.mark.part1
-    @pytest.mark.run(order=26)
     def test_document_collection_document_sending_success(self):
         try:
             logging.info(" ---Test Start---  test_document_collection_document_sending_success  ---Test Start--- ")
@@ -63,7 +62,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         return response['documentCollectionId']
 
     @pytest.mark.part2
-    @pytest.mark.run(order=25)
     def test_document_collection_document_sending_two_contacts_by_order_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess')
         assert r.status_code == StatusCode.OK
@@ -74,7 +72,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response_two) == 1
 
     @pytest.mark.part3
-    @pytest.mark.run(order=24)
     def test_document_collection_document_sending_two_contacts_by_group_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingTwoRecipientByGroupSuccess')
         assert r.status_code == StatusCode.OK
@@ -88,7 +85,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response_three) == 2
 
     @pytest.mark.part1
-    @pytest.mark.run(order=23)
     def test_document_collection_document_sending_with_text_field_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithTextFieldSuccess')
         assert r.status_code == StatusCode.OK
@@ -97,7 +93,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response) == 85
 
     @pytest.mark.part2
-    @pytest.mark.run(order=21)
     def test_document_collection_document_sending_with_personal_note_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithPersonalNoteSuccess')
         assert r.status_code == StatusCode.OK
@@ -114,7 +109,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(personal_note_popup_window) > 0
 
     @pytest.mark.part3
-    @pytest.mark.run(order=20)
     def test_document_collection_document_sending_using_otp_code_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingUsingOtpCodeSuccess')
         assert r.status_code == StatusCode.OK
@@ -131,7 +125,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(otp_box) > 0
 
     @pytest.mark.part1
-    @pytest.mark.run(order=19)
     def test_document_collection_document_sending_using_otp_code_send_to_phone_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingUsingOtpCodeSendToPhoneSuccess')
         assert r.status_code == StatusCode.OK
@@ -153,7 +146,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(otp_box) > 0
 
     @pytest.mark.part2
-    @pytest.mark.run(order=18)
     def test_document_collection_document_sending_using_document_code_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingUsingDocumentCodeSuccess')
         assert r.status_code == StatusCode.OK
@@ -168,7 +160,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(document_code) > 0
 
     @pytest.mark.part3
-    @pytest.mark.run(order=17)
     def test_document_collection_document_sending_using_document_code_and_otp_code_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingUsingDocumentCodeAndOtpCodeSuccess')
         assert r.status_code == StatusCode.OK
@@ -190,7 +181,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(otp_box) > 0
 
     @pytest.mark.part1
-    @pytest.mark.run(order=16)
     def test_document_collection_document_sending_with_invalid_sign_field_name(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidSignFieldName')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -199,7 +189,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.FIELD_NAME_NOT_EXIST
 
     @pytest.mark.part2
-    @pytest.mark.run(order=15)
     def test_document_collection_document_sending_with_empty_field_name_in_read_only_fields(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithEmptyFieldNameReadOnly')
         assert r.status_code == StatusCode.BAD_REQUEST, "Status " + str(r.status_code) + " incorrect"
@@ -208,7 +197,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.READ_ONLY_FIELDS_SHOULD_CONTAIN_NAME_AND_VALUE
 
     @pytest.mark.part3
-    @pytest.mark.run(order=14)
     def test_document_collection_document_sending_with_invalid_field_name_in_read_only_fields(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidFieldNameReadOnly')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -217,7 +205,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.FIELD_NAME_NOT_EXIST
 
     @pytest.mark.part1
-    @pytest.mark.run(order=13)
     def test_document_collection_document_sending_with_empty_value_field_in_read_only_fields(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWitheEmptyFieldValueReadOnly')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -226,7 +213,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.READ_ONLY_FIELDS_SHOULD_CONTAIN_NAME_AND_VALUE
 
     @pytest.mark.part2
-    @pytest.mark.run(order=12)
     def test_document_collection_document_sending_with_invalid_template_id(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWitheInvalidTemplateId')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -236,7 +222,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                    0] == ResultCode.TEMPLATES_IN_SIGNERS_FIELDS_AND_IN_READ_ONLY_FIELDS_MUST_BE_FROM_TEMPLATES_COLLECTION_INPUT
 
     @pytest.mark.part3
-    @pytest.mark.run(order=11)
     def test_document_collection_document_sending_with_empty_document_name(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWitheEmptyDocumentName')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -245,7 +230,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_A_NAME
 
     @pytest.mark.part1
-    @pytest.mark.run(order=10)
     def test_document_collection_document_sending_with_invalid_document_mode(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidDocumentMode')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -254,7 +238,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_VALID_DOCUMENT_MODE
 
     @pytest.mark.part2
-    @pytest.mark.run(order=9)
     def test_document_collection_document_sending_with_invalid_contact_id(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidContactId')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -263,7 +246,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.CONTACT_NOT_CREATED_BY_USER
 
     @pytest.mark.part3
-    @pytest.mark.run(order=8)
     def test_document_collection_document_sending_with_duplicate_fields_name(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithDuplicateFieldsName')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -272,7 +254,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.THERE_IS_DUPLICATE_FIELD_FOR_SIGNER
 
     @pytest.mark.part1
-    @pytest.mark.run(order=7)
     def test_document_collection_document_sending_not_feet_contact_means(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingNotFeetContactMeans')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -281,7 +262,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.SIGNER_METHOD_NOT_FEET_TO_CONTACT_MEANS
 
     @pytest.mark.part2
-    @pytest.mark.run(order=6)
     def test_document_collection_document_sending_with_invalid_sending_method(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithInvalidSendingMethod')
         assert r.status_code == StatusCode.BAD_REQUEST
@@ -290,7 +270,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert json_response[0] == ResultCode.PLEASE_SPECIFY_VALID_SIGNERS, "Validation is " + str(json_response[0])
 
     @pytest.mark.part3
-    @pytest.mark.run(order=4)
     def test_document_collection_document_sending_with_should_send_parameter_as_false(self):
         email_prefix = uuid.uuid4().hex
         self.document_name = email_prefix
@@ -317,7 +296,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.quit()
 
     @pytest.mark.part1
-    @pytest.mark.run(order=2)
     def test_document_collection_document_sending_with_should_send_parameter_as_true(self):
         self.__setup()
         email = self.__enter_temp_mail()
@@ -344,7 +322,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.quit()
 
     @pytest.mark.part2
-    @pytest.mark.run(order=3)
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_false(self):
         self.__setup()
         self.driver.execute_script("window.open('');")
@@ -381,7 +358,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(attached_document) == 0, "Pdf document attached"
 
     @pytest.mark.part3
-    @pytest.mark.run(order=5)
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
         self.__setup()
         self.driver.execute_script("window.open('');")
@@ -544,7 +520,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert r.status_code == StatusCode.OK
 
     @pytest.mark.part2
-    @pytest.mark.run(order=31)
     def test_document_collection_without_fields_one_recipient_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithoutFields')
         assert r.status_code == StatusCode.OK
@@ -567,7 +542,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(sign_complete_msg) > 0
 
     @pytest.mark.part3
-    @pytest.mark.run(order=30)
     def test_document_collection_without_fields_two_recipient_by_group_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithoutFieldsTwoRecipients')
         assert r.status_code == StatusCode.OK
@@ -581,7 +555,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response_three) == 2
 
     @pytest.mark.part1
-    @pytest.mark.run(order=29)
     def test_document_collection_without_fields_two_recipient_by_order_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithoutFieldsTwoRecipientsOrder')
         assert r.status_code == StatusCode.OK
@@ -592,7 +565,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response_two) == 1
 
     @pytest.mark.part2
-    @pytest.mark.run(order=28)
     def test_document_collection_with_only_one_signature_field_two_recipient_by_order_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipients')
         assert r.status_code == StatusCode.OK
@@ -603,7 +575,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         assert len(json_response_two) == 1
 
     @pytest.mark.part3
-    @pytest.mark.run(order=27)
     def test_document_collection_with_only_one_signature_field_two_recipient_by_group_success(self):
         r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionSendDocumentWithOnlyOneSignatureFieldTwoRecipientsGroup')
         assert r.status_code == StatusCode.OK
@@ -2505,9 +2476,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.part2
     def test_download_batch_document_collection(self):
-        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
-                      "sendingFailed": "false", "canceled": "false"}
-        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2519,9 +2488,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.part3
     def test_download_batch_with_incorrect_document_id(self):
-        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
-                      "sendingFailed": "false", "canceled": "false"}
-        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2535,8 +2502,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.part1
     def test_download_batch_with_unsigned_document(self):
-        parameters = {"signed": "false"}
-        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        r = WesignMethodsApi.document_collections_unsigned_get_parameters(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2548,9 +2514,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.part2
     def test_download_batch_with_30_documents(self):
-        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
-                      "sendingFailed": "false", "canceled": "false", "limit": "30"}
-        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2585,8 +2549,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(2)
         self.__sign_on_document()
         sleep(2)
-        parameters = {"key": template_name}
-        check_doc = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        check_doc = WesignMethodsApi.document_collections_get_parameters_tablet(self, template_name)
         assert check_doc.status_code == StatusCode.OK
         r = json.loads(check_doc.content)
         is_signed = r["documentCollections"][0]["documentStatus"]
@@ -3707,6 +3670,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             assert field['value'] != ''
             fields.append([field['value']])
 
+    @pytest.mark.part1
     def test_reactive_document(self):
         self.__setup()
         document = uuid.uuid4().hex

@@ -35,12 +35,21 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part2
     def test_create_new_editor_user_success(self):
-        r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewEditorUserRequest')
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        with open(self.settings["CreateNewEditorUserRandomRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
+        r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewEditorUserRandomRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()
         json_response_user_id = response['userId']
         assert len(json_response_user_id) > 0
-        WesignMethodsApi.admins_users_id_delete(self, json_response_user_id)
+        delete = WesignMethodsApi.admins_users_id_delete(self, json_response_user_id)
+        assert delete.status_code == StatusCode.OK
 
     @pytest.mark.part3
     def test_create_new_admin_user_success(self):

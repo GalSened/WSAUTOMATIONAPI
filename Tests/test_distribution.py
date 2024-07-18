@@ -73,16 +73,16 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         doc_id = self.__get_documentCollectionId_from_db(self.document_name)
 
         self.__get_link_by_signers_number_without_signing(1, doc_id)
-        sleep(8)
+        sleep(2.5)
 
         WebDriverWait(self.driver, 50).until(EC.presence_of_element_located((By.ID, "logo_image")))
-        sleep(8)
+        sleep(2.5)
         self.driver.find_element(By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
         sleep(2)
         WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
-        sleep(60)
+        sleep(400)
         self.__enter_comda_mail(self.settings['second_dev_email'], self.settings['comda_mail_password'])
-        sleep(8)
+        sleep(1.5)
         WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH,
                                                                              f"(//*[contains(text(), '{self.document_name} has been completed')])[1]")))
         assert self.driver.find_element(By.XPATH,

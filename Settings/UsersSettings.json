@@ -2,6 +2,7 @@
   "Base_Url" : "https://devtest.comda.co.il/userapi/v3/",
   "CreateNewBasicUserRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\CreateNewBasicUserRequest.json",
   "CreateNewEditorUserRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\CreateNewEditorUserRequest.json",
+  "CreateNewEditorUserRandomRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\CreateNewEditorUserRandomRequest.json",
   "CreateNewAdminUserRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\CreateNewAdminUserRequest.json",
   "CreateNewUserInvalidUserTypeRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\CreateNewUserInvalidUserTypeRequest.json",
   "CreateNewUserWhitEmptyNameRequest" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\UsersRequest\\CreateNewUserWhitEmptyNameRequest.json",

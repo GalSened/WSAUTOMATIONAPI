@@ -48,3 +48,6 @@ class ResultCode:
     SIGNER_SIGNED_OR_DECLINE = 'Cannot Create signing Link for signer that already signed or decline'
     DOCUMENT_NOT_BELONG_TO_USER_OR_GROUP = 'Document not belong to the user group'
     INVALID_CONTACTS_GROUP_NAME = 'Invalid contacts group name'
+    THERE_ARE_USERS_IN_GROUP = "There are users in group"
+    USER_IS_ALREADY_CONNECTED_TO_THE_GROUP = ['User is already connected to the group']
+    INVALID_XLSX = 'Cannot parse *.xlsx file to contacts'
