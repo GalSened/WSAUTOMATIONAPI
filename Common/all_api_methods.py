@@ -399,6 +399,11 @@ class WesignMethodsApi:
         new_request = requests.get(self.settings['Base_Url'] + 'documentcollections?sent=false&viewed=false&signed=true&declined=false&sendingFailed=false&canceled=false&userId=null&key=&offset=0&limit=10&searchParameter=0',headers=header)
         return new_request
 
+    def document_collections_get_parameters_download(self):
+        header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        new_request = requests.get(self.settings['Base_Url'] + '/documentcollections?sent=false&viewed=false&signed=true&declined=false&sendingFailed=false&canceled=false&userId=null&key=&offset=0&limit=10&searchParameter=0',headers=header)
+        return new_request
+
     def document_collections_get_parameters_tablet(self, template_key: str):
         header = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
         new_request = requests.get(self.settings['Base_Url'] + f'/documentcollections?key={template_key}&sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&offset=0&limit=20',headers=header)

@@ -2476,7 +2476,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.part2
     def test_download_batch_document_collection(self):
-        r = WesignMethodsApi.document_collections_get_parameters(self)
+        r = WesignMethodsApi.document_collections_get_parameters_download(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -2488,7 +2488,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.part3
     def test_download_batch_with_incorrect_document_id(self):
-        r = WesignMethodsApi.document_collections_get_parameters(self)
+        r = WesignMethodsApi.document_collections_get_parameters_download(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
