@@ -26,6 +26,14 @@ class WesignApiUsersTests(unittest.TestCase):
 
     @pytest.mark.part1
     def test_create_new_basic_user_success(self):
+        email_prefix = uuid.uuid4().hex
+        self.email = email_prefix + "@comda.co.il"
+        with open(self.settings["CreateNewBasicUserRequest"], 'r+') as f:
+            data = json.load(f)
+            data["email"] = self.email  # <--- add `id` value.
+            f.seek(0)  # <--- should reset file position to the beginning.
+            json.dump(data, f, indent=3)
+            f.truncate()  # remove remaining part
         r = WesignMethodsApi.admins_users_post_json_file(self, 'CreateNewBasicUserRequest')
         assert r.status_code == StatusCode.OK
         response = r.json()

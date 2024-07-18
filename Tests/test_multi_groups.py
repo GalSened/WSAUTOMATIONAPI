@@ -98,9 +98,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
     @pytest.mark.part2
     def test_add_user_to_another_group_validate_data_success(self):
         old_token = self.token
-        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
-                      "sendingFailed": "false", "canceled": "false", "limit": "30"}
-        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -188,9 +186,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
 
         self.token = response
 
-        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
-                      "sendingFailed": "false", "canceled": "false", "limit": "30"}
-        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -387,9 +383,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
     @pytest.mark.part2
     def test_add_user_to_another_group_validate_data_in_existing_group_success(self):
         old_token = self.token
-        parameters = {"sent": "false", "viewed": "false", "singed": "true", "declined": "false",
-                      "sendingFailed": "false", "canceled": "false", "limit": "30"}
-        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
@@ -430,9 +424,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
 
         self.token = response
 
-        parameters = {"sent": "true", "viewed": "true", "singed": "true", "declined": "true",
-                      "sendingFailed": "false", "canceled": "false", "limit": "30"}
-        r = WesignMethodsApi.document_collections_get_parameters(self, parameters)
+        r = WesignMethodsApi.document_collections_get_parameters(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
