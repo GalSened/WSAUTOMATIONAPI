@@ -361,8 +361,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
         self.__setup()
         self.driver.execute_script("window.open('');")
-        sleep(5)
+        self.driver.save_screenshot("test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true_before.png")
+        sleep(10)
         email = self.__enter_temp_mail()
+        self.driver.save_screenshot("test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true.png")
         email_prefix = uuid.uuid4().hex
         self.document_name = email_prefix
         with open(
@@ -2514,7 +2516,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     @pytest.mark.part2
     def test_download_batch_with_30_documents(self):
-        r = WesignMethodsApi.document_collections_get_parameters(self)
+        r = WesignMethodsApi.document_collections_get_parameters_download(self)
         assert r.status_code == StatusCode.OK
         response = json.loads(r.content)
         document_collection = response["documentCollections"]
