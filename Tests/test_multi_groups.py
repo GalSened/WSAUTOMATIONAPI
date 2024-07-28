@@ -170,16 +170,9 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
         json_response = response['errors']['error']
         assert json_response[0] == ResultCode.THERE_ARE_USERS_IN_GROUP
         sleep(120)
-        while True:
-            switch_group = WesignMethodsApi.users_switch_group_payload(self, new_group_id)
-            if switch_group.status_code == StatusCode.BAD_REQUEST:
-                print(switch_group.json())
-                continue
-            sleep(2)
-            new = switch_group.json()
-            if new['token'] != "":
-                response = new['token']
-                break
+        switch_group = WesignMethodsApi.users_switch_group_payload(self, new_group_id)
+        new = switch_group.json()
+        response = new['token']
 
         sleep(2)
         assert response != old_token
@@ -408,16 +401,9 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
             contacts_first_group.append(x["id"])
 
         sleep(120)
-        while True:
-            switch_group = WesignMethodsApi.users_switch_group_payload(self, "ca80a7bc-a4e7-42f5-b5a0-08dca18dc640")
-            if switch_group.status_code == StatusCode.BAD_REQUEST:
-                print(switch_group.json())
-                continue
-            sleep(2)
-            new = switch_group.json()
-            if new['token'] != "":
-                response = new['token']
-                break
+        switch_group = WesignMethodsApi.users_switch_group_payload(self, "ca80a7bc-a4e7-42f5-b5a0-08dca18dc640")
+        new = switch_group.json()
+        response = new['token']
 
         sleep(2)
         assert response != old_token
