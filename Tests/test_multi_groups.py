@@ -21,7 +21,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_multi_groups_account(self)
 
-    @pytest.mark.part1
+    @pytest.mark.multi
     def test_add_user_to_another_group_success(self):
         group = uuid.uuid4().hex
         self.group_name = group
@@ -95,7 +95,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
         delete_group = WesignMethodsApi.admins_groups_delete(self, f'{new_group_id}')
         assert delete_group.status_code == StatusCode.OK
 
-    @pytest.mark.part2
+    @pytest.mark.multi
     def test_add_user_to_another_group_validate_data_success(self):
         old_token = self.token
         r = WesignMethodsApi.document_collections_get_parameters(self)
@@ -242,7 +242,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
         delete_group = WesignMethodsApi.admins_groups_delete(self, f'{new_group_id}')
         assert delete_group.status_code == StatusCode.OK
 
-    @pytest.mark.part3
+    @pytest.mark.multi
     def test_add_user_to_multi_groups_success(self):
         all_groups_id = ["9de765cd-2892-4f7e-e071-08dc999e2a5d"]
         for x in range(5):
@@ -318,7 +318,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
             delete_group = WesignMethodsApi.admins_groups_delete(self, f'{all_groups_id[x]}')
             assert delete_group.status_code == StatusCode.OK
 
-    @pytest.mark.part1
+    @pytest.mark.multi
     def test_delete_user_from_multi_groups(self):
         group = uuid.uuid4().hex
         self.group_name = group
@@ -373,7 +373,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
         for group in data['groups']:
             assert new_group_id not in group['groupId']
 
-    @pytest.mark.part2
+    @pytest.mark.multi
     def test_add_user_to_another_group_validate_data_in_existing_group_success(self):
         old_token = self.token
         r = WesignMethodsApi.document_collections_get_parameters(self)
@@ -452,7 +452,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
         if common_values:
             raise Exception(f"Common values found: {common_values}")
 
-    @pytest.mark.part3
+    @pytest.mark.multi
     def test_switch_group_not_attached(self):
         group = uuid.uuid4().hex
         self.group_name = group
@@ -471,7 +471,7 @@ class WesignApiMultiGroupsTests(unittest.TestCase):
         delete_group = WesignMethodsApi.admins_groups_delete(self, f'{new_group_id}')
         assert delete_group.status_code == StatusCode.OK
 
-    @pytest.mark.part1
+    @pytest.mark.multi
     def test_switch_group_user_connected_to_attached(self):
         sleep(5)
         switch_group = WesignMethodsApi.users_switch_group_payload(self, "9de765cd-2892-4f7e-e071-08dc999e2a5d")
