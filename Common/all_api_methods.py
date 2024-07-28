@@ -437,7 +437,7 @@ class WesignMethodsApi:
 
     def document_collections_id_get_data_fields_info_json(self, with_signatures: bool):
         headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
-        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/e9fe162b-2b89-4d44-1958-08dc99c8eca1/fields/json?includeSigantures={with_signatures}',headers=headers)
+        r = requests.get(self.settings['Base_Url'] + f'/documentcollections/6f4f5b48-c423-4dda-8afb-08dcaed13fca/fields/json?includeSigantures={with_signatures}',headers=headers)
         return r
 
     def document_collections_reactive(self, document_id: str):
