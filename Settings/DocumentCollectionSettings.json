@@ -34,6 +34,7 @@
   "DocumentCollectionDocumentSendingNotFeetContactMeans" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingNotFeetContactMeans.json",
   "DocumentCollectionDocumentSendingWithInvalidSendingMethod" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithInvalidSendingMethod.json",
   "DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwoRecipientnByOrderSuccess.json",
+  "DocumentCollectionTestDeletFromDb" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionTestDeletFromDb.json",
   "DocumentCollectionDocumentSendingTwoRecipientByGroupSuccess" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingTwoRecipientByGroupSuccess.json",
   "DocumentCollectionDocumentSendingWithShouldSendParamaterFlase" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSendParamaterFlase.json",
   "DocumentCollectionDocumentSendingWithShouldSendParamaterTrue" : "\\\\fs01\\Users\\NirK\\PythonAutomation\\DocumentCollectionRequest\\DocumentCollectionDocumentSendingWithShouldSendParamaterTrue.json",
@@ -82,5 +83,6 @@
   "comda_mail_password" : "Comsign1!",
   "db_name" : "WeSign",
   "db_user" : "sa",
-  "db_password" : "Aa123456"
+  "db_password" : "Aa123456",
+  "jobs_url" : "https://devtest.comda.co.il:10443/managementApi/jobs/recurring"
 }

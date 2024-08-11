@@ -3737,6 +3737,139 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(self.driver, 50).until(
             EC.element_to_be_clickable((By.ID, "menuButton")))
 
+    @pytest.mark.part2
+    def test_delete_documents_from_db(self):
+        documents = []
+        for x in range(50):
+            r = WesignMethodsApi.document_collections_post_json_file(self,'DocumentCollectionTestDeletFromDb')
+            assert r.status_code == StatusCode.OK
+            response = r.json()
+            doc_id = response['documentCollectionId']
+            documents.append(doc_id)
+
+        sleep(16)
+
+        for y in range(len(documents)):
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            cursor = conn.cursor()
+            b = cursor.execute(
+                f"SELECT * from [DocumentCollections] where [Id] = '{documents[y]}'")
+            status = b.fetchall()
+            sleep(1.5)
+            assert status[0][4] == 2, f"Document {documents[y]} not in correct status" ##Sent / pending status
+
+
+        for i in range(len(documents)):
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            cursor = conn.cursor()
+            d = cursor.execute(
+                f"update DocumentCollections set Status = 7 where Id = '{documents[i]}'")
+            d.commit()
+            sleep(1)
+
+        for n in range(len(documents)):
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            cursor = conn.cursor()
+            b = cursor.execute(
+                f"SELECT * from [DocumentCollections] where [Id] = '{documents[n]}'")
+            status = b.fetchall()
+            sleep(1.2)
+            assert status[0][4] == 7, f"Document {documents[n]} not in delete status" ##Sent / pending status
+        self.__setup()
+        self.driver.get(self.settings['jobs_url'])
+        WebDriverWait(self.driver, 60).until(EC.presence_of_all_elements_located((By.XPATH, "//table/tbody/tr[1]/td[1]/input")))
+        self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
+        sleep(2)
+        self.driver.find_element(By.XPATH, "//div[2]/div/div/div[1]/button[1]").click()
+        sleep(8)
+        for m in range(len(documents)):
+            sleep(1.5)
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            a = conn.execute(f"SELECT COUNT(*) FROM DocumentCollections where Id = '{documents[m]}'")
+            row_count = a.fetchone()
+            sleep(1.5)
+            assert str(row_count) == '(0, )' or str(row_count) == '(0,)'
+
+    @pytest.mark.part3
+    def test_delete_documents_from_db_after_x_days_delete_company_configuration(self):
+        documents = []
+        for x in range(25):
+            r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionTestDeletFromDb')
+            assert r.status_code == StatusCode.OK
+            response = r.json()
+            doc_id = response['documentCollectionId']
+            documents.append(doc_id)
+
+        sleep(16)
+
+        for y in range(len(documents)):
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            cursor = conn.cursor()
+            b = cursor.execute(
+                f"SELECT * from [DocumentCollections] where [Id] = '{documents[y]}'")
+            status = b.fetchall()
+            sleep(1.5)
+            assert status[0][4] == 2, f"Document {documents[y]} not in correct status"  ##Sent / pending status
+
+        for i in range(len(documents)):
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            cursor = conn.cursor()
+            cursor.execute(f"update [DocumentCollections] set [CreationTime] = DATEADD(DAY, -361, GETDATE()) where [Id] = '{documents[i]}'")
+            conn.commit()
+            sleep(1)
+
+        self.__setup()
+        self.driver.get(self.settings['jobs_url'])
+        WebDriverWait(self.driver, 60).until(
+            EC.presence_of_all_elements_located((By.XPATH, "//table/tbody/tr[1]/td[1]/input")))
+        self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
+        sleep(2)
+        self.driver.find_element(By.XPATH, "//div[2]/div/div/div[1]/button[1]").click()
+        sleep(8)
+        for m in range(len(documents)):
+            sleep(1.5)
+            conn = pyodbc.connect(f'Driver=SQL Server;'
+                                  "Server=DEVTEST\SQLEXPRESS;"
+                                  f'Database={self.settings["db_name"]};'
+                                  f'UID={self.settings["db_user"]};'
+                                  F'PWD={self.settings["db_password"]};'
+                                  'Trusted_Connection=no;')
+            a = conn.execute(f"SELECT COUNT(*) FROM DocumentCollections where Id = '{documents[m]}'")
+            row_count = a.fetchone()
+            sleep(1.5)
+            assert str(row_count) == '(0, )' or str(row_count) == '(0,)'
+
+
     # def test_download_document_collection_and_save_as_pdf(self):
     #     headers = {'content-type': 'application/pdf', 'Authorization': 'Bearer ' + self.token}
     #     r = requests.get(self.settings['Base_Url'] + '/documentcollections/0f80163e-ca54-4873-5bac-08db5c2fc008',headers=headers)
