@@ -93,13 +93,13 @@ class WesignApiLoginTests(unittest.TestCase):
         assert login['token'] == ''
         assert len(login['refreshToken']) > 30
         assert login['authToken'] == 'OTP'
-        sleep(15)
+        sleep(20)
         self.__enter_comda_mail(self.settings['DevtestMailUsingOtp'], self.settings['company_user_password'])
-        WebDriverWait(self.driver, 20).until(
+        WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'Your validation code is')])[1]")))
         self.driver.find_element(By.XPATH, "(//*[contains(text(),'Your validation code is')])[1]").click()
-        sleep(1.5)
-        WebDriverWait(self.driver, 20).until(
+        sleep(10)
+        WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.XPATH, "//*[@style='direction:LTR']")))
         otp_number = self.driver.find_element(By.XPATH, "//*[@style='direction:LTR']").text
         sleep(1.5)

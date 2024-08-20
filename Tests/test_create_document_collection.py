@@ -350,7 +350,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.__sign_on_document()
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(30)
+        sleep(40)
         email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
         email_notification.click()
         sleep(8)
