@@ -287,7 +287,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         self.__setup()
-        sleep(5)
+        sleep(60)
         self.__enter_comda_mail(self.settings['dev_email'], self.settings['comda_mail_password'])
         sleep(8)
         email = self.driver.find_elements(By.XPATH, f"//span[contains(text(),'{self.document_name}')]")
@@ -3747,9 +3747,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             doc_id = response['documentCollectionId']
             documents.append(doc_id)
 
-        sleep(16)
+        sleep(10)
 
         for y in range(len(documents)):
+            sleep(1.5)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3763,8 +3764,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             sleep(1.5)
             assert status[0][4] == 2, f"Document {documents[y]} not in correct status" ##Sent / pending status
 
+        sleep(10)
 
         for i in range(len(documents)):
+            sleep(1.5)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3777,7 +3780,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             d.commit()
             sleep(1)
 
+        sleep(16)
+
         for n in range(len(documents)):
+            sleep(1.5)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3796,7 +3802,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
         sleep(2)
         self.driver.find_element(By.XPATH, "//div[2]/div/div/div[1]/button[1]").click()
-        sleep(8)
+        sleep(16)
+
         for m in range(len(documents)):
             sleep(1.5)
             conn = pyodbc.connect(f'Driver=SQL Server;'

@@ -93,7 +93,7 @@ class WesignApiLoginTests(unittest.TestCase):
         assert login['token'] == ''
         assert len(login['refreshToken']) > 30
         assert login['authToken'] == 'OTP'
-        sleep(20)
+        sleep(60)
         self.__enter_comda_mail(self.settings['DevtestMailUsingOtp'], self.settings['company_user_password'])
         WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.XPATH, "(//*[contains(text(),'Your validation code is')])[1]")))
