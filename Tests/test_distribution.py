@@ -901,9 +901,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")))
         # self.driver.find_element(By.XPATH,"(//span[contains(text(),'devtest')])[2]").click()
         sleep(3)
-        self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]").click()
+        notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]").click()
+        self.driver.execute_script("arguments[0].click();", notification)
         sleep(2)
         WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'Click here')]")))
         sleep(3)
-        self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]").click()
+        click = self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]")
+        self.driver.execute_script("arguments[0].click();", click)
