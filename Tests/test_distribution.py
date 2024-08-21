@@ -314,8 +314,8 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file_for_otp("Distribution_OTP", template, document_name, full_name, email)
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "Distribution_OTP")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(100)
-        self.__enter_temp_mail_and_sign(document_name)
+        sleep(20)
+        self.__enter_temp_mail_and_sign_dc(document_name)
         sleep(1)
         WebDriverWait(self.driver, 25).until(
             EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'OTP' )] ")))
@@ -899,7 +899,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(3)
         WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")))
-        # self.driver.find_element(By.XPATH,"(//span[contains(text(),'devtest')])[2]").click()
         sleep(3)
         notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]").click()
         self.driver.execute_script("arguments[0].click();", notification)
@@ -909,3 +908,32 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(3)
         click = self.driver.find_element(By.XPATH, "//a[contains(text(),'Click here')]")
         self.driver.execute_script("arguments[0].click();", click)
+
+    def __enter_temp_mail_and_sign_dc(self, document_name):
+        driver = self.driver
+        sleep(3)
+        try:
+
+            WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")))
+            sleep(3)
+            notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")
+            self.driver.execute_script("arguments[0].click();", notification)
+            sleep(2)
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//td/table/tbody/tr/td/a")))
+            sleep(3)
+            click = self.driver.find_element(By.XPATH, "//td/table/tbody/tr/td/a")
+            self.driver.execute_script("arguments[0].click();", click)
+        except:
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.XPATH, f"(//tbody/tr[2]/td)[2]")))
+            sleep(3)
+            notification = self.driver.find_element(By.XPATH, f"(//tbody/tr[2]/td)[2]")
+            self.driver.execute_script("arguments[0].click();", notification)
+            sleep(2)
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//td/table/tbody/tr/td/a")))
+            sleep(3)
+            click = self.driver.find_element(By.XPATH, "//td/table/tbody/tr/td/a")
+            self.driver.execute_script("arguments[0].click();", click)
