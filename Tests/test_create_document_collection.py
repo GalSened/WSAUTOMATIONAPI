@@ -3830,6 +3830,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(16)
 
         for y in range(len(documents)):
+            sleep(2.5)
+
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3844,6 +3846,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             assert status[0][4] == 2, f"Document {documents[y]} not in correct status"  ##Sent / pending status
 
         for i in range(len(documents)):
+            sleep(2.5)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3864,7 +3867,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, "//div[2]/div/div/div[1]/button[1]").click()
         sleep(8)
         for m in range(len(documents)):
-            sleep(1.5)
+            sleep(2.5)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
