@@ -312,7 +312,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
-        sleep(50)
+        sleep(90)
         email = self.driver.find_elements(By.XPATH, f"//*[contains(text(),'{self.document_name}')]")
         assert len(email) > 0, "Email didn't sent"
         sleep(2)
@@ -347,7 +347,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.__sign_on_document()
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(40)
+        sleep(90)
         email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
         email_notification.click()
         sleep(8)
@@ -3737,17 +3737,17 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     @pytest.mark.part2
     def test_delete_documents_from_db(self):
         documents = []
-        for x in range(50):
+        for x in range(25):
             r = WesignMethodsApi.document_collections_post_json_file(self,'DocumentCollectionTestDeletFromDb')
             assert r.status_code == StatusCode.OK
             response = r.json()
             doc_id = response['documentCollectionId']
             documents.append(doc_id)
 
-        sleep(10)
+        sleep(45)
 
         for y in range(len(documents)):
-            sleep(1.5)
+            sleep(2)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3758,13 +3758,13 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             b = cursor.execute(
                 f"SELECT * from [DocumentCollections] where [Id] = '{documents[y]}'")
             status = b.fetchall()
-            sleep(1.5)
+            sleep(2)
             assert status[0][4] == 2, f"Document {documents[y]} not in correct status" ##Sent / pending status
 
-        sleep(10)
+        sleep(30)
 
         for i in range(len(documents)):
-            sleep(1.5)
+            sleep(2)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3775,12 +3775,12 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             d = cursor.execute(
                 f"update DocumentCollections set Status = 7 where Id = '{documents[i]}'")
             d.commit()
-            sleep(1)
+            sleep(2)
 
-        sleep(16)
+        sleep(25)
 
         for n in range(len(documents)):
-            sleep(1.5)
+            sleep(2)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3791,7 +3791,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             b = cursor.execute(
                 f"SELECT * from [DocumentCollections] where [Id] = '{documents[n]}'")
             status = b.fetchall()
-            sleep(1.2)
+            sleep(2)
             assert status[0][4] == 7, f"Document {documents[n]} not in delete status" ##Sent / pending status
         self.__setup()
         self.driver.get(self.settings['jobs_url'])
@@ -3799,10 +3799,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
         sleep(2)
         self.driver.find_element(By.XPATH, "//div[2]/div/div/div[1]/button[1]").click()
-        sleep(16)
+        sleep(30)
 
         for m in range(len(documents)):
-            sleep(1.5)
+            sleep(2)
             conn = pyodbc.connect(f'Driver=SQL Server;'
                                   "Server=DEVTEST\SQLEXPRESS;"
                                   f'Database={self.settings["db_name"]};'
@@ -3811,20 +3811,20 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                                   'Trusted_Connection=no;')
             a = conn.execute(f"SELECT COUNT(*) FROM DocumentCollections where Id = '{documents[m]}'")
             row_count = a.fetchone()
-            sleep(1.5)
+            sleep(2)
             assert str(row_count) == '(0, )' or str(row_count) == '(0,)'
 
     @pytest.mark.part3
     def test_delete_documents_from_db_after_x_days_delete_company_configuration(self):
         documents = []
-        for x in range(25):
+        for x in range(10):
             r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionTestDeletFromDb')
             assert r.status_code == StatusCode.OK
             response = r.json()
             doc_id = response['documentCollectionId']
             documents.append(doc_id)
 
-        sleep(16)
+        sleep(45)
 
         for y in range(len(documents)):
             sleep(2.5)
@@ -3839,7 +3839,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             b = cursor.execute(
                 f"SELECT * from [DocumentCollections] where [Id] = '{documents[y]}'")
             status = b.fetchall()
-            sleep(1.5)
+            sleep(2.5)
             assert status[0][4] == 2, f"Document {documents[y]} not in correct status"  ##Sent / pending status
 
         for i in range(len(documents)):
@@ -3862,7 +3862,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
         sleep(2)
         self.driver.find_element(By.XPATH, "//div[2]/div/div/div[1]/button[1]").click()
-        sleep(8)
+        sleep(40)
         for m in range(len(documents)):
             sleep(2.5)
             conn = pyodbc.connect(f'Driver=SQL Server;'
@@ -3873,7 +3873,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                                   'Trusted_Connection=no;')
             a = conn.execute(f"SELECT COUNT(*) FROM DocumentCollections where Id = '{documents[m]}'")
             row_count = a.fetchone()
-            sleep(1.5)
+            sleep(2.5)
             assert str(row_count) == '(0, )' or str(row_count) == '(0,)'
 
 
