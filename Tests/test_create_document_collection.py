@@ -28,9 +28,6 @@ from shared import Shared
 @pytest.mark.flaky(max_runs=6)
 class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def setUp(self):
-        # p = Path(__file__).with_name('DocumentCollectionSettings.json')
-        # with open(p) as f:
-        #     self.settings = json.load(f)
         p = Path(__file__).resolve().parent.parent
         file_path = p / "Settings\\DocumentCollectionSettings.json"
         with open(file_path) as f:
@@ -315,7 +312,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
-        sleep(30)
+        sleep(50)
         email = self.driver.find_elements(By.XPATH, f"//*[contains(text(),'{self.document_name}')]")
         assert len(email) > 0, "Email didn't sent"
         sleep(2)

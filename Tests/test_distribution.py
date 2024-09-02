@@ -314,7 +314,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         self.__change_values_in_file_for_otp("Distribution_OTP", template, document_name, full_name, email)
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "Distribution_OTP")
         assert send_distribution.status_code == StatusCode.OK
-        sleep(20)
+        sleep(45)
         self.__enter_temp_mail_and_sign_dc(document_name)
         sleep(1)
         WebDriverWait(self.driver, 25).until(
