@@ -193,7 +193,7 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
             "templates": [
                 "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
                  "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
-                "74e681d1-4cea-4f02-fe03-08db9d6801a6"
+                "35bd969e-a5d4-404f-0642-08dccb46a16d"
             ],
             "name": "Merge_templates",
             "isOneTimeUseTemplate": False
@@ -211,8 +211,8 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
             "templates": [
                 "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
                  "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
-                "74e681d1-4cea-4f02-fe03-08db9d6801a6",
-                "d67c417f-83c8-48cb-9d30-08db966ebb19"
+                "f600dd33-4bb8-4837-061c-08dccb46a16d",
+                "6c3ec53c-fbc6-46e9-0679-08dccb46a16d"
             ],
             "name": "Merge_templates",
             "isOneTimeUseTemplate": False
@@ -230,9 +230,9 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
             "templates": [
                 "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
                  "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
-                "74e681d1-4cea-4f02-fe03-08db9d6801a6",
-                "d67c417f-83c8-48cb-9d30-08db966ebb19",
-                "be63edf9-2834-4959-558f-08db9cac3bb4"
+                "6c3ec53c-fbc6-46e9-0679-08dccb46a16d",
+                "35bd969e-a5d4-404f-0642-08dccb46a16d",
+                "cb579096-6519-42db-d4ce-08dcd561cfb6"
             ],
             "name": "Merge_templates",
             "isOneTimeUseTemplate": False
