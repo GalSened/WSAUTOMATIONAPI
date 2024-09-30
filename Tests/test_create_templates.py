@@ -174,8 +174,8 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
     def test_2_merge_templates_success(self):
         merge = {
             "templates": [
-                "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
-                 "97ffa5b7-b561-423b-7acf-08dba3ce1e25"
+                "cb579096-6519-42db-d4ce-08dcd561cfb6",
+                 "6c3ec53c-fbc6-46e9-0679-08dccb46a16d"
             ],
             "name": "Merge_templates",
             "isOneTimeUseTemplate": False
@@ -191,8 +191,8 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
     def test_3_merge_templates_success(self):
         merge = {
             "templates": [
-                "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
-                 "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
+                "6c3ec53c-fbc6-46e9-0679-08dccb46a16d",
+                 "cb579096-6519-42db-d4ce-08dcd561cfb6",
                 "35bd969e-a5d4-404f-0642-08dccb46a16d"
             ],
             "name": "Merge_templates",
@@ -208,11 +208,12 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
     @pytest.mark.part2
     def test_4_merge_templates_success(self):
         merge = {
-            "templates": [
-                "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
-                 "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
-                "f600dd33-4bb8-4837-061c-08dccb46a16d",
-                "6c3ec53c-fbc6-46e9-0679-08dccb46a16d"
+             "templates": [
+                "6c3ec53c-fbc6-46e9-0679-08dccb46a16d",
+                 "cb579096-6519-42db-d4ce-08dcd561cfb6",
+                "35bd969e-a5d4-404f-0642-08dccb46a16d",
+                 "6edb0771-4225-464e-9ce1-08dce142e35a"
+
             ],
             "name": "Merge_templates",
             "isOneTimeUseTemplate": False
@@ -228,11 +229,12 @@ class WesignApiCreateTemplateTests(unittest.TestCase):
     def test_5_merge_templates_success(self):
         merge = {
             "templates": [
-                "73a15249-f2de-4b50-7ae0-08dba3ce1e25",
-                 "97ffa5b7-b561-423b-7acf-08dba3ce1e25",
                 "6c3ec53c-fbc6-46e9-0679-08dccb46a16d",
+                 "cb579096-6519-42db-d4ce-08dcd561cfb6",
                 "35bd969e-a5d4-404f-0642-08dccb46a16d",
-                "cb579096-6519-42db-d4ce-08dcd561cfb6"
+                 "6edb0771-4225-464e-9ce1-08dce142e35a",
+                "e621aa58-d147-45ea-9cd9-08dce142e35a"
+
             ],
             "name": "Merge_templates",
             "isOneTimeUseTemplate": False
