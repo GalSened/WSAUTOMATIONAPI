@@ -2,12 +2,18 @@ import unittest
 import uuid
 import warnings
 from pathlib import Path
+from telnetlib import EC
 from time import sleep
 import pytest
 import json
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from Enums.status_codes import StatusCode, ResultCode
 from Common.all_api_methods import WesignMethodsApi
 from shared import Shared
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 
 
 @pytest.mark.flaky(max_runs=6)
@@ -349,9 +355,112 @@ class WesignApiUsersTests(unittest.TestCase):
         response = r.json()
         assert response['errors']['Username'] == ResultCode.USER_NAME_INVALID_FORMAT
 
+    def test_create_new_register_user_with_password(self):
+        self.__setup()
+        self.email = self.__enter_temp_mail_site()
+        payload = {
+            "Name": "TestRegister",
+            "Language": 2,
+            "Email": self.email,
+            "Password": "Comsign1!",
+            "SendActivationLink": True
+            }
+
+        r = WesignMethodsApi.users_sign_up(self, payload)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['link']
+        assert json_response != ""
+        self.__activate_free_user_account(True)
+
+    def test_create_new_register_user_without_password(self):
+        self.__setup()
+        self.email = self.__enter_temp_mail_site()
+        payload = {
+            "Name": "TestRegister",
+            "Language": 2,
+            "Email": self.email,
+            "SendActivationLink": True
+        }
+
+        r = WesignMethodsApi.users_sign_up(self, payload)
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        json_response = response['link']
+        assert json_response != ""
+        self.__activate_free_user_account(False)
+
+
     def tearDown(self):
         sleep(3)
 
     if __name__ == "__main__":
         unittest.main()
 
+    def __enter_temp_mail_site(self):
+        self.driver.get('https://www.1secmail.com/')
+        sleep(3)
+        WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.ID, "login")))
+        name = self.driver.find_element(By.XPATH, "//input[@id='login']")
+        art_name = name.get_attribute('value')
+        sleep(3)
+        domain = self.driver.find_element(By.XPATH, "//select[@id='domain']")
+        art_domain = domain.get_attribute('value')
+        email = str(art_name) + '@' + str(art_domain)
+        return email
+
+
+    def __setup(self):
+        service = Service(self.settings['chrome_driver'])
+        options = webdriver.ChromeOptions()
+        options.add_argument(
+            '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
+        options.add_argument("start-maximized")
+        options.add_argument("window-size=1920,1080")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extenstions")
+        options.add_argument("disable-infobars")
+        options.add_argument('--ignore-certificate-errors')
+        options.add_argument("force-device-scale-factor=0.75")
+        options.add_argument("high-dpi-support=0.75")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        self.driver = webdriver.Chrome(service=service, options=options)
+
+    def __activate_free_user_account(self, with_password: True):
+        if with_password:
+
+            WebDriverWait(self.driver, 100).until(
+                EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'הפעל/י את החשבון שלך')])[1]")))
+            sleep(1.5)
+            email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'הפעל/י את החשבון שלך')])[1]")
+            email_notification.click()
+            sleep(1.5)
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'אמת/י')]")))
+            sleep(3)
+            self.driver.find_element(By.XPATH, "//a[contains(text(),'אמת/י')]").click()
+            sleep(3)
+            WebDriverWait(self.driver, 70).until(EC.url_to_be(('https://devtest.comda.co.il/dashboard/main')))
+        else:
+            WebDriverWait(self.driver, 100).until(
+                EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'אתחל/י את הסיסמה שלך')])[1]")))
+            sleep(1.5)
+            email_notification = self.driver.find_element(By.XPATH,
+                                                          f"(//*[contains(text(),'אתחל/י את הסיסמה שלך')])[1]")
+            email_notification.click()
+            sleep(1.5)
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'אתחל/י')]")))
+            sleep(3)
+            self.driver.find_element(By.XPATH, "//a[contains(text(),'אתחל/י')]").click()
+            sleep(3)
+
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "(//*[@type='password'])[1]"))).send_keys("Comsign1!")
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "(//*[@type='password'])[2]"))).send_keys("Comsign1!")
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "(//*[@type='submit'])[1]"))).click()
+            WebDriverWait(self.driver, 70).until(EC.url_to_be(('https://devtest.comda.co.il/dashboard/main')))
