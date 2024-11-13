@@ -1974,8 +1974,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "3efc3b51fa3743beb941291b35392a76",
-              "contactMeans": "3efc3b51fa3743beb941291b35392a76@comda.co.il",
+              "contactName": "devtest1",
+              "contactMeans": "devtest1@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -1989,8 +1989,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "35a41cc83bea4f1497515bc14e688cd4",
-              "contactMeans": "35a41cc83bea4f1497515bc14e688cd4@comda.co.il",
+              "contactName": "devtest2",
+              "contactMeans": "devtest2@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2004,8 +2004,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "f6cdbb062e2d446ab213861c6b4a6987",
-              "contactMeans": "f6cdbb062e2d446ab213861c6b4a6987@comda.co.il",
+              "contactName": "devtest3",
+              "contactMeans": "devtest3@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2019,8 +2019,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
-              "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec@comda.co.il",
+              "contactName": "devtest4",
+              "contactMeans": "devtest4@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2034,8 +2034,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "ac833a2512db4023935b3f265921a808",
-              "contactMeans": "ac833a2512db4023935b3f265921a808@comda.co.il",
+              "contactName": "devtest5",
+              "contactMeans": "devtest5@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2049,8 +2049,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "0d6992ce432d49eb8ca6b9dbfc45a4be",
-              "contactMeans": "0d6992ce432d49eb8ca6b9dbfc45a4be@comda.co.il",
+              "contactName": "devtest6",
+              "contactMeans": "devtest6@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2064,8 +2064,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "0d5f7ec292b643f2935354227a5c6c08",
-              "contactMeans": "0d5f7ec292b643f2935354227a5c6c08@comda.co.il",
+              "contactName": "devtest7",
+              "contactMeans": "devtest7@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2079,8 +2079,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "76500ff0a2184b3d8f7cc9dfd824a174",
-              "contactMeans": "76500ff0a2184b3d8f7cc9dfd824a174@comda.co.il",
+              "contactName": "devtest8",
+              "contactMeans": "devtest8@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2094,8 +2094,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "b3d5c9706807478a908e1cc4ba381c92",
-              "contactMeans": "b3d5c9706807478a908e1cc4ba381c92@comda.co.il",
+              "contactName": "devtest9",
+              "contactMeans": "devtest9@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2109,8 +2109,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "2f384bbaf22d4cf9a97169ff3621f222",
-              "contactMeans": "2f384bbaf22d4cf9a97169ff3621f222@comda.co.il",
+              "contactName": "devtest10",
+              "contactMeans": "devtest10@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2124,8 +2124,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "182c8227e5ed4d7ba65b5f9c37213d71",
-              "contactMeans": "182c8227e5ed4d7ba65b5f9c37213d71@comda.co.il",
+              "contactName": "devtest1",
+              "contactMeans": "devtest1@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2139,8 +2139,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "b509941d08da49ff87042fc7303d7df1",
-              "contactMeans": "b509941d08da49ff87042fc7303d7df1@comda.co.il",
+              "contactName": "devtest2",
+              "contactMeans": "devtest2@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2154,8 +2154,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "9ae850fc0806477ca7785d4fd681fd6e",
-              "contactMeans": "9ae850fc0806477ca7785d4fd681fd6e@comda.co.il",
+              "contactName": "devtest3",
+              "contactMeans": "devtest3@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2169,8 +2169,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "826ca7140f14468da46865fbf4899bb4",
-              "contactMeans": "826ca7140f14468da46865fbf4899bb4@comda.co.il",
+              "contactName": "devtest4",
+              "contactMeans": "devtest4@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2184,8 +2184,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "776a3adcee654793bb8081a07b99c5b2",
-              "contactMeans": "776a3adcee654793bb8081a07b99c5b2@comda.co.il",
+              "contactName": "devtest5",
+              "contactMeans": "devtest5@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2199,8 +2199,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "9c2a166e1206461294ead0af24b734d7",
-              "contactMeans": "9c2a166e1206461294ead0af24b734d7@comda.co.il",
+              "contactName": "devtest6",
+              "contactMeans": "devtest6@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2214,8 +2214,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "b8a86919ab9548cfa39aa573a120ee58",
-              "contactMeans": "b8a86919ab9548cfa39aa573a120ee58@comda.co.il",
+              "contactName": "devtest7",
+              "contactMeans": "devtest7@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2229,8 +2229,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "6a7335c17bfb4e688aeeaa4c3bf09e9c",
-              "contactMeans": "6a7335c17bfb4e688aeeaa4c3bf09e9c@comda.co.il",
+              "contactName": "devtest8",
+              "contactMeans": "devtest8@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2244,8 +2244,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "a762a65d61e945998205198085380f2e",
-              "contactMeans": "a762a65d61e945998205198085380f2e@comda.co.il",
+              "contactName": "devtest9",
+              "contactMeans": "devtest9@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2259,8 +2259,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "9af9872a4bc74818b3565bf313c0c53d",
-              "contactMeans": "9af9872a4bc74818b3565bf313c0c53d@comda.co.il",
+              "contactName": "devtest10",
+              "contactMeans": "devtest10@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2274,8 +2274,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "94f05c0e140044bd9f84ca145df5cc2c",
-              "contactMeans": "94f05c0e140044bd9f84ca145df5cc2c@comda.co.il",
+              "contactName": "devtest1",
+              "contactMeans": "devtest1@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2289,8 +2289,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "3ad82e93161e40b1a9b035ddf89574f6",
-              "contactMeans": "3ad82e93161e40b1a9b035ddf89574f6@comda.co.il",
+              "contactName": "devtest2",
+              "contactMeans": "devtest2@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2304,8 +2304,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "30e0f675b7664ba4a448a21e70dc7d92",
-              "contactMeans": "30e0f675b7664ba4a448a21e70dc7d92@comda.co.il",
+              "contactName": "devtest3",
+              "contactMeans": "devtest3@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2319,8 +2319,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "7506b19783d542eda18f25458e7c1b1d",
-              "contactMeans": "7506b19783d542eda18f25458e7c1b1d@comda.co.il",
+              "contactName": "devtest4",
+              "contactMeans": "devtest4@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2333,8 +2333,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             {
               "otpMode": 0,
               "authenticationMode": 0,
-              "contactName": "5e2dc2f2bb7c46d784101087cb0332e9",
-              "contactMeans": "5e2dc2f2bb7c46d784101087cb0332e9@comda.co.il",
+              "contactName": "devtest5",
+              "contactMeans": "devtest5@comda.co.il",
               "sendingMethod": 2,
               "phoneExtension": "+972",
               "signerFields": [
@@ -2738,8 +2738,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "3efc3b51fa3743beb941291b35392a76",
-                    "contactMeans": "3efc3b51fa3743beb941291b35392a76@comda.co.il",
+                    "contactName": "devtest1",
+                    "contactMeans": "devtest1@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2753,8 +2753,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "35a41cc83bea4f1497515bc14e688cd4",
-                    "contactMeans": "35a41cc83bea4f1497515bc14e688cd4@comda.co.il",
+                    "contactName": "devtest2",
+                    "contactMeans": "devtest2@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2768,8 +2768,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "f6cdbb062e2d446ab213861c6b4a6987",
-                    "contactMeans": "f6cdbb062e2d446ab213861c6b4a6987@comda.co.il",
+                    "contactName": "devtest3",
+                    "contactMeans": "devtest3@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2783,8 +2783,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
-                    "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec@comda.co.il",
+                    "contactName": "devtest4",
+                    "contactMeans": "devtest4@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2798,8 +2798,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "ac833a2512db4023935b3f265921a808",
-                    "contactMeans": "ac833a2512db4023935b3f265921a808@comda.co.il",
+                    "contactName": "devtest5",
+                    "contactMeans": "devtest5@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2813,8 +2813,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "0d6992ce432d49eb8ca6b9dbfc45a4be",
-                    "contactMeans": "0d6992ce432d49eb8ca6b9dbfc45a4be@comda.co.il",
+                    "contactName": "devtest6",
+                    "contactMeans": "devtest6@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2828,8 +2828,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "0d5f7ec292b643f2935354227a5c6c08",
-                    "contactMeans": "0d5f7ec292b643f2935354227a5c6c08@comda.co.il",
+                    "contactName": "devtest7",
+                    "contactMeans": "devtest7@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2843,8 +2843,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "76500ff0a2184b3d8f7cc9dfd824a174",
-                    "contactMeans": "76500ff0a2184b3d8f7cc9dfd824a174@comda.co.il",
+                    "contactName": "devtest8",
+                    "contactMeans": "devtest8@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2858,8 +2858,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "b3d5c9706807478a908e1cc4ba381c92",
-                    "contactMeans": "b3d5c9706807478a908e1cc4ba381c92@comda.co.il",
+                    "contactName": "devtest9",
+                    "contactMeans": "devtest9@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2873,8 +2873,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "2f384bbaf22d4cf9a97169ff3621f222",
-                    "contactMeans": "2f384bbaf22d4cf9a97169ff3621f222@comda.co.il",
+                    "contactName": "devtest10",
+                    "contactMeans": "devtest10@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2888,8 +2888,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "182c8227e5ed4d7ba65b5f9c37213d71",
-                    "contactMeans": "182c8227e5ed4d7ba65b5f9c37213d71@comda.co.il",
+                    "contactName": "devtest1",
+                    "contactMeans": "devtest1@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2903,8 +2903,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "b509941d08da49ff87042fc7303d7df1",
-                    "contactMeans": "b509941d08da49ff87042fc7303d7df1@comda.co.il",
+                    "contactName": "devtest2",
+                    "contactMeans": "devtest2@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2918,8 +2918,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "9ae850fc0806477ca7785d4fd681fd6e",
-                    "contactMeans": "9ae850fc0806477ca7785d4fd681fd6e@comda.co.il",
+                    "contactName": "devtest3",
+                    "contactMeans": "devtest3@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2933,8 +2933,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "826ca7140f14468da46865fbf4899bb4",
-                    "contactMeans": "826ca7140f14468da46865fbf4899bb4@comda.co.il",
+                    "contactName": "devtest4",
+                    "contactMeans": "devtest4@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2948,8 +2948,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "776a3adcee654793bb8081a07b99c5b2",
-                    "contactMeans": "776a3adcee654793bb8081a07b99c5b2@comda.co.il",
+                    "contactName": "devtest5",
+                    "contactMeans": "devtest5@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2963,8 +2963,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "9c2a166e1206461294ead0af24b734d7",
-                    "contactMeans": "9c2a166e1206461294ead0af24b734d7@comda.co.il",
+                    "contactName": "devtest6",
+                    "contactMeans": "devtest6@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2978,8 +2978,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "b8a86919ab9548cfa39aa573a120ee58",
-                    "contactMeans": "b8a86919ab9548cfa39aa573a120ee58@comda.co.il",
+                    "contactName": "devtest7",
+                    "contactMeans": "devtest7@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -2993,8 +2993,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "6a7335c17bfb4e688aeeaa4c3bf09e9c",
-                    "contactMeans": "6a7335c17bfb4e688aeeaa4c3bf09e9c@comda.co.il",
+                    "contactName": "devtest8",
+                    "contactMeans": "devtest8@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -3008,8 +3008,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "a762a65d61e945998205198085380f2e",
-                    "contactMeans": "a762a65d61e945998205198085380f2e@comda.co.il",
+                    "contactName": "devtest9",
+                    "contactMeans": "devtest9@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -3023,8 +3023,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "9af9872a4bc74818b3565bf313c0c53d",
-                    "contactMeans": "9af9872a4bc74818b3565bf313c0c53d@comda.co.il",
+                    "contactName": "devtest10",
+                    "contactMeans": "devtest10@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -3038,8 +3038,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "94f05c0e140044bd9f84ca145df5cc2c",
-                    "contactMeans": "94f05c0e140044bd9f84ca145df5cc2c@comda.co.il",
+                    "contactName": "devtest1",
+                    "contactMeans": "devtest1@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -3053,8 +3053,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "3ad82e93161e40b1a9b035ddf89574f6",
-                    "contactMeans": "3ad82e93161e40b1a9b035ddf89574f6@comda.co.il",
+                    "contactName": "devtest2",
+                    "contactMeans": "devtest2@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -3068,8 +3068,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "30e0f675b7664ba4a448a21e70dc7d92",
-                    "contactMeans": "30e0f675b7664ba4a448a21e70dc7d92@comda.co.il",
+                    "contactName": "devtest3",
+                    "contactMeans": "devtest3@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -3083,8 +3083,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "7506b19783d542eda18f25458e7c1b1d",
-                    "contactMeans": "7506b19783d542eda18f25458e7c1b1d@comda.co.il",
+                    "contactName": "devtest4",
+                    "contactMeans": "devtest4@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -3097,8 +3097,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 {
                     "otpMode": 0,
                     "authenticationMode": 0,
-                    "contactName": "5e2dc2f2bb7c46d784101087cb0332e9",
-                    "contactMeans": "5e2dc2f2bb7c46d784101087cb0332e9@comda.co.il",
+                    "contactName": "devtest5",
+                    "contactMeans": "devtest5@comda.co.il",
                     "sendingMethod": 2,
                     "phoneExtension": "+972",
                     "signerFields": [
@@ -3207,88 +3207,88 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 "signers": [
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "0a2e9c6a114948d1a7d200c20bdec1ec_1@comda.co.il",
-                    "contactName": "0a2e9c6a114948d1a7d200c20bdec1ec",
+                    "contactMeans": "devtest1@comda.co.il",
+                    "contactName": "devtest1",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "0d5f7ec292b643f2935354227a5c6c0880_2@comda.co.il",
-                    "contactName": "0d5f7ec292b643f2935354227a5c6c08",
+                    "contactMeans": "devtest2@comda.co.il",
+                    "contactName": "devtest2",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "0d6992ce432d49eb8ca6b9dbfc45a4be_3@comda.co.il",
-                    "contactName": "0d6992ce432d49eb8ca6b9dbfc45a4be",
+                    "contactMeans": "devtest3@comda.co.il",
+                    "contactName": "devtest3",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "182c8227e5ed4d7ba65b5f9c37213d71_4@comda.co.il",
-                    "contactName": "182c8227e5ed4d7ba65b5f9c37213d71",
+                    "contactMeans": "devtest4@comda.co.il",
+                    "contactName": "devtest4",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "2f384bbaf22d4cf9a97169ff3621f222_5@comda.co.il",
-                    "contactName": "2f384bbaf22d4cf9a97169ff3621f222",
+                    "contactMeans": "devtest5@comda.co.il",
+                    "contactName": "devtest5",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "30e0f675b7664ba4a448a21e70dc7d92_6@comda.co.il",
-                    "contactName": "30e0f675b7664ba4a448a21e70dc7d92",
+                    "contactMeans": "devtest6@comda.co.il",
+                    "contactName": "devtest6",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "35a41cc83bea4f1497515bc14e688cd4_7@comda.co.il",
-                    "contactName": "35a41cc83bea4f1497515bc14e688cd4",
+                    "contactMeans": "devtest7@comda.co.il",
+                    "contactName": "devtest7",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "5e2dc2f2bb7c46d784101087cb0332e9_8@comda.co.il",
-                    "contactName": "5e2dc2f2bb7c46d784101087cb0332e9",
+                    "contactMeans": "devtest8@comda.co.il",
+                    "contactName": "devtest8",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "3ad82e93161e40b1a9b035ddf89574f6_9@comda.co.il",
-                    "contactName": "3ad82e93161e40b1a9b035ddf89574f6",
+                    "contactMeans": "devtest9@comda.co.il",
+                    "contactName": "devtest9",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "3efc3b51fa3743beb941291b35392a76_10@comda.co.il",
-                    "contactName": "3efc3b51fa3743beb941291b35392a76",
+                    "contactMeans": "devtest10@comda.co.il",
+                    "contactName": "devtest10",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
                 {
                     "sendingMethod": 2,
-                    "contactMeans": "3efc3b51fa3743beb941291b35392a20_11@comda.co.il",
-                    "contactName": "3efc3b51fa3743beb941291b35392a76",
+                    "contactMeans": "devtest11@comda.co.il",
+                    "contactName": "devtest11",
                     "otpMode": 0,
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
