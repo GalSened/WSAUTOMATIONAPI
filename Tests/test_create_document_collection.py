@@ -3299,13 +3299,15 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         res = r.json()
         documentCollectionId = res['documentCollectionId']
         documentCollectionLink = res['signerLinks'][0]['link']
+        sleep(1)
         next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
         link = next_link.json()
         assert documentCollectionLink == link[0]['link']
-        sleep(2)
+        sleep(1)
         self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
+        sleep(10)
         self.driver.get(documentCollectionLink)
+        sleep(5)
         self.__sign_document_using_finish_button()
         sleep(1)
         WebDriverWait(self.driver, 50).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))
