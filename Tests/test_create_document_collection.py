@@ -3322,7 +3322,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         index = 2
         row_index = 2
         my_list = [11, 10, 9, 8, 7, 6, 5, 4]
-        for x in range(9):
+        for x in range(8):
             sleep(2)
             self.driver.switch_to.window(self.driver.window_handles[0])
             sleep(3)
