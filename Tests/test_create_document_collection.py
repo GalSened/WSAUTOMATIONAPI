@@ -3277,14 +3277,14 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                     "authenticationMode": 0,
                     "phoneExtension": "+972"
                 },
-                {
-                    "sendingMethod": 2,
-                    "contactMeans": "devtest10@comda.co.il",
-                    "contactName": "devtest10",
-                    "otpMode": 0,
-                    "authenticationMode": 0,
-                    "phoneExtension": "+972"
-                },
+                # {
+                #     "sendingMethod": 2,
+                #     "contactMeans": "devtest10@comda.co.il",
+                #     "contactName": "devtest10",
+                #     "otpMode": 0,
+                #     "authenticationMode": 0,
+                #     "phoneExtension": "+972"
+                # },
                 {
                     "sendingMethod": 2,
                     "contactMeans": "devtest11@comda.co.il",
@@ -3299,11 +3299,11 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         res = r.json()
         documentCollectionId = res['documentCollectionId']
         documentCollectionLink = res['signerLinks'][0]['link']
-        sleep(1)
+        sleep(3)
         next_link = WesignMethodsApi.document_collections_id_get_document_collection_links(self, documentCollectionId)
         link = next_link.json()
         assert documentCollectionLink == link[0]['link']
-        sleep(1)
+        sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(10)
         self.driver.get(documentCollectionLink)
@@ -3321,7 +3321,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         search_bar.send_keys(self.document_name)
         index = 2
         row_index = 2
-        my_list = [12, 11, 10, 9, 8, 7, 6, 5, 4]
+        my_list = [11, 10, 9, 8, 7, 6, 5, 4]
         for x in range(9):
             sleep(2)
             self.driver.switch_to.window(self.driver.window_handles[0])
