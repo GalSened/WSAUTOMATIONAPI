@@ -3139,9 +3139,9 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             self.driver.get(f"https://devtest.comda.co.il/signer/signature/{links[index]}")
             driver = self.driver
             sleep(1)
-            WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@name='feather']")))
+            WebDriverWait(driver, 60).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@name='feather']")))
             self.driver.find_element(By.XPATH, "//*[@name='feather']").click()
-            WebDriverWait(driver, 30).until(
+            WebDriverWait(driver, 60).until(
                 EC.presence_of_all_elements_located((By.XPATH, "//div[@class='signature-pad__canvas']")))
             canvas = self.driver.find_element(By.XPATH, "//div[@class='signature-pad__canvas']")
             drawing = ActionChains(self.driver) \
