@@ -3800,7 +3800,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         WebDriverWait(self.driver, 60).until(EC.presence_of_all_elements_located((By.XPATH, "//table/tbody/tr[1]/td[1]/input")))
         self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
         sleep(2)
-        self.driver.find_element(By.XPATH, "//div[2]/div/div/div[1]/button[1]").click()
+        self.driver.find_element(By.XPATH, "//*[@id='wrap']/div[2]/div/div/div/div[1]/button[1]").click()
         sleep(30)
 
         for m in range(len(documents)):
@@ -3863,7 +3863,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             EC.presence_of_all_elements_located((By.XPATH, "//table/tbody/tr[1]/td[1]/input")))
         self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
         sleep(2)
-        self.driver.find_element(By.XPATH, "//div[2]/div/div/div[1]/button[1]").click()
+        self.driver.find_element(By.XPATH, "//*[@id='wrap']/div[2]/div/div/div/div[1]/button[1]").click()
         sleep(40)
         for m in range(len(documents)):
             sleep(2.5)
