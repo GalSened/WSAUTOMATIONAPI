@@ -3611,6 +3611,80 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         specific_document_collection_id = doc_id
         assert any(obj['documentCollectionId'] == specific_document_collection_id for obj in filtered_data), f"Document collection ID '{specific_document_collection_id}' not found in notificationType: 4"
 
+    ##Task WES-1650
+    @pytest.mark.part2
+    def test_notification_from_callback_when_document_deleted_after_creation_time_pending_status(self):
+        doc_id = self.test_return_next_link_in_case_document_complete()
+        sleep(2.5)
+        conn = pyodbc.connect(f'Driver=SQL Server;'
+                              "Server=DEVTEST\SQLEXPRESS;"
+                              f'Database={self.settings["db_name"]};'
+                              f'UID={self.settings["db_user"]};'
+                              F'PWD={self.settings["db_password"]};'
+                              'Trusted_Connection=no;')
+        cursor = conn.cursor()
+        cursor.execute(f"update [DocumentCollections] set [CreationTime] = DATEADD(DAY, -361, GETDATE()) where [Id] = '{doc_id}'")
+        conn.commit()
+        self.driver.get(self.settings['jobs_url'])
+        WebDriverWait(self.driver, 60).until(
+            EC.presence_of_all_elements_located((By.XPATH, "//table/tbody/tr[1]/td[1]/input")))
+        self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
+        sleep(2)
+        self.driver.find_element(By.XPATH, "//*[@id='wrap']/div[2]/div/div/div/div[1]/button[1]").click()
+        sleep(4)
+        response = requests.get(self.settings['call_back_url'])
+        data = response.json()
+        document_collection_ids = [item['documentCollectionId'] for item in data]
+        assert doc_id in document_collection_ids
+        specific_document_collection_id = doc_id
+
+        for item in data:
+            if item['documentCollectionId'] == specific_document_collection_id:
+                if item['notificationType'] == 3:
+                    assert item['documentStatus'] == 3 or item['documentStatus'] == 4 ##Document Signed
+                    break
+        else:
+            raise AssertionError(f"Document {specific_document_collection_id} status is not 4: the status is : {item['documentStatus']} for signer name {item['signerName']}")
+
+    ##Task WES-1650
+    @pytest.mark.part1
+    def test_notification_from_callback_when_document_deleted_after_creation_time_sign_status(self):
+        self.__setup()
+        r = WesignMethodsApi.document_collections_post_json_file(self, 'DocumentCollectionDocumentSendingWithTextFieldSuccess')
+        assert r.status_code == StatusCode.OK
+        response = r.json()
+        doc_id = response['documentCollectionId']
+        sleep(2.5)
+        conn = pyodbc.connect(f'Driver=SQL Server;'
+                              "Server=DEVTEST\SQLEXPRESS;"
+                              f'Database={self.settings["db_name"]};'
+                              f'UID={self.settings["db_user"]};'
+                              F'PWD={self.settings["db_password"]};'
+                              'Trusted_Connection=no;')
+        cursor = conn.cursor()
+        cursor.execute(
+            f"update [DocumentCollections] set [CreationTime] = DATEADD(DAY, -361, GETDATE()) where [Id] = '{doc_id}'")
+        conn.commit()
+        self.driver.get(self.settings['jobs_url'])
+        WebDriverWait(self.driver, 60).until(
+            EC.presence_of_all_elements_located((By.XPATH, "//table/tbody/tr[1]/td[1]/input")))
+        self.driver.find_element(By.XPATH, "//table/tbody/tr[1]/td[1]/input").click()
+        sleep(2)
+        self.driver.find_element(By.XPATH, "//*[@id='wrap']/div[2]/div/div/div/div[1]/button[1]").click()
+        sleep(4)
+        response = requests.get(self.settings['call_back_url'])
+        data = response.json()
+        document_collection_ids = [item['documentCollectionId'] for item in data]
+        assert doc_id in document_collection_ids
+        specific_document_collection_id = doc_id
+        for item in data:
+            if item['documentCollectionId'] == specific_document_collection_id:
+                if item['notificationType'] == 3:
+                    assert item['documentStatus'] == 2
+                    break
+        else:
+            raise AssertionError(f"Document {specific_document_collection_id} not displayed oin callback list")
+
     @pytest.mark.part3
     def test_get_template_id_extra_info_json_from_document_collection(self):
         document = uuid.uuid4().hex
