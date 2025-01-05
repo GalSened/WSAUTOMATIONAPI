@@ -3665,6 +3665,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         cursor.execute(
             f"update [DocumentCollections] set [CreationTime] = DATEADD(DAY, -361, GETDATE()) where [Id] = '{doc_id}'")
         conn.commit()
+        sleep(5)
         self.driver.get(self.settings['jobs_url'])
         WebDriverWait(self.driver, 60).until(
             EC.presence_of_all_elements_located((By.XPATH, "//table/tbody/tr[1]/td[1]/input")))
