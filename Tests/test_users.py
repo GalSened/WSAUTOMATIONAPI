@@ -1,3 +1,5 @@
+import random
+import string
 import unittest
 import uuid
 import warnings
@@ -398,24 +400,38 @@ class WesignApiUsersTests(unittest.TestCase):
         unittest.main()
 
     def __enter_temp_mail_site(self):
-        self.driver.get('https://www.1secmail.com/')
+        driver = self.driver
+        name_length = 6
+        name = ''.join(random.choices(string.ascii_letters, k=name_length))
+        number = random.randint(1000, 9999)
+        name_number = f"{name}{number}"
+
+        driver.get('https://fviainboxes.com/')
+        sleep(1)
+        WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
+        )
+        sleep(1)
+
+        new_username = WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
+        )
+        sleep(1)
+        new_username.clear()
+        sleep(1.5)
+        new_username.send_keys(name_number)
         sleep(3)
-        WebDriverWait(self.driver, 40).until(
-            EC.presence_of_element_located((By.ID, "login")))
-        name = self.driver.find_element(By.XPATH, "//input[@id='login']")
-        art_name = name.get_attribute('value')
-        sleep(3)
-        domain = self.driver.find_element(By.XPATH, "//select[@id='domain']")
-        art_domain = domain.get_attribute('value')
-        email = str(art_name) + '@' + str(art_domain)
-        return email
+        email = WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[type="text"]'))
+        )
+        email_address = email.get_attribute("value")
+
+        return email_address + '@fviainboxes.com'
 
 
     def __setup(self):
         service = Service(self.settings['chrome_driver'])
         options = webdriver.ChromeOptions()
-        options.add_argument(
-            '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
         options.add_argument("start-maximized")
         options.add_argument("window-size=1920,1080")
         options.add_argument("--disable-notifications")
@@ -429,8 +445,14 @@ class WesignApiUsersTests(unittest.TestCase):
         self.driver = webdriver.Chrome(service=service, options=options)
 
     def __activate_free_user_account(self, with_password: True):
+        sleep(3)
+        for x in range(3):
+            sleep(3)
+            WebDriverWait(self.driver, 100).until(
+                EC.element_to_be_clickable((By.XPATH,f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
+            sleep(3)
+        sleep(3)
         if with_password:
-
             WebDriverWait(self.driver, 100).until(
                 EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'הפעל/י את החשבון שלך')])[1]")))
             sleep(1.5)

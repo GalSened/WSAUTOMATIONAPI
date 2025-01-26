@@ -1,6 +1,8 @@
 import logging
 import os
+import random
 import shutil
+import string
 import unittest
 import uuid
 import warnings
@@ -313,6 +315,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         sleep(90)
+        WebDriverWait(self.driver, 100).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
+        sleep(5)
         email = self.driver.find_elements(By.XPATH, f"//*[contains(text(),'{self.document_name}')]")
         assert len(email) > 0, "Email didn't sent"
         sleep(2)
@@ -357,11 +363,10 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     @pytest.mark.part3
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
         self.__setup()
-        self.driver.execute_script("window.open('');")
-        self.driver.save_screenshot("test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true_before.png")
+        self.driver.execute_script("window.open();")
         sleep(10)
-        email = self.__enter_temp_mail()
-        self.driver.save_screenshot("test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true.png")
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        email = "devtest1@comda.co.il"
         email_prefix = uuid.uuid4().hex
         self.document_name = email_prefix
         with open(
@@ -379,20 +384,30 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
         sleep(4)
-        self.driver.switch_to.window(self.driver.window_handles[1])
+        self.driver.switch_to.window(self.driver.window_handles[0])
         sleep(2)
         self.driver.get(json_response)
         sleep(3)
         self.__sign_on_document()
+        sleep(40)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
+        self.__enter_comda_mail("devtest1@comda.co.il", "Comsign1!")
         sleep(5)
-        self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(30)
         email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
         email_notification.click()
         sleep(2.5)
-        attached_document = self.driver.find_elements(By.XPATH,
+        while True:
+            self.driver.refresh()
+            email_notification = self.driver.find_element(By.XPATH,
+                                                          f"(//*[contains(text(),'{self.document_name}')])[1]")
+            email_notification.click()
+            sleep(5)
+            attached_document = self.driver.find_elements(By.XPATH,
                                                       f"(//*[contains(text(),'{self.document_name}.pdf')])[1]")
-        assert len(attached_document) > 0, "Pdf document attached"
+            sleep(30)
+            if len(attached_document) > 0:
+                break
 
     # @pytest.mark.run(order=1)
     # def test_delete_all_mails(self):
@@ -4214,8 +4229,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     def __setup(self):
         service = Service(self.settings['chrome_driver'])
         options = webdriver.ChromeOptions()
-        options.add_argument(
-            '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
         options.add_argument("start-maximized")
         options.add_argument("window-size=1920,1080")
         options.add_argument("--disable-notifications")
@@ -4349,17 +4362,30 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     def __enter_temp_mail(self):
         driver = self.driver
-        self.driver.get('https://www.1secmail.com/')
+        name_length = 6
+        name = ''.join(random.choices(string.ascii_letters, k=name_length))
+        number = random.randint(1000, 9999)
+        name_number = f"{name}{number}"
+
+        driver.get('https://fviainboxes.com/')
+        sleep(1)
+        WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
+        )
+        sleep(1)
+
+        new_username = WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
+        )
+        sleep(1)
+        new_username.clear()
+        sleep(1.5)
+        new_username.send_keys(name_number)
         sleep(3)
-        self.driver.refresh()
-        sleep(3)
-        WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.ID, "login")))
-        name = self.driver.find_element(By.XPATH, "//input[@id='login']")
-        art_name = name.get_attribute('value')
-        sleep(3)
-        domain = self.driver.find_element(By.XPATH, "//select[@id='domain']")
-        art_domain = domain.get_attribute('value')
-        email = str(art_name) + '@' + str(art_domain)
-        return email
+        email = WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[type="text"]'))
+        )
+        email_address = email.get_attribute("value")
+
+        return email_address + '@fviainboxes.com'
 

@@ -1,3 +1,5 @@
+import random
+import string
 import unittest
 import uuid
 import warnings
@@ -747,8 +749,6 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def __setup(self):
         service = Service(self.settings['chrome_driver'])
         options = webdriver.ChromeOptions()
-        options.add_argument(
-            '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"')
         options.add_argument("start-maximized")
         options.add_argument("window-size=1920,1080")
         options.add_argument("--disable-notifications")
@@ -880,23 +880,42 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     def __enter_temp_mail(self):
         driver = self.driver
-        self.driver.get('https://www.1secmail.com/')
+        name_length = 6
+        name = ''.join(random.choices(string.ascii_letters, k=name_length))
+        number = random.randint(1000, 9999)
+        name_number = f"{name}{number}"
+
+        driver.get('https://fviainboxes.com/')
+        sleep(1)
+        WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
+        )
+        sleep(1)
+
+        new_username = WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
+        )
+        sleep(1)
+        new_username.clear()
+        sleep(1.5)
+        new_username.send_keys(name_number)
         sleep(3)
-        self.driver.refresh()
-        sleep(3)
-        WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.ID, "login")))
-        name = self.driver.find_element(By.XPATH, "//input[@id='login']")
-        art_name = name.get_attribute('value')
-        sleep(3)
-        domain = self.driver.find_element(By.XPATH, "//select[@id='domain']")
-        art_domain = domain.get_attribute('value')
-        email = str(art_name) + '@' + str(art_domain)
-        return email
+        email = WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[type="text"]'))
+        )
+        email_address = email.get_attribute("value")
+
+        return email_address + '@fviainboxes.com'
 
     def __enter_temp_mail_and_sign(self, document_name):
         driver = self.driver
-        sleep(3)
+        for x in range(3):
+            WebDriverWait(self.driver, 100).until(
+                EC.element_to_be_clickable(
+                    (By.XPATH,
+                     f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
+            sleep(1)
+        sleep(2)
         WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")))
         sleep(3)
@@ -911,6 +930,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     def __enter_temp_mail_and_sign_dc(self, document_name):
         driver = self.driver
+        sleep(3)
+        WebDriverWait(self.driver, 100).until(
+            EC.element_to_be_clickable(
+                (By.XPATH,
+                 f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
         sleep(3)
         try:
 
