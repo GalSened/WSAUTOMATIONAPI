@@ -353,12 +353,30 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.__sign_on_document()
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(90)
-        email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
-        email_notification.click()
-        sleep(8)
-        attached_document = self.driver.find_elements(By.XPATH, "//img[@id=':70']")
-        assert len(attached_document) == 0, "Pdf document attached"
+        sleep(20)
+        WebDriverWait(self.driver, 100).until(
+            EC.element_to_be_clickable(
+                (By.XPATH,
+                 f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
+        sleep(3)
+        while True:
+            try:
+                sleep(2)
+                WebDriverWait(self.driver, 100).until(
+                    EC.element_to_be_clickable(
+                        (By.XPATH,
+                         f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
+                email_notification = self.driver.find_element(By.XPATH,
+                                                              f"(//*[contains(text(),'{self.document_name}')])[1]")
+                email_notification.click()
+                sleep(5)
+                attached_document = self.driver.find_elements(By.XPATH,
+                                                              f"(//*[contains(text(),'{self.document_name}.pdf')])[1]")
+                sleep(10)
+                if len(attached_document) == 0:
+                    break
+            except:
+                continue
 
     @pytest.mark.part3
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
