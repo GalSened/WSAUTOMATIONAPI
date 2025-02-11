@@ -17,7 +17,7 @@ class ResultCode:
     PLEASE_SPECIFY_VALID_DOCUMENT_MODE = "Please specify valid DocumentMode: 1 (OrderedGroupSign ) or 2 (GroupSign) or 3 (Online)"
     CONTACT_NOT_CREATED_BY_USER = "Contact not created by user"
     THERE_IS_DUPLICATE_FIELD_FOR_SIGNER = 'There is duplicate field for signer'
-    SIGNER_METHOD_NOT_FEET_TO_CONTACT_MEANS = "Signer method not feet to contact means"
+    SIGNER_METHOD_NOT_FEET_TO_CONTACT_MEANS = "Signer method does not fit contact means"
     OVERLAYING_FIELDS_PLEASE_MOVE_THE_FIELDS = "Signature fields coordinates must be unique, remove duplication fields with same X , Y - [X=0.1397916666666666;Y=0.1559055118110236]"
     SIGNATURE_FIELDS_MUST_BE_UNIQUE = "Signature fields must be unique, remove duplication fields- [sign1]"
     INVALID_TEMPLATE_ID = 'Invalid template id'
@@ -26,9 +26,9 @@ class ResultCode:
     BASE_64_FILE_UNSUPPORTED_TYPE = 'Supported FileType are: PDF, DOCX, PNG, JPG , JPEG. Please specify a valid Base64File in format data:application/FILE_TYPE;base64,.... '
     READ_ONLY_FIELDS_SHOULD_CONTAIN_NAME_AND_VALUE = 'Read only fields should contain name and value'
     PLEASE_SPECIFY_VALID_SIGNERS = 'Please specify valid signers (signer should contain contactId with valid sendingMethod (sms-1,email-2 or tablet-3) or contantMeans with contactName)'
-    GROUP_WITH_SAME_NAME = 'Group with same name already exist in company'
+    GROUP_WITH_SAME_NAME = 'Group with the same name already exists in the company'
     EMPTY_NAME = "'Name' must not be empty."
-    THERE_ARE_USERS_IN_GROUP = 'There are users in group'
+    THERE_ARE_USERS_IN_GROUP = 'There are users in the group'
     INVALID_USER_TYPE = 'Invalid user type'
     INVALID_GROUP_ID = 'Invalid GroupId'
     PLEASE_SPECIFY_VALID_EMAIL = 'Please specify valid Email '
@@ -39,15 +39,15 @@ class ResultCode:
     CONTACT_WITH_SAME_MEANS_ALREADY_EXISTS = 'Contact with same means already exists'
     INVALID_PHONE = 'Invalid Phone'
     INVALID_CSV = 'Csv must contains headers of FullName,Email,PhoneNumber,SendingMethod'
-    NAME_IS_MISSING = 'Name Is Missing'
+    NAME_IS_MISSING = 'Name is missing'
     NAME_SHOULD_CONTAIN_ONLY_CHARACTERS = 'Name should contain only characters'
     SMS_PROVIDER_ERROR = "Your SMS provider not support sending SMS globally"
     INVALID_FORMAT = 'Cannot parse *.xlsx file to contacts'
     SAME_FIELD_NAME = 'There is field that assign to more than one signer'
     INVALID_PASSWORD = 'Password should contain at least one digit, one special character and at least 8 characters long'
-    SIGNER_SIGNED_OR_DECLINE = 'Cannot Create signing Link for signer that already signed or decline'
+    SIGNER_SIGNED_OR_DECLINE = 'Cannot create signing link for signer that already signed or declined'
     DOCUMENT_NOT_BELONG_TO_USER_OR_GROUP = 'Document not belong to the user group'
     INVALID_CONTACTS_GROUP_NAME = 'Invalid contacts group name'
-    THERE_ARE_USERS_IN_GROUP = "There are users in group"
+    THERE_ARE_USERS_IN_GROUP = "There are users in the group"
     USER_IS_ALREADY_CONNECTED_TO_THE_GROUP = ['User is already connected to the group']
     INVALID_XLSX = 'Cannot parse *.xlsx file to contacts'
