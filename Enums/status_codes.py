@@ -9,7 +9,7 @@ class ResultCode:
     PLEASE_SPECIFY_A_VALID_EMAIL = 'Please specify a valid Email'
     PLEASE_SPECIFY_AN_EMAIL = 'Please specify an Email or Username'
     MINIMUN_LENGTH_OF_EMAIL_OR_USERNAME = "Minimun length of email/username is 6 characters"
-    FIELD_NAME_NOT_EXIST = 'Field name not exist'
+    FIELD_NAME_NOT_EXIST = 'Field name does not exist'
     PLEASE_SPECIFY_FIELD_NAME_IN_READ_ONLY_FIELDS = 'Field name not exist'
     READ_ONLY_FIELDS_SHOULD_CONTAIN_VALUE = "Read only fields should contain value"
     TEMPLATES_IN_SIGNERS_FIELDS_AND_IN_READ_ONLY_FIELDS_MUST_BE_FROM_TEMPLATES_COLLECTION_INPUT = "Templates in signers fields and in read only fields must be from templates collection input"
