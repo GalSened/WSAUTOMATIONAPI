@@ -273,7 +273,7 @@ class WesignMethodsApi:
         return r
 
     def users_sign_up(self, payload):
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token}
+        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + self.token_nirk}
         r = requests.post(self.settings['Base_Url'] + 'users', data=json.dumps(payload), headers=headers)
         return r
 

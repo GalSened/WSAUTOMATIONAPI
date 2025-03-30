@@ -8,6 +8,8 @@ from telnetlib import EC
 from time import sleep
 import pytest
 import json
+
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -21,9 +23,6 @@ from selenium.webdriver.chrome.service import Service
 @pytest.mark.flaky(max_runs=6)
 class WesignApiUsersTests(unittest.TestCase):
     def setUp(self):
-        # p = Path(__file__).with_name('UsersSettings.json')
-        # with open(p) as f:
-        #     self.settings = json.load(f)
         p = Path(__file__).resolve().parent.parent
         file_path = p / "Settings\\UsersSettings.json"
         with open(file_path) as f:
@@ -31,6 +30,8 @@ class WesignApiUsersTests(unittest.TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         warnings.simplefilter('ignore', DeprecationWarning)
         self.token = Shared.login_request(self)
+        self.token_nirk = Shared.login_request_nirk(self)
+
 
     @pytest.mark.part1
     def test_create_new_basic_user_success(self):
@@ -400,33 +401,21 @@ class WesignApiUsersTests(unittest.TestCase):
         unittest.main()
 
     def __enter_temp_mail_site(self):
-        driver = self.driver
+        self.driver.get('http://192.168.0.32/')
+        sleep(0.5)
+        WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.XPATH, '//input[@type="text"]')))
         name_length = 6
         name = ''.join(random.choices(string.ascii_letters, k=name_length))
         number = random.randint(1000, 9999)
         name_number = f"{name}{number}"
-
-        driver.get('https://fviainboxes.com/')
-        sleep(1)
-        WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
-        )
-        sleep(1)
-
-        new_username = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
-        )
-        sleep(1)
-        new_username.clear()
-        sleep(1.5)
-        new_username.send_keys(name_number)
-        sleep(3)
-        email = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[type="text"]'))
-        )
-        email_address = email.get_attribute("value")
-
-        return email_address + '@fviainboxes.com'
+        name_input = self.driver.find_element(By.XPATH, '//input[@type="text"]')
+        email = name_number + "@localhost.com"
+        name_input.send_keys(email)
+        sleep(0.5)
+        add_inbox_button = self.driver.find_element(By.CLASS_NAME, "bi-search")
+        add_inbox_button.click()
+        return email
 
 
     def __setup(self):
@@ -445,25 +434,29 @@ class WesignApiUsersTests(unittest.TestCase):
         self.driver = webdriver.Chrome(service=service, options=options)
 
     def __activate_free_user_account(self, with_password: True):
-        sleep(3)
-        for x in range(3):
-            sleep(3)
-            WebDriverWait(self.driver, 100).until(
-                EC.element_to_be_clickable((By.XPATH,f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
-            sleep(3)
-        sleep(3)
+        sleep(10)
+        refresh = WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "bi-search")))
+        refresh.click()
+        WebDriverWait(self.driver, 100).until(
+            EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'הפעל/י את החשבון שלך')])[1]")))
         if with_password:
             WebDriverWait(self.driver, 100).until(
                 EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'הפעל/י את החשבון שלך')])[1]")))
-            sleep(1.5)
+            sleep(3)
             email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'הפעל/י את החשבון שלך')])[1]")
-            email_notification.click()
-            sleep(1.5)
-            WebDriverWait(self.driver, 30).until(
-                EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'אמת/י')]")))
+            self.driver.execute_script("arguments[0].click();", email_notification)
+            sleep(2)
+            WebDriverWait(self.driver, 50).until(
+                EC.presence_of_element_located(
+                    (By.ID, "preview-html")))
+            iframe = self.driver.find_element(By.ID, "preview-html")
+            self.driver.switch_to.frame(iframe)
             sleep(3)
             self.driver.find_element(By.XPATH, "//a[contains(text(),'אמת/י')]").click()
             sleep(3)
+            self.driver.switch_to.window(self.driver.window_handles[1])
+            sleep(2)
             WebDriverWait(self.driver, 70).until(EC.url_to_be(('https://devtest.comda.co.il/dashboard/main')))
         else:
             WebDriverWait(self.driver, 100).until(
@@ -473,6 +466,12 @@ class WesignApiUsersTests(unittest.TestCase):
                                                           f"(//*[contains(text(),'אתחל/י את הסיסמה שלך')])[1]")
             email_notification.click()
             sleep(1.5)
+            WebDriverWait(self.driver, 50).until(
+                EC.presence_of_element_located(
+                    (By.ID, "preview-html")))
+            iframe = self.driver.find_element(By.ID, "preview-html")
+            self.driver.switch_to.frame(iframe)
+            sleep(2)
             WebDriverWait(self.driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'אתחל/י')]")))
             sleep(3)

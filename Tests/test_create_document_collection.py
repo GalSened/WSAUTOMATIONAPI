@@ -3195,19 +3195,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
                 action.perform()
             sleep(3)
             self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
-            sleep(1)
-            # try:
-            #     sleep(1)
-            #     WebDriverWait(self.driver, 15).until(
-            #         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
-            #     yes_button = "//button[contains(text(),'Yes')]"
-            #     self.driver.find_element(By.XPATH, yes_button).click()
-            # except:
-            #     sleep(1)
-            #     WebDriverWait(self.driver, 15).until(
-            #         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
-            #     yes_button = "//button[contains(text(),'No')]"
-            #     self.driver.find_element(By.XPATH, yes_button).click()
             sleep(3)
             self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
             sleep(1)
@@ -4116,19 +4103,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             action.perform()
         sleep(4)
         self.driver.find_element(By.CLASS_NAME, "ct-button--primary").click()  ##Sign button
-        sleep(4)
-        # try:
-        #     sleep(1)
-        #     WebDriverWait(self.driver, 15).until(
-        #         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
-        #     yes_button = "//button[contains(text(),'Yes')]"
-        #     self.driver.find_element(By.XPATH, yes_button).click()
-        # except:
-        #     sleep(1)
-        #     WebDriverWait(self.driver, 15).until(
-        #         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Yes')]")))
-        #     yes_button = "//button[contains(text(),'No')]"
-        #     self.driver.find_element(By.XPATH, yes_button).click()
         sleep(3)
         self.driver.find_element(By.CLASS_NAME, "ct-button--titlebar-primary").click()  ##Finish button
         sleep(5)
@@ -4205,15 +4179,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
             EC.element_to_be_clickable((By.XPATH, "//div[@id='passwordNext']")))
         self.driver.find_element(By.XPATH, "//div[@id='passwordNext']").click()
         sleep(2)
-        # sleep(self.settings['max_wait_time'])
-        # try:
-        #     self.driver.find_element_by_xpath("//span[contains(text(),'devtest')]").is_displayed()
-        #     self.driver.find_element_by_xpath("//body/div[7]/div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/span[1]").click() ##click on email checkbox
-        #     sleep(self.settings['min_wait_time'])
-        #     self.driver.find_element_by_xpath("(//div[@role='button'])[11]").click() ##delete button
-        #     sleep(self.settings['min_wait_time'])
-        # except:
-        #     pass
+
 
     def __enter_gmail_mail_and_sign(self, document_name):
         self.driver.get('https://mail.google.com/')
@@ -4223,7 +4189,6 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         sleep(3)
         WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]")))
-        # self.driver.find_element_by_xpath("(//span[contains(text(),'devtest')])[2]").click()
         sleep(3)
         self.driver.find_element(By.XPATH, f"(//span[contains(text(),'document {document_name}')])[2]").click()
         sleep(2)
@@ -4380,30 +4345,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
 
     def __enter_temp_mail(self):
         driver = self.driver
+        driver.get('http://192.168.0.32/')
+        sleep(0.5)
+        WebDriverWait(driver, 40).until(
+            EC.presence_of_element_located((By.XPATH, '//input[@type="text"]')))
         name_length = 6
         name = ''.join(random.choices(string.ascii_letters, k=name_length))
         number = random.randint(1000, 9999)
         name_number = f"{name}{number}"
-
-        driver.get('https://fviainboxes.com/')
-        sleep(1)
-        WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
-        )
-        sleep(1)
-
-        new_username = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
-        )
-        sleep(1)
-        new_username.clear()
-        sleep(1.5)
-        new_username.send_keys(name_number)
-        sleep(3)
-        email = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[type="text"]'))
-        )
-        email_address = email.get_attribute("value")
-
-        return email_address + '@fviainboxes.com'
+        name_input = driver.find_element(By.XPATH, '//input[@type="text"]')
+        email = name_number + "@localhost.com"
+        name_input.send_keys(email)
+        sleep(0.5)
+        add_inbox_button = self.driver.find_element(By.CLASS_NAME, "bi-search")
+        add_inbox_button.click()
+        return email
 

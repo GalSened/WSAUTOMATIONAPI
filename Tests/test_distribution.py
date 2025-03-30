@@ -880,41 +880,28 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     def __enter_temp_mail(self):
         driver = self.driver
+        driver.get('http://192.168.0.32/')
+        sleep(0.5)
+        WebDriverWait(driver, 40).until(
+            EC.presence_of_element_located((By.XPATH, '//input[@type="text"]')))
         name_length = 6
         name = ''.join(random.choices(string.ascii_letters, k=name_length))
         number = random.randint(1000, 9999)
         name_number = f"{name}{number}"
-
-        driver.get('https://fviainboxes.com/')
-        sleep(1)
-        WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
-        )
-        sleep(1)
-
-        new_username = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#username"))
-        )
-        sleep(1)
-        new_username.clear()
-        sleep(1.5)
-        new_username.send_keys(name_number)
-        sleep(3)
-        email = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[type="text"]'))
-        )
-        email_address = email.get_attribute("value")
-
-        return email_address + '@fviainboxes.com'
+        name_input = driver.find_element(By.XPATH, '//input[@type="text"]')
+        email = name_number + "@localhost.com"
+        name_input.send_keys(email)
+        sleep(0.5)
+        add_inbox_button = self.driver.find_element(By.CLASS_NAME, "bi-search")
+        add_inbox_button.click()
+        return email
 
     def __enter_temp_mail_and_sign(self, document_name):
         driver = self.driver
-        for x in range(3):
-            WebDriverWait(self.driver, 100).until(
-                EC.element_to_be_clickable(
-                    (By.XPATH,
-                     f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
-            sleep(1)
+        sleep(1.5)
+        refresh = WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "bi-search")))
+        refresh.click()
         sleep(2)
         WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")))
@@ -922,6 +909,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]").click()
         self.driver.execute_script("arguments[0].click();", notification)
         sleep(2)
+        WebDriverWait(self.driver, 50).until(
+            EC.presence_of_element_located(
+                (By.ID, "preview-html")))
+        iframe = self.driver.find_element(By.ID, "preview-html")
+        self.driver.switch_to.frame(iframe)
+        sleep(1.5)
         WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'Click here')]")))
         sleep(3)
@@ -930,20 +923,23 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
 
     def __enter_temp_mail_and_sign_dc(self, document_name):
         driver = self.driver
-        sleep(3)
-        WebDriverWait(self.driver, 100).until(
-            EC.element_to_be_clickable(
-                (By.XPATH,
-                 f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
-        sleep(3)
+        sleep(1.5)
+        refresh = WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "bi-search")))
+        refresh.click()
+        sleep(2)
         try:
-
             WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")))
             sleep(3)
             notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{document_name}')])[1]")
             self.driver.execute_script("arguments[0].click();", notification)
-            sleep(2)
+            WebDriverWait(self.driver, 50).until(
+                EC.presence_of_element_located(
+                    (By.ID, "preview-html")))
+            iframe = self.driver.find_element(By.ID, "preview-html")
+            self.driver.switch_to.frame(iframe)
+            sleep(1.5)
             WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, "//td/table/tbody/tr/td/a")))
             sleep(3)
@@ -956,6 +952,12 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             notification = self.driver.find_element(By.XPATH, f"(//tbody/tr[2]/td)[2]")
             self.driver.execute_script("arguments[0].click();", notification)
             sleep(2)
+            WebDriverWait(self.driver, 50).until(
+                EC.presence_of_element_located(
+                    (By.ID, "preview-html")))
+            iframe = self.driver.find_element(By.ID, "preview-html")
+            self.driver.switch_to.frame(iframe)
+            sleep(1.5)
             WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, "//td/table/tbody/tr/td/a")))
             sleep(3)
