@@ -45,8 +45,11 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
     def test_api_sending_distribution_and_receiving_confirmation_for_document_viewed_and_signed_success(self):
         self.token = Shared.login_request(self)
         self.__setup()
+        email = self.__enter_temp_mail()
+        sleep(1.5)
+        self.driver.execute_script("window.open('');")
         sleep(2)
-        emails = [self.settings['dev_email']]
+        emails = [email]
         self.__enter_name_and_email_to_xlsx_file(self.settings["empty_xlsx_file"],
                                                  self.settings["empty_file_with_no_fields_Copy"], emails)
         data = open(self.settings["empty_file_with_no_fields_Copy"], "rb").read()
@@ -72,28 +75,25 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         send_distribution = WesignMethodsApi.distribution_post_json_file(self, "DistributeSignersApi_Copy")
         assert send_distribution.status_code == StatusCode.OK
         sleep(2)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(2)
         doc_id = self.__get_documentCollectionId_from_db(self.document_name)
 
         self.__get_link_by_signers_number_without_signing(1, doc_id)
-        sleep(2.5)
-
-        WebDriverWait(self.driver, 50).until(EC.presence_of_element_located((By.ID, "logo_image")))
-        sleep(2.5)
-        self.driver.find_element(By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']").click()
+        self.__sign_on_document()
         sleep(2)
-        WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "ct-button--primary")))
-        sleep(400)
-        self.__enter_comda_mail(self.settings['second_dev_email'], self.settings['comda_mail_password'])
-        sleep(1.5)
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        sleep(5)
+        self.return_to_mailbox()
+        self.refresh_mailpit()
         WebDriverWait(self.driver, 40).until(EC.presence_of_element_located((By.XPATH,
                                                                              f"(//*[contains(text(), '{self.document_name} has been completed')])[1]")))
         assert self.driver.find_element(By.XPATH,
-                                        f"//*[contains(text(), '({self.settings['dev_email']}) has viewed {self.document_name}')]")
+                                        f"//*[contains(text(), '({email}) has viewed {self.document_name}')]")
         assert self.driver.find_element(By.XPATH,
-                                        f"//*[contains(text(), '({self.settings['dev_email']}) has signed {self.document_name}')]")
+                                        f"//*[contains(text(), '({email}) has signed {self.document_name}')]")
 
-        # Bug number = WES-1021
-
+    # Bug number = WES-1021
     @pytest.mark.part2
     def test_api_sending_distribution_document_with_duplicated_signer_email_success(self):
         template = WesignMethodsApi.templates_post_json_file(self, "PDF_file_base64")
@@ -319,6 +319,7 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
         sleep(45)
         self.__enter_temp_mail_and_sign_dc(document_name)
         sleep(1)
+        self.driver.switch_to.window(self.driver.window_handles[1])
         WebDriverWait(self.driver, 25).until(
             EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'OTP' )] ")))
         OTP = self.driver.find_element(By.XPATH, "//*[contains(text(), 'OTP' )] ")
@@ -963,3 +964,23 @@ class WesignApiCreateDocumentDistributionTests(unittest.TestCase):
             sleep(3)
             click = self.driver.find_element(By.XPATH, "//td/table/tbody/tr/td/a")
             self.driver.execute_script("arguments[0].click();", click)
+
+    def refresh_mailpit(self):
+        refresh = WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "bi-search")))
+        refresh.click()
+
+    def return_to_mailbox(self):
+        sleep(3)
+        button = WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "d-sm-inline")))
+        button.click()
+
+    def __sign_on_document(self):
+        sleep(2)
+        WebDriverWait(self.driver, 40).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//button[@class='ct-button--titlebar-primary ng-star-inserted']")))
+        finish_button = "//button[@class='ct-button--titlebar-primary ng-star-inserted']"
+        self.driver.find_element(By.XPATH, finish_button).click()
+        WebDriverWait(self.driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, "//main/h2")))

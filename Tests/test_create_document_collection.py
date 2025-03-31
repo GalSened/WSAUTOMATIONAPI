@@ -314,10 +314,8 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         response = r.json()
         json_response = response['signerLinks'][0]['link']
         assert len(json_response) == 85
-        sleep(90)
-        WebDriverWait(self.driver, 100).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
+        sleep(10)
+        self.refresh_mailpit()
         sleep(5)
         email = self.driver.find_elements(By.XPATH, f"//*[contains(text(),'{self.document_name}')]")
         assert len(email) > 0, "Email didn't sent"
@@ -349,34 +347,16 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[1])
         sleep(2)
         self.driver.get(json_response)
-        sleep(14)
+        sleep(3)
         self.__sign_on_document()
         sleep(5)
         self.driver.switch_to.window(self.driver.window_handles[0])
-        sleep(20)
-        WebDriverWait(self.driver, 100).until(
-            EC.element_to_be_clickable(
-                (By.XPATH,
-                 f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
-        sleep(3)
-        while True:
-            try:
-                sleep(2)
-                WebDriverWait(self.driver, 100).until(
-                    EC.element_to_be_clickable(
-                        (By.XPATH,
-                         f"//body/div[@id='app']/div[3]/main[1]/section[1]/div[1]/div[2]/*[1]"))).click()
-                email_notification = self.driver.find_element(By.XPATH,
-                                                              f"(//*[contains(text(),'{self.document_name}')])[1]")
-                email_notification.click()
-                sleep(5)
-                attached_document = self.driver.find_elements(By.XPATH,
-                                                              f"(//*[contains(text(),'{self.document_name}.pdf')])[1]")
-                sleep(10)
-                if len(attached_document) == 0:
-                    break
-            except:
-                continue
+        sleep(10)
+        self.refresh_mailpit()
+        sleep(2)
+        email_notification = self.driver.find_elements(By.XPATH,
+                                                      f"(//*[contains(text(),'Thank you for signing the document {self.document_name}')])[1]")
+        assert len(email_notification) == 0
 
     @pytest.mark.part3
     def test_document_collection_document_sending_with_should_send_sign_document_parameter_as_true(self):
@@ -384,7 +364,7 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.execute_script("window.open();")
         sleep(10)
         self.driver.switch_to.window(self.driver.window_handles[1])
-        email = "devtest1@comda.co.il"
+        email = self.__enter_temp_mail()
         email_prefix = uuid.uuid4().hex
         self.document_name = email_prefix
         with open(
@@ -407,25 +387,19 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
         self.driver.get(json_response)
         sleep(3)
         self.__sign_on_document()
-        sleep(40)
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        sleep(2)
-        self.__enter_comda_mail("devtest1@comda.co.il", "Comsign1!")
         sleep(5)
-        email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'{self.document_name}')])[1]")
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        sleep(5)
+        self.refresh_mailpit()
+        sleep(2)
+        email_notification = self.driver.find_element(By.XPATH, f"(//*[contains(text(),'Thank you for signing the document {self.document_name}')])[1]")
         email_notification.click()
         sleep(2.5)
-        while True:
-            self.driver.refresh()
-            email_notification = self.driver.find_element(By.XPATH,
-                                                          f"(//*[contains(text(),'{self.document_name}')])[1]")
-            email_notification.click()
-            sleep(5)
-            attached_document = self.driver.find_elements(By.XPATH,
-                                                      f"(//*[contains(text(),'{self.document_name}.pdf')])[1]")
-            sleep(30)
-            if len(attached_document) > 0:
-                break
+        attached_document = self.driver.find_elements(By.XPATH,
+                                                  f"(//*[contains(text(),'{self.document_name}.pdf')])[1]")
+        sleep(5)
+        assert len(attached_document) > 0, "Attached document not displ"
+
 
     # @pytest.mark.run(order=1)
     # def test_delete_all_mails(self):
@@ -4078,6 +4052,23 @@ class WesignApiCreateDocumentCollectionTests(unittest.TestCase):
     #         'https://devtest.comda.co.il/userapi/v3/documentcollections?sent=true&viewed=true&signed=true&declined=true&sendingFailed=true&canceled=true&limit=200',
     #         headers=headers)
     #     return r
+
+    def refresh_mailpit(self):
+        refresh = WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "bi-search")))
+        refresh.click()
+
+    def return_to_mailbox(self):
+        sleep(3)
+        return_to_box = WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "list-group-item")))
+        return_to_box.click()
+
+    def click_mailpit_logo(self):
+        sleep(3)
+        button = WebDriverWait(self.driver, 40).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "d-sm-inline")))
+        button.click()
 
     def __sign_on_document(self):
         driver = self.driver
